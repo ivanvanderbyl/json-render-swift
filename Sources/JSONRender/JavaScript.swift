@@ -73,14 +73,15 @@ enum JavaScript {
             }
             if let radix { return parseInteger(units.dropFirst(2), radix: radix) }
         }
-        var body = Substring(trimmed)
+        var body = Substring(trimmed).unicodeScalars[...]
         var sign = 1.0
         if body.first == "+" || body.first == "-" {
             sign = body.first == "-" ? -1 : 1
             body = body.dropFirst()
         }
-        if body == "Infinity" { return sign * .infinity }
-        guard isDecimalLiteral(body), let magnitude = Double(String(body)) else { return .nan }
+        let text = Substring(body)
+        if text == "Infinity" { return sign * .infinity }
+        guard isDecimalLiteral(text), let magnitude = Double(String(text)) else { return .nan }
         return sign * magnitude
     }
 
