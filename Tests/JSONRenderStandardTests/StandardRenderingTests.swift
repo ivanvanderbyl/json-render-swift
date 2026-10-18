@@ -1,10 +1,57 @@
-#if canImport(AppKit)
+#if canImport(UIKit)
+import UIKit
+#else
 import AppKit
+#endif
 import JSONRender
 import SwiftUI
 import Testing
 @testable import JSONRenderStandard
 @testable import JSONRenderUI
+
+/// Draws a view and lays it out so every body runs: an NSHostingView on
+/// macOS, and a UIHostingController in a window on iOS.
+@MainActor
+final class Host<Content: View> {
+    #if canImport(UIKit)
+    let controller: UIHostingController<Content>
+    let window: UIWindow
+
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
+        controller = UIHostingController(rootView: content)
+        window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        window.rootViewController = controller
+        window.isHidden = false
+        controller.view.frame = window.bounds
+        layout()
+    }
+
+    func update(_ content: Content) {
+        controller.rootView = content
+        layout()
+    }
+
+    func layout() {
+        controller.view.setNeedsLayout()
+        controller.view.layoutIfNeeded()
+    }
+    #else
+    let view: NSHostingView<Content>
+
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
+        view = NSHostingView(rootView: content)
+        view.frame = NSRect(x: 0, y: 0, width: width, height: height)
+        view.layoutSubtreeIfNeeded()
+    }
+
+    func update(_ content: Content) {
+        view.rootView = content
+        layout()
+    }
+
+    func layout() { view.layoutSubtreeIfNeeded() }
+    #endif
+}
 
 /// Draws every standard component through SwiftUI. Laying out the hosting
 /// view runs every component body, so a component that cannot draw its
@@ -49,11 +96,9 @@ struct StandardRenderingTests {
             "modal": ["type": "Modal", "props": ["visible": false, "title": "Modal"], "children": []],
         ]
         let runtime = Runtime(initialState: ["name": "Ada", "on": true])
-        let view = NSHostingView(rootView: Renderer(spec: Spec(root: "screen", elements: elements), registry: .standard, runtime: runtime))
-        view.frame = NSRect(x: 0, y: 0, width: 390, height: 2000)
-        view.layoutSubtreeIfNeeded()
+        let host = Host(Renderer(spec: Spec(root: "screen", elements: elements), registry: .standard, runtime: runtime), width: 390, height: 2000)
         await runtime.settle()
-        view.layoutSubtreeIfNeeded()
+        host.layout()
 
         let tree = try #require(runtime.tree)
         let failed = tree.allNodes.filter { $0.status != .rendered }.map(\.id)
@@ -61,4 +106,3 @@ struct StandardRenderingTests {
         #expect(tree.allNodes.count == elements.count)
     }
 }
-#endif

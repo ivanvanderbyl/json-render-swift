@@ -12,4 +12,9 @@ goldens-check:
 test:
 	swift test
 
-.PHONY: goldens goldens-check test
+# Run every Swift test on an iOS simulator. Override IOS_DESTINATION to pick another.
+IOS_DESTINATION ?= platform=iOS Simulator,name=iPhone 17
+test-ios:
+	xcodebuild test -scheme JSONRender-Package -destination '$(IOS_DESTINATION)' -quiet
+
+.PHONY: goldens goldens-check test test-ios

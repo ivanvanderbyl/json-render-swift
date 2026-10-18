@@ -139,6 +139,7 @@ A schema-valid spec is only well formed. Check the element graph with `SpecValid
 
 ```sh
 make test            # every Swift test, including the conformance tests
+make test-ios        # the same tests on an iOS simulator (set IOS_DESTINATION to choose one)
 make goldens         # regenerate the goldens from the pinned upstream packages
 make goldens-check   # fail if the goldens are out of date with the pinned packages
 ```

@@ -1,5 +1,8 @@
-#if canImport(AppKit)
+#if canImport(UIKit)
+import UIKit
+#else
 import AppKit
+#endif
 import Foundation
 import JSONRender
 import JSONRenderUI
@@ -11,6 +14,50 @@ import Testing
 // (packages/genui), generated with zod's toJSONSchema from its json-render
 // 0.21.1 catalog. Everything Brightfield-specific lives in this test: the
 // library only loads the exported schema and draws host-registered views.
+
+/// Draws a view and lays it out so every body runs: an NSHostingView on
+/// macOS, and a UIHostingController in a window on iOS.
+@MainActor
+final class Host<Content: View> {
+    #if canImport(UIKit)
+    let controller: UIHostingController<Content>
+    let window: UIWindow
+
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
+        controller = UIHostingController(rootView: content)
+        window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        window.rootViewController = controller
+        window.isHidden = false
+        controller.view.frame = window.bounds
+        layout()
+    }
+
+    func update(_ content: Content) {
+        controller.rootView = content
+        layout()
+    }
+
+    func layout() {
+        controller.view.setNeedsLayout()
+        controller.view.layoutIfNeeded()
+    }
+    #else
+    let view: NSHostingView<Content>
+
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
+        view = NSHostingView(rootView: content)
+        view.frame = NSRect(x: 0, y: 0, width: width, height: height)
+        view.layoutSubtreeIfNeeded()
+    }
+
+    func update(_ content: Content) {
+        view.rootView = content
+        layout()
+    }
+
+    func layout() { view.layoutSubtreeIfNeeded() }
+    #endif
+}
 
 @MainActor
 @Suite("Brie surfaces")
@@ -88,11 +135,8 @@ struct BrieSurfaceTests {
         }
         let registry = Registry(catalog: schema.catalog(), components: components)
 
-        let view = NSHostingView(rootView: Renderer(spec: spec, registry: registry, runtime: Runtime()))
-        view.frame = NSRect(x: 0, y: 0, width: 390, height: 600)
-        view.layoutSubtreeIfNeeded()
+        _ = Host(Renderer(spec: spec, registry: registry, runtime: Runtime()), width: 390, height: 600)
 
         #expect(drawn == ["position position r1", "question turn-1:call-1", "unavailable HelpAnswer"])
     }
 }
-#endif

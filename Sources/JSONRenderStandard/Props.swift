@@ -37,7 +37,7 @@ extension ComponentContext {
 
     /// An enum prop, or the fallback when it is missing or not a known case.
     func choice<Value: RawRepresentable<String>>(_ key: String, default fallback: Value) -> Value {
-        string(key).flatMap(Value.init(rawValue:)) ?? fallback
+        string(key).flatMap { Value(rawValue: $0) } ?? fallback
     }
 }
 

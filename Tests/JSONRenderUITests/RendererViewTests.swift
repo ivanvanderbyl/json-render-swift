@@ -1,23 +1,50 @@
-#if canImport(AppKit)
+#if canImport(UIKit)
+import UIKit
+#else
 import AppKit
+#endif
 import JSONRender
 import SwiftUI
 import Testing
 @testable import JSONRenderUI
 
-// Tests the SwiftUI layer by hosting views in an NSHostingView: laying the
+// Tests the SwiftUI layer by hosting views (see Host): laying the
 // view out evaluates every body, so a recording component sees exactly what
 // the renderer draws. Behaviour of the render tree itself is covered by the
 // UI-free JSONRenderTests and the conformance suites.
 
-/// Draws a view and lays it out so every body runs.
+/// Draws a view and lays it out so every body runs: an NSHostingView on
+/// macOS, and a UIHostingController in a window on iOS.
 @MainActor
 final class Host<Content: View> {
+    #if canImport(UIKit)
+    let controller: UIHostingController<Content>
+    let window: UIWindow
+
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
+        controller = UIHostingController(rootView: content)
+        window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        window.rootViewController = controller
+        window.isHidden = false
+        controller.view.frame = window.bounds
+        layout()
+    }
+
+    func update(_ content: Content) {
+        controller.rootView = content
+        layout()
+    }
+
+    func layout() {
+        controller.view.setNeedsLayout()
+        controller.view.layoutIfNeeded()
+    }
+    #else
     let view: NSHostingView<Content>
 
-    init(_ content: Content) {
+    init(_ content: Content, width: CGFloat = 400, height: CGFloat = 800) {
         view = NSHostingView(rootView: content)
-        view.frame = NSRect(x: 0, y: 0, width: 400, height: 800)
+        view.frame = NSRect(x: 0, y: 0, width: width, height: height)
         view.layoutSubtreeIfNeeded()
     }
 
@@ -27,6 +54,7 @@ final class Host<Content: View> {
     }
 
     func layout() { view.layoutSubtreeIfNeeded() }
+    #endif
 }
 
 /// Diagnostics a test receives.
@@ -337,4 +365,3 @@ struct ConfirmDialogTests {
         #expect(!custom.isDestructive)
     }
 }
-#endif
