@@ -5,8 +5,6 @@ import Testing
 @testable import JSONRender
 
 // actions.test.ts › onSuccess/onError schemas
-// Deferred: "keeps params on the onSuccess action form" - ported with the schema module.
-// Deferred: "keeps params on the onError action form" - ported with the schema module.
 
 @Suite("actions.test.ts › interpolateString")
 struct InterpolateStringTests {
@@ -364,5 +362,20 @@ struct ActionBindingWithSuccessTests {
 
         #expect(a.params == ["data": "test"])
         #expect(a.onSuccess == ["navigate": "/done"])
+    }
+}
+
+@Suite("actions.test.ts › onSuccess/onError schemas")
+struct ActionSchemaTests {
+    @Test("keeps params on the onSuccess action form")
+    func keepsOnSuccessParams() throws {
+        let parsed = try ActionSchemas.onSuccess.parse(["action": "toast", "params": ["message": "Saved"]])
+        #expect(parsed == ["action": "toast", "params": ["message": "Saved"]])
+    }
+
+    @Test("keeps params on the onError action form")
+    func keepsOnErrorParams() throws {
+        let parsed = try ActionSchemas.onError.parse(["action": "toast", "params": ["message": "Failed"]])
+        #expect(parsed == ["action": "toast", "params": ["message": "Failed"]])
     }
 }

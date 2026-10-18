@@ -1,0 +1,2316 @@
+{
+  "suite": "upstream-schemas",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "f3643478b6eb0f086fef81fc81e2ae7328127af21c66465d26a0479a37ecf3e6",
+  "cases": [
+    {
+      "name": "ActionConfirmSchema",
+      "output": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "confirmLabel": {
+            "type": "string"
+          },
+          "cancelLabel": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string",
+            "enum": [
+              "default",
+              "danger"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "message"
+        ]
+      }
+    },
+    {
+      "name": "ActionOnSuccessSchema",
+      "output": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "navigate": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "navigate"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "set": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "set"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$state": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "$state"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "action"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ActionOnErrorSchema",
+      "output": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "set": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "set"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$state": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "$state"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "action"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ActionBindingSchema",
+      "output": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "params": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$state": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "$state"
+                  ]
+                }
+              ]
+            }
+          },
+          "confirm": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "confirmLabel": {
+                "type": "string"
+              },
+              "cancelLabel": {
+                "type": "string"
+              },
+              "variant": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "danger"
+                ]
+              }
+            },
+            "required": [
+              "title",
+              "message"
+            ]
+          },
+          "onSuccess": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "navigate": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "navigate"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {}
+                  }
+                },
+                "required": [
+                  "set"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string"
+                  },
+                  "params": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          },
+          "onError": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {}
+                  }
+                },
+                "required": [
+                  "set"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string"
+                  },
+                  "params": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          },
+          "preventDefault": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "action"
+        ]
+      }
+    },
+    {
+      "name": "DynamicValueSchema",
+      "output": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$state": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "$state"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ValidationCheckSchema",
+      "output": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$state": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "$state"
+                  ]
+                }
+              ]
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "message"
+        ]
+      }
+    },
+    {
+      "name": "ValidationConfigSchema",
+      "output": {
+        "type": "object",
+        "properties": {
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "args": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "message"
+              ]
+            }
+          },
+          "validateOn": {
+            "type": "string",
+            "enum": [
+              "change",
+              "blur",
+              "submit"
+            ]
+          },
+          "enabled": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "$defs": {
+          "__schema0": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "$state": {
+                        "type": "string"
+                      },
+                      "eq": {},
+                      "neq": {},
+                      "gt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "gte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "not": {
+                        "type": "boolean",
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "$state"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "$item": {
+                        "type": "string"
+                      },
+                      "eq": {},
+                      "neq": {},
+                      "gt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "gte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "not": {
+                        "type": "boolean",
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "$item"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "$index": {
+                        "type": "boolean",
+                        "const": true
+                      },
+                      "eq": {},
+                      "neq": {},
+                      "gt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "gte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lt": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "lte": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "$state": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "$state"
+                            ]
+                          }
+                        ]
+                      },
+                      "not": {
+                        "type": "boolean",
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "$index"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$state": {
+                          "type": "string"
+                        },
+                        "eq": {},
+                        "neq": {},
+                        "gt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "gte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "not": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "$state"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$item": {
+                          "type": "string"
+                        },
+                        "eq": {},
+                        "neq": {},
+                        "gt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "gte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "not": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "$item"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "$index": {
+                          "type": "boolean",
+                          "const": true
+                        },
+                        "eq": {},
+                        "neq": {},
+                        "gt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "gte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lt": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "lte": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "$state": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "$state"
+                              ]
+                            }
+                          ]
+                        },
+                        "not": {
+                          "type": "boolean",
+                          "const": true
+                        }
+                      },
+                      "required": [
+                        "$index"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$and": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/__schema0"
+                    }
+                  }
+                },
+                "required": [
+                  "$and"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$or": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/__schema0"
+                    }
+                  }
+                },
+                "required": [
+                  "$or"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "VisibilityConditionSchema",
+      "output": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "$state": {
+                    "type": "string"
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$state"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$item": {
+                    "type": "string"
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$item"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$index": {
+                    "type": "boolean",
+                    "const": true
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$index"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "$state": {
+                      "type": "string"
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$state"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$item": {
+                      "type": "string"
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$item"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$index": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$index"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$and": {
+                "type": "array",
+                "items": {
+                  "$ref": "#"
+                }
+              }
+            },
+            "required": [
+              "$and"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$or": {
+                "type": "array",
+                "items": {
+                  "$ref": "#"
+                }
+              }
+            },
+            "required": [
+              "$or"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "VisibilityConditionStrictSchema",
+      "output": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "$state": {
+                    "type": "string"
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$state"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$item": {
+                    "type": "string"
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$item"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "$index": {
+                    "type": "boolean",
+                    "const": true
+                  },
+                  "eq": {},
+                  "neq": {},
+                  "gt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "gte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lt": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "lte": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "$state": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "$state"
+                        ]
+                      }
+                    ]
+                  },
+                  "not": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "$index"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "$state": {
+                      "type": "string"
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$state"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$item": {
+                      "type": "string"
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$item"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "$index": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "eq": {},
+                    "neq": {},
+                    "gt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "gte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lt": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "lte": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "$state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "$state"
+                          ]
+                        }
+                      ]
+                    },
+                    "not": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "$index"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$and": {
+                "type": "array",
+                "items": {
+                  "$ref": "#"
+                }
+              }
+            },
+            "required": [
+              "$and"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "$or": {
+                "type": "array",
+                "items": {
+                  "$ref": "#"
+                }
+              }
+            },
+            "required": [
+              "$or"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  ]
+}

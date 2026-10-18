@@ -158,11 +158,12 @@ final class SchemaNode: @unchecked Sendable {
     }
 }
 
-enum SchemaError: Error, CustomStringConvertible {
+/// A JSON Schema document that cannot be compiled.
+public enum SchemaDocumentError: Error, Sendable, Equatable, CustomStringConvertible {
     case invalidSchema(String)
     case unresolvedReference(String)
 
-    var description: String {
+    public var description: String {
         switch self {
         case let .invalidSchema(location): "The value at \(location) is not a JSON Schema."
         case let .unresolvedReference(reference): "The schema reference \(reference) does not resolve."
@@ -188,7 +189,7 @@ private struct SchemaCompiler {
         case let .object(object):
             return try compile(object, at: location)
         default:
-            throw SchemaError.invalidSchema(location)
+            throw SchemaDocumentError.invalidSchema(location)
         }
     }
 
@@ -212,7 +213,7 @@ private struct SchemaCompiler {
             switch type {
             case let .string(name): node.types = [name]
             case let .array(names): node.types = names.compactMap(\.stringValue)
-            default: throw SchemaError.invalidSchema(location)
+            default: throw SchemaDocumentError.invalidSchema(location)
             }
         }
         node.constValue = object["const"]
@@ -319,10 +320,10 @@ private struct SchemaCompiler {
     mutating func resolvePendingReferences() throws {
         while let reference = pending.popLast() {
             if compiled[reference] != nil { continue }
-            guard JavaScript.startsWith(reference, "#") else { throw SchemaError.unresolvedReference(reference) }
+            guard JavaScript.startsWith(reference, "#") else { throw SchemaDocumentError.unresolvedReference(reference) }
             let pointer = String(reference.dropFirst())
             let target = pointer.isEmpty ? document : document.value(atPath: pointer.removingPercentEncoding ?? pointer)
-            if target.isUndefined { throw SchemaError.unresolvedReference(reference) }
+            if target.isUndefined { throw SchemaDocumentError.unresolvedReference(reference) }
             compiled[reference] = try compile(target, at: reference)
         }
     }
@@ -786,5 +787,20 @@ extension JavaScript {
         let valueInteger = (value * scale).rounded()
         let stepInteger = (step * scale).rounded()
         return valueInteger.truncatingRemainder(dividingBy: stepInteger) / scale
+    }
+}
+
+/// The issues of a value that failed ``JSONSchema/parse(_:)``, like a `ZodError`.
+public struct SchemaError: Error, Sendable, Equatable, CustomStringConvertible {
+    public var issues: [SchemaIssue]
+    public var description: String { issues.map(\.description).joined(separator: "; ") }
+}
+
+extension JSONSchema {
+    /// Validates a value and returns the parsed data, like zod's `parse`.
+    public func parse(_ value: JSONValue) throws -> JSONValue {
+        let result = validate(value)
+        guard result.success else { throw SchemaError(issues: result.issues) }
+        return result.data
     }
 }

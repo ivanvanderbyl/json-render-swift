@@ -8,6 +8,9 @@
     "react-dom": "19.2.3"
   },
   "suites": {
+    "catalog": {
+      "corpusSHA256": "f6aede03a3aae59bda5830ba6e4f8997ad36a88372ff4b24dff1d16615497a45"
+    },
     "js-semantics": {
       "corpusSHA256": "14f0cb1083093b0bfa8c7ef07b31a92d54e8964ca5124ceb6afdc33850651f6b"
     },
@@ -22,6 +25,9 @@
     },
     "spec-validator": {
       "corpusSHA256": "a6afd8a14176fac311b1e50e7cdadc55e501d23b756263c21d7b9ad657f23ce2"
+    },
+    "upstream-schemas": {
+      "corpusSHA256": "f3643478b6eb0f086fef81fc81e2ae7328127af21c66465d26a0479a37ecf3e6"
     },
     "validation": {
       "corpusSHA256": "b32ee2bb813bfb7614019721c50af21f82569464cd10040b2fef99561ce80d7e"

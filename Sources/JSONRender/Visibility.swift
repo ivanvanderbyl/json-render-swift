@@ -186,56 +186,7 @@ public enum Visibility {
     /// valid conditions. Spec validation reports anything else as
     /// `invalid_visible`.
     public static func isValid(_ condition: JSONValue) -> Bool {
-        switch condition {
-        case .bool:
-            return true
-        case let .array(parts):
-            return parts.allSatisfy(isStrictSingleCondition)
-        case let .object(object):
-            if isStrictSingleCondition(condition) { return true }
-            for key in ["$and", "$or"] where object.keys == [key] {
-                guard case let .array(children) = object[key]! else { return false }
-                return children.allSatisfy(isValid)
-            }
-            return false
-        default:
-            return false
-        }
-    }
-
-    private static let comparisonKeys: Set<String> = ["eq", "neq", "gt", "gte", "lt", "lte", "not"]
-
-    private static func isStrictSingleCondition(_ condition: JSONValue) -> Bool {
-        guard case let .object(object) = condition else { return false }
-        let sources: [(String, (JSONValue) -> Bool)] = [
-            ("$state", { $0.stringValue != nil }),
-            ("$item", { $0.stringValue != nil }),
-            ("$index", { $0 == true }),
-        ]
-        return sources.contains { source, isValidSource in
-            guard let value = object[source], isValidSource(value) else { return false }
-            return object.allSatisfy { key, member in
-                if key == source { return true }
-                guard comparisonKeys.contains(key) else { return false }
-                return isValidOperand(key, member)
-            }
-        }
-    }
-
-    private static func isValidOperand(_ key: String, _ value: JSONValue) -> Bool {
-        if value.isUndefined { return true }
-        switch key {
-        case "eq", "neq":
-            return true
-        case "not":
-            return value == true
-        default:
-            switch value {
-            case let .number(number): return number.isFinite
-            case let .object(object): return object["$state"]?.stringValue != nil
-            default: return false
-            }
-        }
+        strictConditionSchema.validate(condition).success
     }
 
     // MARK: Helpers (upstream `visibility`)

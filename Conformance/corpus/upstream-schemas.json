@@ -1,0 +1,41 @@
+{
+  "description": "zod schemas exported by @json-render/core, which the Swift package embeds as JSON Schema.",
+  "cases": [
+    {
+      "name": "ActionConfirmSchema",
+      "export": "ActionConfirmSchema"
+    },
+    {
+      "name": "ActionOnSuccessSchema",
+      "export": "ActionOnSuccessSchema"
+    },
+    {
+      "name": "ActionOnErrorSchema",
+      "export": "ActionOnErrorSchema"
+    },
+    {
+      "name": "ActionBindingSchema",
+      "export": "ActionBindingSchema"
+    },
+    {
+      "name": "DynamicValueSchema",
+      "export": "DynamicValueSchema"
+    },
+    {
+      "name": "ValidationCheckSchema",
+      "export": "ValidationCheckSchema"
+    },
+    {
+      "name": "ValidationConfigSchema",
+      "export": "ValidationConfigSchema"
+    },
+    {
+      "name": "VisibilityConditionSchema",
+      "export": "VisibilityConditionSchema"
+    },
+    {
+      "name": "VisibilityConditionStrictSchema",
+      "export": "VisibilityConditionStrictSchema"
+    }
+  ]
+}
