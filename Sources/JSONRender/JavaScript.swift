@@ -309,3 +309,27 @@ extension JavaScript {
         }
     }
 }
+
+extension JavaScript {
+    /// `key in value`: arrays have no named members here; primitives throw.
+    static func hasProperty(_ key: String, in value: JSONValue) throws -> Bool {
+        switch value {
+        case let .object(object): return object.hasKey(key)
+        case .array: return false
+        default:
+            throw JavaScriptError.typeError("Cannot use 'in' operator to search for '\(key)' in \(value.javaScriptString)")
+        }
+    }
+
+    /// `value.length`: arrays and strings (UTF-16 code units); `undefined`
+    /// (treated as not zero) for other values.
+    static func length(of value: JSONValue) throws -> Int? {
+        switch value {
+        case let .array(array): return array.count
+        case let .string(string): return string.utf16.count
+        case .undefined, .null:
+            throw JavaScriptError.typeError("Cannot read properties of \(value.javaScriptString) (reading 'length')")
+        default: return nil
+        }
+    }
+}

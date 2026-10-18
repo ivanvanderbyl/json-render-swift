@@ -1,3 +1,5 @@
+import Foundation
+
 /// Sent when an action starts, like upstream `ActionDispatchInfo`.
 public struct ActionDispatchInfo: Sendable, Equatable {
     public var id: String
@@ -52,18 +54,53 @@ public struct ActionObserver {
 /// The process-wide observer registry, like upstream `action-observer.ts`.
 @MainActor
 public enum ActionObservers {
+    private static var observers: [(id: Int, observer: ActionObserver)] = []
+    private static var nextObserverID = 0
+    private static var dispatchCounter = 0
+
     /// Registers an observer, like upstream `registerActionObserver`. Returns
     /// a function that unregisters it.
-    public static func register(_ observer: ActionObserver) -> @MainActor () -> Void { {} }
+    public static func register(_ observer: ActionObserver) -> @MainActor () -> Void {
+        let id = nextObserverID
+        nextObserverID += 1
+        observers.append((id, observer))
+        return { observers.removeAll { $0.id == id } }
+    }
 
     /// Sends a dispatch event to every observer, like upstream
     /// `notifyActionDispatch`. An observer that throws is reported and skipped.
-    public static func notifyDispatch(_ info: ActionDispatchInfo) {}
+    public static func notifyDispatch(_ info: ActionDispatchInfo) {
+        for entry in observers {
+            guard let onDispatch = entry.observer.onDispatch else { continue }
+            do {
+                try onDispatch(info)
+            } catch {
+                Diagnostics.error("[json-render] action observer threw in onDispatch: \(Actions.message(of: error).javaScriptString)")
+            }
+        }
+    }
 
     /// Sends a settle event, like upstream `notifyActionSettle`.
-    public static func notifySettle(_ info: ActionSettleInfo) {}
+    public static func notifySettle(_ info: ActionSettleInfo) {
+        for entry in observers {
+            guard let onSettle = entry.observer.onSettle else { continue }
+            do {
+                try onSettle(info)
+            } catch {
+                Diagnostics.error("[json-render] action observer threw in onSettle: \(Actions.message(of: error).javaScriptString)")
+            }
+        }
+    }
 
     /// A unique dispatch id "<milliseconds>-<counter>", like upstream
     /// `nextActionDispatchId`.
-    public static func nextDispatchID() -> String { "" }
+    public static func nextDispatchID() -> String {
+        dispatchCounter += 1
+        return "\(Int(now()))-\(dispatchCounter)"
+    }
+
+    /// `Date.now()`: milliseconds since 1970.
+    static func now() -> Double {
+        (Date().timeIntervalSince1970 * 1000).rounded(.down)
+    }
 }
