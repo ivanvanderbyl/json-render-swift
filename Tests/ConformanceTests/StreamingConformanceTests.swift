@@ -331,7 +331,10 @@ struct ActionConformanceTests {
                     if case let .string(message) = behaviour["reject"] { throw JavaScriptError.error(message) }
                     return behaviour["resolve"]
                 },
-                setState: { path, value in calls.append(["fn": "setState", "path": .string(path), "value": value]) },
+                setState: { path, value in
+                    calls.append(["fn": "setState", "path": .string(path), "value": value])
+                    if behaviour["setStateThrows"] == true { throw JavaScriptError.error("setState failed") }
+                },
                 navigate: input["navigate"] == true ? navigate : nil,
                 executeAction: input["executeAction"] == true ? executeAction : nil
             )

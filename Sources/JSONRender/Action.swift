@@ -66,14 +66,14 @@ public typealias ActionHandler = @MainActor (JSONObject) async throws -> JSONVal
 public struct ActionExecutionContext {
     public var action: ResolvedAction
     public var handler: ActionHandler
-    public var setState: @MainActor (String, JSONValue) -> Void
+    public var setState: @MainActor (String, JSONValue) throws -> Void
     public var navigate: (@MainActor (JSONValue) -> Void)?
     public var executeAction: (@MainActor (ActionBinding) async throws -> Void)?
 
     public init(
         action: ResolvedAction,
         handler: @escaping ActionHandler,
-        setState: @escaping @MainActor (String, JSONValue) -> Void,
+        setState: @escaping @MainActor (String, JSONValue) throws -> Void,
         navigate: (@MainActor (JSONValue) -> Void)? = nil,
         executeAction: (@MainActor (ActionBinding) async throws -> Void)? = nil
     ) {
@@ -153,7 +153,7 @@ public enum Actions {
                     navigate(onSuccess["navigate"])
                 } else if try has("set", onSuccess) {
                     for (path, value) in try JavaScript.entries(onSuccess["set"]) {
-                        context.setState(path, value)
+                        try context.setState(path, value)
                     }
                 } else if try has("action", onSuccess), let executeAction = context.executeAction {
                     try await executeAction(ActionBinding(onSuccess.objectValue ?? [:]))
@@ -164,7 +164,7 @@ public enum Actions {
             let onError = action.onError
             if try has("set", onError) {
                 for (path, value) in try JavaScript.entries(onError["set"]) {
-                    context.setState(path, value == "$error.message" ? message(of: error) : value)
+                    try context.setState(path, value == "$error.message" ? message(of: error) : value)
                 }
             } else if try has("action", onError), let executeAction = context.executeAction {
                 try await executeAction(ActionBinding(onError.objectValue ?? [:]))

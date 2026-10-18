@@ -10,10 +10,6 @@ enum Divergences {
             "get: prototype-like key":
                 "JavaScript objects inherit Object.prototype members such as toString; JSON values have no prototype.",
         ],
-        "actions": [
-            "execute: setState throwing in onError rejects":
-                "Swift setState callbacks cannot throw, so a failing setState inside onError cannot be reproduced.",
-        ],
         "streaming": [
             "applySpec: move and copy":
                 "After a JavaScript copy both paths share one object, so editing one edits both; Swift values are independent.",
