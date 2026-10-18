@@ -60,6 +60,18 @@ public struct Registry: ComponentLookup {
         Registry(components: components.merging(more) { $1 }, actions: actions, fallback: fallback, catalogSlots: catalogSlots)
     }
 
+    /// This registry with another's components, actions and catalog slots,
+    /// which replace entries of the same name, like `{ ...registry, ...other }`.
+    /// The other registry's fallback wins when it has one.
+    public func merging(_ other: Registry) -> Registry {
+        Registry(
+            components: components.merging(other.components) { $1 },
+            actions: actions.merging(other.actions) { $1 },
+            fallback: other.fallback ?? fallback,
+            catalogSlots: catalogSlots.merging(other.catalogSlots) { $1 }
+        )
+    }
+
     private init(components: [String: Component], actions: [String: ActionFunction], fallback: Component?, catalogSlots: [String: [String]?]) {
         self.components = components
         self.actions = actions
