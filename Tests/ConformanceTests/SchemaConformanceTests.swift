@@ -14,7 +14,7 @@ struct SchemaConformanceTests {
         try #require(values.count == results.count)
         for (index, (raw, expected)) in zip(values, results).enumerated() {
             let value = Tagged.decode(raw)
-            try withDivergence(golden, value: index) {
+            withDivergence(golden, value: index) {
                 let result = schema.validate(value)
                 var actual: JSONObject = ["success": .bool(result.success)]
                 if result.success {

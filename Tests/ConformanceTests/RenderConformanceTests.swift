@@ -19,7 +19,7 @@ struct RenderConformanceTests {
         for (index, (expected, actual)) in zip(expectedSteps, actualSteps).enumerated() {
             for field in ["tree", "state", "log", "messages", "pendingConfirmation", "fieldStates"] {
                 let label = "\(golden.name) step \(index) \(field)"
-                try withDivergence(golden, value: index) {
+                withDivergence(golden, value: index) {
                     #expect(
                         Tagged.matches(expected[field], actual[field]),
                         "\(label)\n  upstream: \(expected[field])\n  swift:    \(actual[field])"
@@ -101,7 +101,7 @@ final class ScenarioRunner {
         defer { unobserve() }
 
         var steps: [JSONValue] = []
-        try await messages.record {
+        await messages.record {
             runtime.render(spec, components: components, loading: loading)
             await settle()
         }

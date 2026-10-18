@@ -21,7 +21,7 @@ struct CatalogConformanceTests {
         let results = golden.output["results"].arrayValue ?? []
         try #require(specs.count == results.count)
         for (index, (raw, expected)) in zip(specs, results).enumerated() {
-            try withDivergence(golden, value: index) {
+            withDivergence(golden, value: index) {
                 let result = catalog.validate(Tagged.decode(raw))
                 var actual: JSONObject = ["success": .bool(result.success)]
                 if result.success {

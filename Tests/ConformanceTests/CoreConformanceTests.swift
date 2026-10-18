@@ -28,7 +28,7 @@ private func context(_ raw: JSONValue) -> ResolutionContext {
 struct PathsConformanceTests {
     @Test(arguments: Golden.cases("paths"))
     func matchesUpstream(_ golden: GoldenCase) throws {
-        try withDivergence(golden) {
+        withDivergence(golden) {
             let args = Tagged.decode(golden.input["args"]).arrayValue ?? []
             func arg(_ index: Int) -> JSONValue { args.indices.contains(index) ? args[index] : .undefined }
             func mutate(_ body: (inout JSONValue) throws -> Void) -> JSONValue {
@@ -82,7 +82,7 @@ struct PathsConformanceTests {
 struct VisibilityConformanceTests {
     @Test(arguments: Golden.cases("visibility"))
     func matchesUpstream(_ golden: GoldenCase) throws {
-        try withDivergence(golden) {
+        withDivergence(golden) {
             let condition = Tagged.decode(golden.input["condition"])
             let raw = Tagged.decode(golden.input["context"])
             var context = ResolutionContext(state: raw["stateModel"].isUndefined ? [:] : raw["stateModel"])
@@ -111,7 +111,7 @@ struct VisibilityConformanceTests {
 struct PropsConformanceTests {
     @Test(arguments: Golden.cases("props"))
     func matchesUpstream(_ golden: GoldenCase) throws {
-        try withDivergence(golden) {
+        withDivergence(golden) {
             let value = Tagged.decode(golden.input["value"])
             let context = context(golden.input["context"])
             let actual: JSONValue
@@ -139,7 +139,7 @@ struct PropsConformanceTests {
 struct ValidationConformanceTests {
     @Test(arguments: Golden.cases("validation"))
     func matchesUpstream(_ golden: GoldenCase) throws {
-        try withDivergence(golden) {
+        withDivergence(golden) {
             let input = golden.input
             func validationContext(_ raw: JSONValue) -> ValidationContext {
                 let raw = Tagged.decode(raw)
@@ -183,7 +183,7 @@ struct ValidationConformanceTests {
 struct SpecValidatorConformanceTests {
     @Test(arguments: Golden.cases("spec-validator"))
     func matchesUpstream(_ golden: GoldenCase) throws {
-        try withDivergence(golden) {
+        withDivergence(golden) {
             let input = golden.input
             let spec = Spec(Tagged.decode(input["spec"]).objectValue ?? [:])
             let options = Tagged.decode(input["options"])
