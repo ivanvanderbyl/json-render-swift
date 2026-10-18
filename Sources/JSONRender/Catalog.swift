@@ -2,15 +2,16 @@
 public struct ComponentDefinition: Sendable {
     /// The props schema, or nil when the component takes no declared props.
     public var props: JSONSchema?
-    /// "default" for children, plus any named slots.
-    public var slots: [String]
+    /// "default" for children, plus any named slots. Nil when the definition
+    /// declares no slots, which turns off upstream's slot name warnings.
+    public var slots: [String]?
     /// Event names the component emits, such as "press".
     public var events: [String]
     public var description: String?
     /// Example props for prompts. Kept for parity.
     public var example: JSONValue
 
-    public init(props: JSONSchema? = nil, slots: [String] = [], events: [String] = [], description: String? = nil, example: JSONValue = .undefined) {
+    public init(props: JSONSchema? = nil, slots: [String]? = nil, events: [String] = [], description: String? = nil, example: JSONValue = .undefined) {
         self.props = props
         self.slots = slots
         self.events = events
@@ -79,7 +80,7 @@ public struct Catalog: Sendable {
         for (name, entry) in manifest["components"].objectValue ?? [:] {
             components.append((name, ComponentDefinition(
                 props: try entry["props"].isUndefined ? nil : JSONSchema(entry["props"]),
-                slots: (entry["slots"].arrayValue ?? []).compactMap(\.stringValue),
+                slots: entry["slots"].arrayValue?.compactMap(\.stringValue),
                 events: (entry["events"].arrayValue ?? []).compactMap(\.stringValue),
                 description: entry["description"].stringValue,
                 example: entry["example"]

@@ -30,8 +30,10 @@ public struct EventHandle {
     public var bound: Bool
     /// True when any binding sets `preventDefault`.
     public var shouldPreventDefault: Bool
-    /// Runs the bound actions.
+    /// Runs the bound actions and waits for them.
     public var emit: @MainActor () async throws -> Void
+    /// Starts the bound actions without waiting, like upstream's `emit()`.
+    public var fire: @MainActor () -> Void
 }
 
 /// Everything a rendered spec needs, like upstream `JSONUIProvider` together

@@ -17,8 +17,10 @@ public enum Diagnostics {
 
     private static let logger = Logger(subsystem: "JSONRender", category: "json-render")
 
-    static func warn(_ text: String) { report(Message(level: .warning, text: text)) }
-    static func error(_ text: String) { report(Message(level: .error, text: text)) }
+    /// Reports a warning, like `console.warn`.
+    public static func warn(_ text: String) { report(Message(level: .warning, text: text)) }
+    /// Reports an error, like `console.error`.
+    public static func error(_ text: String) { report(Message(level: .error, text: text)) }
 
     static func report(_ message: Message) {
         if let handler {

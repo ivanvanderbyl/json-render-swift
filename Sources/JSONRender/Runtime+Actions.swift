@@ -58,31 +58,52 @@ extension Runtime {
     /// `{ "$item": "field" }` params resolve to the item's state path. An error
     /// stops the remaining bindings and is rethrown.
     public func emit(_ event: String, nodeID: String) async throws {
-        guard let instance = instances[nodeID] else { return }
-        let on = try JavaScript.member("on", of: instance.element)
-        let binding = on.isNullish ? JSONValue.undefined : try JavaScript.member(event, of: on)
-        guard binding.isTruthy else { return }
-        let bindings = binding.arrayValue?.elements ?? [binding]
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
-            let chain = ActionChain(bindings: bindings, context: instance.context, cancellation: nil) { error in
+            start(event, nodeID: nodeID) { error in
                 if let error { continuation.resume(throwing: error) } else { continuation.resume() }
             }
-            step(chain)
-            drain()
         }
+    }
+
+    /// Starts the actions an element binds to an event without waiting, like
+    /// a component calling upstream's `emit(event)` and ignoring the promise.
+    /// The first action starts before this returns. A failure is reported as
+    /// an error diagnostic, where JavaScript reports an unhandled rejection.
+    public func fire(_ event: String, nodeID: String) {
+        start(event, nodeID: nodeID) { error in
+            if let error {
+                Diagnostics.error("[json-render] Unhandled error from the \"\(event)\" event: \(Actions.message(of: error).javaScriptString)")
+            }
+        }
+    }
+
+    private func start(_ event: String, nodeID: String, completion: @escaping ((any Error)?) -> Void) {
+        guard let instance = instances[nodeID] else { return completion(nil) }
+        let bindings: [JSONValue]
+        do {
+            let on = try JavaScript.member("on", of: instance.element)
+            let binding = on.isNullish ? JSONValue.undefined : try JavaScript.member(event, of: on)
+            guard binding.isTruthy else { return completion(nil) }
+            bindings = binding.arrayValue?.elements ?? [binding]
+        } catch {
+            return completion(error)
+        }
+        step(ActionChain(bindings: bindings, context: instance.context, cancellation: nil, completion: completion))
+        drain()
     }
 
     /// The handle for one event of an element, like upstream `on(event)`.
     public func eventHandle(_ event: String, nodeID: String) -> EventHandle {
         let binding = (instances[nodeID]?.element["on"] ?? .undefined)[event]
         guard binding.isTruthy else {
-            return EventHandle(bound: false, shouldPreventDefault: false, emit: {})
+            return EventHandle(bound: false, shouldPreventDefault: false, emit: {}, fire: {})
         }
         let bindings = binding.arrayValue?.elements ?? [binding]
         return EventHandle(
             bound: true,
             shouldPreventDefault: bindings.contains { $0["preventDefault"].isTruthy },
-            emit: { [weak self] in try await self?.emit(event, nodeID: nodeID) }
+            emit: { [weak self] in try await self?.emit(event, nodeID: nodeID) },
+            fire: { [weak self] in self?.fire(event, nodeID: nodeID) }
         )
     }
 
