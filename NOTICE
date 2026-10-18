@@ -1,0 +1,5 @@
+json-render for SwiftUI
+Copyright 2026 Ivan Vanderbyl
+
+This product is a Swift port of json-render (https://github.com/vercel-labs/json-render),
+Copyright Vercel, Inc., licensed under the Apache License, Version 2.0.
