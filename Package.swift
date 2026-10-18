@@ -25,6 +25,12 @@ let package = Package(
         .testTarget(name: "JSONRenderTests", dependencies: ["JSONRender"]),
         .testTarget(name: "JSONRenderUITests", dependencies: ["JSONRender", "JSONRenderUI"]),
         .testTarget(name: "JSONRenderStandardTests", dependencies: ["JSONRender", "JSONRenderUI", "JSONRenderStandard"]),
+        // The first consumer: Brightfield's Brie surfaces, from their exported schema.
+        .testTarget(
+            name: "IntegrationTests",
+            dependencies: ["JSONRender", "JSONRenderUI"],
+            exclude: ["Fixtures"]
+        ),
         // Asserts the Swift port matches goldens produced by upstream json-render.
         .testTarget(
             name: "ConformanceTests",
