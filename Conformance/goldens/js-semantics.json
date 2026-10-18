@@ -1,0 +1,1100 @@
+{
+  "suite": "js-semantics",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "14f0cb1083093b0bfa8c7ef07b31a92d54e8964ca5124ceb6afdc33850651f6b",
+  "cases": [
+    {
+      "name": "numberToString: #0 0",
+      "output": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "numberToString: #1 {\"$js\":\"-0\"}",
+      "output": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "numberToString: #2 1",
+      "output": {
+        "value": "1"
+      }
+    },
+    {
+      "name": "numberToString: #3 -1",
+      "output": {
+        "value": "-1"
+      }
+    },
+    {
+      "name": "numberToString: #4 3",
+      "output": {
+        "value": "3"
+      }
+    },
+    {
+      "name": "numberToString: #5 3.5",
+      "output": {
+        "value": "3.5"
+      }
+    },
+    {
+      "name": "numberToString: #6 0.1",
+      "output": {
+        "value": "0.1"
+      }
+    },
+    {
+      "name": "numberToString: #7 0.30000000000000004",
+      "output": {
+        "value": "0.30000000000000004"
+      }
+    },
+    {
+      "name": "numberToString: #8 0.3333333333333333",
+      "output": {
+        "value": "0.3333333333333333"
+      }
+    },
+    {
+      "name": "numberToString: #9 123456789",
+      "output": {
+        "value": "123456789"
+      }
+    },
+    {
+      "name": "numberToString: #10 1e+21",
+      "output": {
+        "value": "1e+21"
+      }
+    },
+    {
+      "name": "numberToString: #11 100000000000000000000",
+      "output": {
+        "value": "100000000000000000000"
+      }
+    },
+    {
+      "name": "numberToString: #12 123000000000000000000",
+      "output": {
+        "value": "123000000000000000000"
+      }
+    },
+    {
+      "name": "numberToString: #13 1.5e+21",
+      "output": {
+        "value": "1.5e+21"
+      }
+    },
+    {
+      "name": "numberToString: #14 0.000001",
+      "output": {
+        "value": "0.000001"
+      }
+    },
+    {
+      "name": "numberToString: #15 1e-7",
+      "output": {
+        "value": "1e-7"
+      }
+    },
+    {
+      "name": "numberToString: #16 1.5e-7",
+      "output": {
+        "value": "1.5e-7"
+      }
+    },
+    {
+      "name": "numberToString: #17 0.000001234",
+      "output": {
+        "value": "0.000001234"
+      }
+    },
+    {
+      "name": "numberToString: #18 9007199254740992",
+      "output": {
+        "value": "9007199254740992"
+      }
+    },
+    {
+      "name": "numberToString: #19 9007199254740994",
+      "output": {
+        "value": "9007199254740994"
+      }
+    },
+    {
+      "name": "numberToString: #20 1.7976931348623157e+308",
+      "output": {
+        "value": "1.7976931348623157e+308"
+      }
+    },
+    {
+      "name": "numberToString: #21 5e-324",
+      "output": {
+        "value": "5e-324"
+      }
+    },
+    {
+      "name": "numberToString: #22 42.5",
+      "output": {
+        "value": "42.5"
+      }
+    },
+    {
+      "name": "numberToString: #23 -0.5",
+      "output": {
+        "value": "-0.5"
+      }
+    },
+    {
+      "name": "numberToString: #24 100",
+      "output": {
+        "value": "100"
+      }
+    },
+    {
+      "name": "numberToString: #25 1e+300",
+      "output": {
+        "value": "1e+300"
+      }
+    },
+    {
+      "name": "numberToString: #26 12345.6789",
+      "output": {
+        "value": "12345.6789"
+      }
+    },
+    {
+      "name": "numberToString: #27 9007199254740992",
+      "output": {
+        "value": "9007199254740992"
+      }
+    },
+    {
+      "name": "numberToString: #28 {\"$js\":\"NaN\"}",
+      "output": {
+        "value": "NaN"
+      }
+    },
+    {
+      "name": "numberToString: #29 {\"$js\":\"Infinity\"}",
+      "output": {
+        "value": "Infinity"
+      }
+    },
+    {
+      "name": "numberToString: #30 {\"$js\":\"-Infinity\"}",
+      "output": {
+        "value": "-Infinity"
+      }
+    },
+    {
+      "name": "toString: undefined",
+      "output": {
+        "value": "undefined"
+      }
+    },
+    {
+      "name": "toString: null",
+      "output": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "toString: true",
+      "output": {
+        "value": "true"
+      }
+    },
+    {
+      "name": "toString: false",
+      "output": {
+        "value": "false"
+      }
+    },
+    {
+      "name": "toString: string",
+      "output": {
+        "value": "abc"
+      }
+    },
+    {
+      "name": "toString: empty array",
+      "output": {
+        "value": ""
+      }
+    },
+    {
+      "name": "toString: array",
+      "output": {
+        "value": "1,a,,,2,3"
+      }
+    },
+    {
+      "name": "toString: object",
+      "output": {
+        "value": "[object Object]"
+      }
+    },
+    {
+      "name": "toString: nested array",
+      "output": {
+        "value": "1,2,3"
+      }
+    },
+    {
+      "name": "toString: array of objects",
+      "output": {
+        "value": "[object Object],[object Object]"
+      }
+    },
+    {
+      "name": "stringToNumber: #0 \"\"",
+      "output": {
+        "value": 0
+      }
+    },
+    {
+      "name": "stringToNumber: #1 \" \"",
+      "output": {
+        "value": 0
+      }
+    },
+    {
+      "name": "stringToNumber: #2 \"12\"",
+      "output": {
+        "value": 12
+      }
+    },
+    {
+      "name": "stringToNumber: #3 \" 12 \"",
+      "output": {
+        "value": 12
+      }
+    },
+    {
+      "name": "stringToNumber: #4 \"\\t\\n 3.5 \\r\"",
+      "output": {
+        "value": 3.5
+      }
+    },
+    {
+      "name": "stringToNumber: #5 \"0x1F\"",
+      "output": {
+        "value": 31
+      }
+    },
+    {
+      "name": "stringToNumber: #6 \"0X1f\"",
+      "output": {
+        "value": 31
+      }
+    },
+    {
+      "name": "stringToNumber: #7 \"-0x1\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #8 \"0b101\"",
+      "output": {
+        "value": 5
+      }
+    },
+    {
+      "name": "stringToNumber: #9 \"0o17\"",
+      "output": {
+        "value": 15
+      }
+    },
+    {
+      "name": "stringToNumber: #10 \"1e3\"",
+      "output": {
+        "value": 1000
+      }
+    },
+    {
+      "name": "stringToNumber: #11 \"1E-2\"",
+      "output": {
+        "value": 0.01
+      }
+    },
+    {
+      "name": "stringToNumber: #12 \".5\"",
+      "output": {
+        "value": 0.5
+      }
+    },
+    {
+      "name": "stringToNumber: #13 \"5.\"",
+      "output": {
+        "value": 5
+      }
+    },
+    {
+      "name": "stringToNumber: #14 \"+5\"",
+      "output": {
+        "value": 5
+      }
+    },
+    {
+      "name": "stringToNumber: #15 \"-5\"",
+      "output": {
+        "value": -5
+      }
+    },
+    {
+      "name": "stringToNumber: #16 \"+-5\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #17 \"Infinity\"",
+      "output": {
+        "value": {
+          "$js": "Infinity"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #18 \"-Infinity\"",
+      "output": {
+        "value": {
+          "$js": "-Infinity"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #19 \"+Infinity\"",
+      "output": {
+        "value": {
+          "$js": "Infinity"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #20 \"infinity\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #21 \"1_000\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #22 \"12px\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #23 \"abc\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #24 \"1,5\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #25 \" 12 \"",
+      "output": {
+        "value": 12
+      }
+    },
+    {
+      "name": "stringToNumber: #26 \"﻿7\"",
+      "output": {
+        "value": 7
+      }
+    },
+    {
+      "name": "stringToNumber: #27 \" 1 \"",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "stringToNumber: #28 \"0.0000001\"",
+      "output": {
+        "value": 1e-7
+      }
+    },
+    {
+      "name": "stringToNumber: #29 \"00012\"",
+      "output": {
+        "value": 12
+      }
+    },
+    {
+      "name": "stringToNumber: #30 \"-0\"",
+      "output": {
+        "value": {
+          "$js": "-0"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #31 \"1e\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #32 \"e1\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #33 \"0x\"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #34 \"  -  \"",
+      "output": {
+        "value": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "stringToNumber: #35 \"9007199254740993\"",
+      "output": {
+        "value": 9007199254740992
+      }
+    },
+    {
+      "name": "stringToNumber: #36 \"1e400\"",
+      "output": {
+        "value": {
+          "$js": "Infinity"
+        }
+      }
+    },
+    {
+      "name": "stringify: undefined",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "stringify: NaN",
+      "output": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "stringify: Infinity",
+      "output": {
+        "value": "null"
+      }
+    },
+    {
+      "name": "stringify: -0",
+      "output": {
+        "value": "0"
+      }
+    },
+    {
+      "name": "stringify: object with undefined member",
+      "output": {
+        "value": "{\"b\":1}"
+      }
+    },
+    {
+      "name": "stringify: array with undefined",
+      "output": {
+        "value": "[1,null,3]"
+      }
+    },
+    {
+      "name": "stringify: control chars",
+      "output": {
+        "value": "\"a\\u0001b\\u001fc\\n\\t\\\"\\\\/\""
+      }
+    },
+    {
+      "name": "stringify: unicode",
+      "output": {
+        "value": "\"é😀 \""
+      }
+    },
+    {
+      "name": "stringify: number keys",
+      "output": {
+        "value": "{\"1\":3,\"2\":2,\"b\":1,\"a\":4}"
+      }
+    },
+    {
+      "name": "stringify: nested",
+      "output": {
+        "value": "{\"x\":[1,{\"y\":null}]}"
+      }
+    },
+    {
+      "name": "stringify: large",
+      "output": {
+        "value": "1e+21"
+      }
+    },
+    {
+      "name": "stringify: fraction",
+      "output": {
+        "value": "0.1"
+      }
+    },
+    {
+      "name": "parseStringify: integer keys first",
+      "output": {
+        "value": {
+          "stringified": "{\"2\":3,\"10\":2,\"4294967294\":7,\"b\":1,\"a\":4,\"-1\":5,\"01\":6,\"4294967295\":8}",
+          "keys": [
+            "2",
+            "10",
+            "4294967294",
+            "b",
+            "a",
+            "-1",
+            "01",
+            "4294967295"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: duplicate keys",
+      "output": {
+        "value": {
+          "stringified": "{\"a\":3,\"b\":2}",
+          "keys": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: whitespace",
+      "output": {
+        "value": {
+          "stringified": "{\"a\":[1,2]}",
+          "keys": [
+            "a"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: escapes",
+      "output": {
+        "value": {
+          "stringified": "\"é\\n\\\"\\\\/\\b\\f\\r\\t\"",
+          "keys": null
+        }
+      }
+    },
+    {
+      "name": "parseStringify: surrogate pair",
+      "output": {
+        "value": {
+          "stringified": "\"😀\"",
+          "keys": null
+        }
+      }
+    },
+    {
+      "name": "parseStringify: numbers",
+      "output": {
+        "value": {
+          "stringified": "[0,0,100,100,-0.0015,12345678901234567000]",
+          "keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: nested",
+      "output": {
+        "value": {
+          "stringified": "{\"0\":[],\"a\":{\"c\":1,\"b\":2}}",
+          "keys": [
+            "0",
+            "a"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: proto key",
+      "output": {
+        "value": {
+          "stringified": "{\"__proto__\":1,\"x\":2}",
+          "keys": [
+            "__proto__",
+            "x"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parseStringify: trailing comma",
+      "output": {
+        "threw": "Unexpected token ']', \"[1,2,]\" is not valid JSON"
+      }
+    },
+    {
+      "name": "parseStringify: single quotes",
+      "output": {
+        "threw": "Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+      }
+    },
+    {
+      "name": "parseStringify: leading zero",
+      "output": {
+        "threw": "Unexpected number in JSON at position 1 (line 1 column 2)"
+      }
+    },
+    {
+      "name": "parseStringify: bare word",
+      "output": {
+        "threw": "\"undefined\" is not valid JSON"
+      }
+    },
+    {
+      "name": "parseStringify: empty",
+      "output": {
+        "threw": "Unexpected end of JSON input"
+      }
+    },
+    {
+      "name": "parseStringify: literal true",
+      "output": {
+        "value": {
+          "stringified": "true",
+          "keys": null
+        }
+      }
+    },
+    {
+      "name": "parseStringify: nan",
+      "output": {
+        "threw": "\"NaN\" is not valid JSON"
+      }
+    },
+    {
+      "name": "parseStringify: control char in string",
+      "output": {
+        "threw": "Bad control character in string literal in JSON at position 2 (line 1 column 3)"
+      }
+    },
+    {
+      "name": "parseStringify: empty key",
+      "output": {
+        "value": {
+          "stringified": "{\"\":1}",
+          "keys": [
+            ""
+          ]
+        }
+      }
+    },
+    {
+      "name": "truthy: undefined",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: null",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: true",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: false",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: 0",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: -0",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: NaN",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: 1",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: empty string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "truthy: space",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: string 0",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: string false",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: empty array",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "truthy: empty object",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "trim: spaces",
+      "output": {
+        "value": "a b"
+      }
+    },
+    {
+      "name": "trim: tabs and newlines",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: nbsp",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: bom",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: line separators",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: ideographic space",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: vertical tab and form feed",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: zero width space is kept",
+      "output": {
+        "value": "​a"
+      }
+    },
+    {
+      "name": "trim: next line is kept",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: en quad",
+      "output": {
+        "value": "a"
+      }
+    },
+    {
+      "name": "trim: empty",
+      "output": {
+        "value": ""
+      }
+    },
+    {
+      "name": "length: ascii",
+      "output": {
+        "value": 3
+      }
+    },
+    {
+      "name": "length: accent",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "length: decomposed accent",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "length: emoji",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "length: flag",
+      "output": {
+        "value": 4
+      }
+    },
+    {
+      "name": "length: empty",
+      "output": {
+        "value": 0
+      }
+    },
+    {
+      "name": "lessThan: a b",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: B a",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: empty",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: prefix",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: dates",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: numbers as strings",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "lessThan: astral vs bmp",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "lessThan: accent",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "lessThan: equal",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "typeOf: undefined",
+      "output": {
+        "value": "undefined"
+      }
+    },
+    {
+      "name": "typeOf: null",
+      "output": {
+        "value": "object"
+      }
+    },
+    {
+      "name": "typeOf: bool",
+      "output": {
+        "value": "boolean"
+      }
+    },
+    {
+      "name": "typeOf: number",
+      "output": {
+        "value": "number"
+      }
+    },
+    {
+      "name": "typeOf: string",
+      "output": {
+        "value": "string"
+      }
+    },
+    {
+      "name": "typeOf: array",
+      "output": {
+        "value": "object"
+      }
+    },
+    {
+      "name": "typeOf: object",
+      "output": {
+        "value": "object"
+      }
+    },
+    {
+      "name": "entries: object",
+      "output": {
+        "value": [
+          [
+            "1",
+            2
+          ],
+          [
+            "b",
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "entries: array",
+      "output": {
+        "value": [
+          [
+            "0",
+            "x"
+          ],
+          [
+            "1",
+            "y"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "entries: string",
+      "output": {
+        "value": [
+          [
+            "0",
+            "a"
+          ],
+          [
+            "1",
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "entries: number",
+      "output": {
+        "value": []
+      }
+    },
+    {
+      "name": "entries: bool",
+      "output": {
+        "value": []
+      }
+    },
+    {
+      "name": "entries: null",
+      "output": {
+        "threw": "Cannot convert undefined or null to object"
+      }
+    },
+    {
+      "name": "entries: undefined",
+      "output": {
+        "threw": "Cannot convert undefined or null to object"
+      }
+    }
+  ]
+}

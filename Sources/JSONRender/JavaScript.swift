@@ -184,3 +184,83 @@ enum JavaScript {
         output += "\""
     }
 }
+
+// MARK: - Value conversions
+
+extension JSONValue {
+    /// `String(value)`: ECMAScript ToString. Arrays join their elements with
+    /// commas and objects become "[object Object]".
+    public var javaScriptString: String {
+        switch self {
+        case .undefined: "undefined"
+        case .null: "null"
+        case let .bool(value): value ? "true" : "false"
+        case let .number(value): JavaScript.numberToString(value)
+        case let .string(value): value
+        case let .array(array):
+            // Array.prototype.join: null and undefined elements become "".
+            array.map { $0.isNullish ? "" : $0.javaScriptString }.joined(separator: ",")
+        case .object: "[object Object]"
+        }
+    }
+
+    /// `Boolean(value)`: false for `undefined`, `null`, `false`, `0`, `-0`,
+    /// `NaN` and the empty string; true otherwise.
+    public var isTruthy: Bool {
+        switch self {
+        case .undefined, .null: false
+        case let .bool(value): value
+        case let .number(value): !(value == 0 || value.isNaN)
+        case let .string(value): !value.isEmpty
+        case .array, .object: true
+        }
+    }
+
+    /// `typeof value`. Arrays and `null` are "object".
+    public var typeOf: String {
+        switch self {
+        case .undefined: "undefined"
+        case .null, .array, .object: "object"
+        case .bool: "boolean"
+        case .number: "number"
+        case .string: "string"
+        }
+    }
+}
+
+extension JavaScript {
+    /// `Object.entries(value)`. Throws for `null` and `undefined` like
+    /// JavaScript; strings yield their UTF-16 code units by index.
+    static func entries(_ value: JSONValue) throws -> [(key: String, value: JSONValue)] {
+        switch value {
+        case .undefined, .null:
+            throw JavaScriptError.typeError("Cannot convert undefined or null to object")
+        case .bool, .number:
+            return []
+        case let .string(string):
+            return string.utf16.enumerated().map {
+                (String($0.offset), .string(String(decoding: [$0.element], as: UTF16.self)))
+            }
+        case let .array(array):
+            return array.enumerated().map { (String($0.offset), $0.element) }
+        case let .object(object):
+            return object.entries
+        }
+    }
+}
+
+/// An error JavaScript would throw, carrying the same message.
+public enum JavaScriptError: Error, Sendable, Equatable, CustomStringConvertible {
+    /// A `TypeError`, for example iterating a value that is not iterable.
+    case typeError(String)
+    /// An `Error` thrown with a message, for example a failed JSON Patch test.
+    case error(String)
+
+    public var message: String {
+        switch self {
+        case let .typeError(message), let .error(message): message
+        }
+    }
+
+    public var description: String { message }
+}

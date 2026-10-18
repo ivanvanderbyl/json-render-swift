@@ -1,0 +1,920 @@
+{
+  "description": "JavaScript language behaviour json-render depends on.",
+  "cases": [
+    {
+      "name": "numberToString: #0 0",
+      "op": "numberToString",
+      "input": 0
+    },
+    {
+      "name": "numberToString: #1 {\"$js\":\"-0\"}",
+      "op": "numberToString",
+      "input": {
+        "$js": "-0"
+      }
+    },
+    {
+      "name": "numberToString: #2 1",
+      "op": "numberToString",
+      "input": 1
+    },
+    {
+      "name": "numberToString: #3 -1",
+      "op": "numberToString",
+      "input": -1
+    },
+    {
+      "name": "numberToString: #4 3",
+      "op": "numberToString",
+      "input": 3
+    },
+    {
+      "name": "numberToString: #5 3.5",
+      "op": "numberToString",
+      "input": 3.5
+    },
+    {
+      "name": "numberToString: #6 0.1",
+      "op": "numberToString",
+      "input": 0.1
+    },
+    {
+      "name": "numberToString: #7 0.30000000000000004",
+      "op": "numberToString",
+      "input": 0.30000000000000004
+    },
+    {
+      "name": "numberToString: #8 0.3333333333333333",
+      "op": "numberToString",
+      "input": 0.3333333333333333
+    },
+    {
+      "name": "numberToString: #9 123456789",
+      "op": "numberToString",
+      "input": 123456789
+    },
+    {
+      "name": "numberToString: #10 1e+21",
+      "op": "numberToString",
+      "input": 1e+21
+    },
+    {
+      "name": "numberToString: #11 100000000000000000000",
+      "op": "numberToString",
+      "input": 100000000000000000000
+    },
+    {
+      "name": "numberToString: #12 123000000000000000000",
+      "op": "numberToString",
+      "input": 123000000000000000000
+    },
+    {
+      "name": "numberToString: #13 1.5e+21",
+      "op": "numberToString",
+      "input": 1.5e+21
+    },
+    {
+      "name": "numberToString: #14 0.000001",
+      "op": "numberToString",
+      "input": 0.000001
+    },
+    {
+      "name": "numberToString: #15 1e-7",
+      "op": "numberToString",
+      "input": 1e-7
+    },
+    {
+      "name": "numberToString: #16 1.5e-7",
+      "op": "numberToString",
+      "input": 1.5e-7
+    },
+    {
+      "name": "numberToString: #17 0.000001234",
+      "op": "numberToString",
+      "input": 0.000001234
+    },
+    {
+      "name": "numberToString: #18 9007199254740992",
+      "op": "numberToString",
+      "input": 9007199254740992
+    },
+    {
+      "name": "numberToString: #19 9007199254740994",
+      "op": "numberToString",
+      "input": 9007199254740994
+    },
+    {
+      "name": "numberToString: #20 1.7976931348623157e+308",
+      "op": "numberToString",
+      "input": 1.7976931348623157e+308
+    },
+    {
+      "name": "numberToString: #21 5e-324",
+      "op": "numberToString",
+      "input": 5e-324
+    },
+    {
+      "name": "numberToString: #22 42.5",
+      "op": "numberToString",
+      "input": 42.5
+    },
+    {
+      "name": "numberToString: #23 -0.5",
+      "op": "numberToString",
+      "input": -0.5
+    },
+    {
+      "name": "numberToString: #24 100",
+      "op": "numberToString",
+      "input": 100
+    },
+    {
+      "name": "numberToString: #25 1e+300",
+      "op": "numberToString",
+      "input": 1e+300
+    },
+    {
+      "name": "numberToString: #26 12345.6789",
+      "op": "numberToString",
+      "input": 12345.6789
+    },
+    {
+      "name": "numberToString: #27 9007199254740992",
+      "op": "numberToString",
+      "input": 9007199254740992
+    },
+    {
+      "name": "numberToString: #28 {\"$js\":\"NaN\"}",
+      "op": "numberToString",
+      "input": {
+        "$js": "NaN"
+      }
+    },
+    {
+      "name": "numberToString: #29 {\"$js\":\"Infinity\"}",
+      "op": "numberToString",
+      "input": {
+        "$js": "Infinity"
+      }
+    },
+    {
+      "name": "numberToString: #30 {\"$js\":\"-Infinity\"}",
+      "op": "numberToString",
+      "input": {
+        "$js": "-Infinity"
+      }
+    },
+    {
+      "name": "toString: undefined",
+      "op": "toString",
+      "input": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "toString: null",
+      "op": "toString",
+      "input": null
+    },
+    {
+      "name": "toString: true",
+      "op": "toString",
+      "input": true
+    },
+    {
+      "name": "toString: false",
+      "op": "toString",
+      "input": false
+    },
+    {
+      "name": "toString: string",
+      "op": "toString",
+      "input": "abc"
+    },
+    {
+      "name": "toString: empty array",
+      "op": "toString",
+      "input": []
+    },
+    {
+      "name": "toString: array",
+      "op": "toString",
+      "input": [
+        1,
+        "a",
+        null,
+        {
+          "$js": "undefined"
+        },
+        [
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "toString: object",
+      "op": "toString",
+      "input": {
+        "a": 1
+      }
+    },
+    {
+      "name": "toString: nested array",
+      "op": "toString",
+      "input": [
+        [
+          1,
+          [
+            2
+          ]
+        ],
+        3
+      ]
+    },
+    {
+      "name": "toString: array of objects",
+      "op": "toString",
+      "input": [
+        {},
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "stringToNumber: #0 \"\"",
+      "op": "stringToNumber",
+      "input": ""
+    },
+    {
+      "name": "stringToNumber: #1 \" \"",
+      "op": "stringToNumber",
+      "input": " "
+    },
+    {
+      "name": "stringToNumber: #2 \"12\"",
+      "op": "stringToNumber",
+      "input": "12"
+    },
+    {
+      "name": "stringToNumber: #3 \" 12 \"",
+      "op": "stringToNumber",
+      "input": " 12 "
+    },
+    {
+      "name": "stringToNumber: #4 \"\\t\\n 3.5 \\r\"",
+      "op": "stringToNumber",
+      "input": "\t\n 3.5 \r"
+    },
+    {
+      "name": "stringToNumber: #5 \"0x1F\"",
+      "op": "stringToNumber",
+      "input": "0x1F"
+    },
+    {
+      "name": "stringToNumber: #6 \"0X1f\"",
+      "op": "stringToNumber",
+      "input": "0X1f"
+    },
+    {
+      "name": "stringToNumber: #7 \"-0x1\"",
+      "op": "stringToNumber",
+      "input": "-0x1"
+    },
+    {
+      "name": "stringToNumber: #8 \"0b101\"",
+      "op": "stringToNumber",
+      "input": "0b101"
+    },
+    {
+      "name": "stringToNumber: #9 \"0o17\"",
+      "op": "stringToNumber",
+      "input": "0o17"
+    },
+    {
+      "name": "stringToNumber: #10 \"1e3\"",
+      "op": "stringToNumber",
+      "input": "1e3"
+    },
+    {
+      "name": "stringToNumber: #11 \"1E-2\"",
+      "op": "stringToNumber",
+      "input": "1E-2"
+    },
+    {
+      "name": "stringToNumber: #12 \".5\"",
+      "op": "stringToNumber",
+      "input": ".5"
+    },
+    {
+      "name": "stringToNumber: #13 \"5.\"",
+      "op": "stringToNumber",
+      "input": "5."
+    },
+    {
+      "name": "stringToNumber: #14 \"+5\"",
+      "op": "stringToNumber",
+      "input": "+5"
+    },
+    {
+      "name": "stringToNumber: #15 \"-5\"",
+      "op": "stringToNumber",
+      "input": "-5"
+    },
+    {
+      "name": "stringToNumber: #16 \"+-5\"",
+      "op": "stringToNumber",
+      "input": "+-5"
+    },
+    {
+      "name": "stringToNumber: #17 \"Infinity\"",
+      "op": "stringToNumber",
+      "input": "Infinity"
+    },
+    {
+      "name": "stringToNumber: #18 \"-Infinity\"",
+      "op": "stringToNumber",
+      "input": "-Infinity"
+    },
+    {
+      "name": "stringToNumber: #19 \"+Infinity\"",
+      "op": "stringToNumber",
+      "input": "+Infinity"
+    },
+    {
+      "name": "stringToNumber: #20 \"infinity\"",
+      "op": "stringToNumber",
+      "input": "infinity"
+    },
+    {
+      "name": "stringToNumber: #21 \"1_000\"",
+      "op": "stringToNumber",
+      "input": "1_000"
+    },
+    {
+      "name": "stringToNumber: #22 \"12px\"",
+      "op": "stringToNumber",
+      "input": "12px"
+    },
+    {
+      "name": "stringToNumber: #23 \"abc\"",
+      "op": "stringToNumber",
+      "input": "abc"
+    },
+    {
+      "name": "stringToNumber: #24 \"1,5\"",
+      "op": "stringToNumber",
+      "input": "1,5"
+    },
+    {
+      "name": "stringToNumber: #25 \" 12 \"",
+      "op": "stringToNumber",
+      "input": " 12 "
+    },
+    {
+      "name": "stringToNumber: #26 \"﻿7\"",
+      "op": "stringToNumber",
+      "input": "﻿7"
+    },
+    {
+      "name": "stringToNumber: #27 \" 1 \"",
+      "op": "stringToNumber",
+      "input": " 1 "
+    },
+    {
+      "name": "stringToNumber: #28 \"0.0000001\"",
+      "op": "stringToNumber",
+      "input": "0.0000001"
+    },
+    {
+      "name": "stringToNumber: #29 \"00012\"",
+      "op": "stringToNumber",
+      "input": "00012"
+    },
+    {
+      "name": "stringToNumber: #30 \"-0\"",
+      "op": "stringToNumber",
+      "input": "-0"
+    },
+    {
+      "name": "stringToNumber: #31 \"1e\"",
+      "op": "stringToNumber",
+      "input": "1e"
+    },
+    {
+      "name": "stringToNumber: #32 \"e1\"",
+      "op": "stringToNumber",
+      "input": "e1"
+    },
+    {
+      "name": "stringToNumber: #33 \"0x\"",
+      "op": "stringToNumber",
+      "input": "0x"
+    },
+    {
+      "name": "stringToNumber: #34 \"  -  \"",
+      "op": "stringToNumber",
+      "input": "  -  "
+    },
+    {
+      "name": "stringToNumber: #35 \"9007199254740993\"",
+      "op": "stringToNumber",
+      "input": "9007199254740993"
+    },
+    {
+      "name": "stringToNumber: #36 \"1e400\"",
+      "op": "stringToNumber",
+      "input": "1e400"
+    },
+    {
+      "name": "stringify: undefined",
+      "op": "stringify",
+      "input": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "stringify: NaN",
+      "op": "stringify",
+      "input": {
+        "$js": "NaN"
+      }
+    },
+    {
+      "name": "stringify: Infinity",
+      "op": "stringify",
+      "input": {
+        "$js": "Infinity"
+      }
+    },
+    {
+      "name": "stringify: -0",
+      "op": "stringify",
+      "input": {
+        "$js": "-0"
+      }
+    },
+    {
+      "name": "stringify: object with undefined member",
+      "op": "stringify",
+      "input": {
+        "a": {
+          "$js": "undefined"
+        },
+        "b": 1
+      }
+    },
+    {
+      "name": "stringify: array with undefined",
+      "op": "stringify",
+      "input": [
+        1,
+        {
+          "$js": "undefined"
+        },
+        3
+      ]
+    },
+    {
+      "name": "stringify: control chars",
+      "op": "stringify",
+      "input": "a\u0001b\u001fc\n\t\"\\/"
+    },
+    {
+      "name": "stringify: unicode",
+      "op": "stringify",
+      "input": "é😀 "
+    },
+    {
+      "name": "stringify: number keys",
+      "op": "stringify",
+      "input": {
+        "1": 3,
+        "2": 2,
+        "b": 1,
+        "a": 4
+      }
+    },
+    {
+      "name": "stringify: nested",
+      "op": "stringify",
+      "input": {
+        "x": [
+          1,
+          {
+            "y": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "stringify: large",
+      "op": "stringify",
+      "input": 1e+21
+    },
+    {
+      "name": "stringify: fraction",
+      "op": "stringify",
+      "input": 0.1
+    },
+    {
+      "name": "parseStringify: integer keys first",
+      "op": "parseStringify",
+      "input": "{\"b\":1,\"10\":2,\"2\":3,\"a\":4,\"-1\":5,\"01\":6,\"4294967294\":7,\"4294967295\":8}"
+    },
+    {
+      "name": "parseStringify: duplicate keys",
+      "op": "parseStringify",
+      "input": "{\"a\":1,\"b\":2,\"a\":3}"
+    },
+    {
+      "name": "parseStringify: whitespace",
+      "op": "parseStringify",
+      "input": " \n\t{ \"a\" : [ 1 , 2 ] } \r\n"
+    },
+    {
+      "name": "parseStringify: escapes",
+      "op": "parseStringify",
+      "input": "\"\\u00e9\\n\\\"\\\\\\/\\b\\f\\r\\t\""
+    },
+    {
+      "name": "parseStringify: surrogate pair",
+      "op": "parseStringify",
+      "input": "\"\\ud83d\\ude00\""
+    },
+    {
+      "name": "parseStringify: numbers",
+      "op": "parseStringify",
+      "input": "[0,-0,1e2,1E+2,-1.5e-3,12345678901234567890]"
+    },
+    {
+      "name": "parseStringify: nested",
+      "op": "parseStringify",
+      "input": "{\"a\":{\"c\":1,\"b\":2},\"0\":[]}"
+    },
+    {
+      "name": "parseStringify: proto key",
+      "op": "parseStringify",
+      "input": "{\"__proto__\":1,\"x\":2}"
+    },
+    {
+      "name": "parseStringify: trailing comma",
+      "op": "parseStringify",
+      "input": "[1,2,]"
+    },
+    {
+      "name": "parseStringify: single quotes",
+      "op": "parseStringify",
+      "input": "{'a':1}"
+    },
+    {
+      "name": "parseStringify: leading zero",
+      "op": "parseStringify",
+      "input": "01"
+    },
+    {
+      "name": "parseStringify: bare word",
+      "op": "parseStringify",
+      "input": "undefined"
+    },
+    {
+      "name": "parseStringify: empty",
+      "op": "parseStringify",
+      "input": ""
+    },
+    {
+      "name": "parseStringify: literal true",
+      "op": "parseStringify",
+      "input": "true"
+    },
+    {
+      "name": "parseStringify: nan",
+      "op": "parseStringify",
+      "input": "NaN"
+    },
+    {
+      "name": "parseStringify: control char in string",
+      "op": "parseStringify",
+      "input": "\"a\u0001b\""
+    },
+    {
+      "name": "parseStringify: empty key",
+      "op": "parseStringify",
+      "input": "{\"\":1}"
+    },
+    {
+      "name": "truthy: undefined",
+      "op": "truthy",
+      "input": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "truthy: null",
+      "op": "truthy",
+      "input": null
+    },
+    {
+      "name": "truthy: true",
+      "op": "truthy",
+      "input": true
+    },
+    {
+      "name": "truthy: false",
+      "op": "truthy",
+      "input": false
+    },
+    {
+      "name": "truthy: 0",
+      "op": "truthy",
+      "input": 0
+    },
+    {
+      "name": "truthy: -0",
+      "op": "truthy",
+      "input": {
+        "$js": "-0"
+      }
+    },
+    {
+      "name": "truthy: NaN",
+      "op": "truthy",
+      "input": {
+        "$js": "NaN"
+      }
+    },
+    {
+      "name": "truthy: 1",
+      "op": "truthy",
+      "input": 1
+    },
+    {
+      "name": "truthy: empty string",
+      "op": "truthy",
+      "input": ""
+    },
+    {
+      "name": "truthy: space",
+      "op": "truthy",
+      "input": " "
+    },
+    {
+      "name": "truthy: string 0",
+      "op": "truthy",
+      "input": "0"
+    },
+    {
+      "name": "truthy: string false",
+      "op": "truthy",
+      "input": "false"
+    },
+    {
+      "name": "truthy: empty array",
+      "op": "truthy",
+      "input": []
+    },
+    {
+      "name": "truthy: empty object",
+      "op": "truthy",
+      "input": {}
+    },
+    {
+      "name": "trim: spaces",
+      "op": "trim",
+      "input": "  a b  "
+    },
+    {
+      "name": "trim: tabs and newlines",
+      "op": "trim",
+      "input": "\t\n a \r\n"
+    },
+    {
+      "name": "trim: nbsp",
+      "op": "trim",
+      "input": " a "
+    },
+    {
+      "name": "trim: bom",
+      "op": "trim",
+      "input": "﻿a"
+    },
+    {
+      "name": "trim: line separators",
+      "op": "trim",
+      "input": " a "
+    },
+    {
+      "name": "trim: ideographic space",
+      "op": "trim",
+      "input": "　a　"
+    },
+    {
+      "name": "trim: vertical tab and form feed",
+      "op": "trim",
+      "input": "\u000b\fa"
+    },
+    {
+      "name": "trim: zero width space is kept",
+      "op": "trim",
+      "input": "​a"
+    },
+    {
+      "name": "trim: next line is kept",
+      "op": "trim",
+      "input": "a"
+    },
+    {
+      "name": "trim: en quad",
+      "op": "trim",
+      "input": " a "
+    },
+    {
+      "name": "trim: empty",
+      "op": "trim",
+      "input": ""
+    },
+    {
+      "name": "length: ascii",
+      "op": "length",
+      "input": "abc"
+    },
+    {
+      "name": "length: accent",
+      "op": "length",
+      "input": "é"
+    },
+    {
+      "name": "length: decomposed accent",
+      "op": "length",
+      "input": "é"
+    },
+    {
+      "name": "length: emoji",
+      "op": "length",
+      "input": "😀"
+    },
+    {
+      "name": "length: flag",
+      "op": "length",
+      "input": "🇦🇺"
+    },
+    {
+      "name": "length: empty",
+      "op": "length",
+      "input": ""
+    },
+    {
+      "name": "lessThan: a b",
+      "op": "lessThan",
+      "input": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "lessThan: B a",
+      "op": "lessThan",
+      "input": [
+        "B",
+        "a"
+      ]
+    },
+    {
+      "name": "lessThan: empty",
+      "op": "lessThan",
+      "input": [
+        "",
+        "a"
+      ]
+    },
+    {
+      "name": "lessThan: prefix",
+      "op": "lessThan",
+      "input": [
+        "ab",
+        "abc"
+      ]
+    },
+    {
+      "name": "lessThan: dates",
+      "op": "lessThan",
+      "input": [
+        "2024-01-02",
+        "2024-01-10"
+      ]
+    },
+    {
+      "name": "lessThan: numbers as strings",
+      "op": "lessThan",
+      "input": [
+        "10",
+        "9"
+      ]
+    },
+    {
+      "name": "lessThan: astral vs bmp",
+      "op": "lessThan",
+      "input": [
+        "￿",
+        "😀"
+      ]
+    },
+    {
+      "name": "lessThan: accent",
+      "op": "lessThan",
+      "input": [
+        "é",
+        "f"
+      ]
+    },
+    {
+      "name": "lessThan: equal",
+      "op": "lessThan",
+      "input": [
+        "a",
+        "a"
+      ]
+    },
+    {
+      "name": "typeOf: undefined",
+      "op": "typeOf",
+      "input": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "typeOf: null",
+      "op": "typeOf",
+      "input": null
+    },
+    {
+      "name": "typeOf: bool",
+      "op": "typeOf",
+      "input": true
+    },
+    {
+      "name": "typeOf: number",
+      "op": "typeOf",
+      "input": 1
+    },
+    {
+      "name": "typeOf: string",
+      "op": "typeOf",
+      "input": "s"
+    },
+    {
+      "name": "typeOf: array",
+      "op": "typeOf",
+      "input": []
+    },
+    {
+      "name": "typeOf: object",
+      "op": "typeOf",
+      "input": {}
+    },
+    {
+      "name": "entries: object",
+      "op": "entries",
+      "input": {
+        "1": 2,
+        "b": 1
+      }
+    },
+    {
+      "name": "entries: array",
+      "op": "entries",
+      "input": [
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "entries: string",
+      "op": "entries",
+      "input": "ab"
+    },
+    {
+      "name": "entries: number",
+      "op": "entries",
+      "input": 5
+    },
+    {
+      "name": "entries: bool",
+      "op": "entries",
+      "input": true
+    },
+    {
+      "name": "entries: null",
+      "op": "entries",
+      "input": null
+    },
+    {
+      "name": "entries: undefined",
+      "op": "entries",
+      "input": {
+        "$js": "undefined"
+      }
+    }
+  ]
+}

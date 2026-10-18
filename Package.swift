@@ -17,6 +17,8 @@ let package = Package(
         .target(name: "JSONRender"),
 
         .testTarget(name: "JSONRenderTests", dependencies: ["JSONRender"]),
+        // Asserts the Swift port matches goldens produced by upstream json-render.
+        .testTarget(name: "ConformanceTests", dependencies: ["JSONRender"]),
     ],
     swiftLanguageModes: [.v6]
 )
