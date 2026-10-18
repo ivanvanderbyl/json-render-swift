@@ -3,3 +3,9 @@ Copyright 2026 Ivan Vanderbyl
 
 This product is a Swift port of json-render (https://github.com/vercel-labs/json-render),
 Copyright Vercel, Inc., licensed under the Apache License, Version 2.0.
+
+It includes material derived from json-render 0.21.1: Swift ports of its test
+suites (Tests/JSONRenderTests), JSON Schema exports of its zod schemas
+(Sources/JSONRender/UpstreamSchemaDocuments.swift) and of its React Native
+standard catalog (Sources/JSONRenderStandard/StandardCatalogManifest.swift),
+and SwiftUI versions of its React Native standard components.
