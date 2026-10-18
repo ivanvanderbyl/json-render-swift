@@ -31,7 +31,7 @@ The conformance harness pins these exact versions (see `Conformance/package.json
 | Streaming into the renderer (spec after each patch) | Compatible | `streaming-render.test.tsx` port, render golden "spec patches stream in" |
 | `useUIStream` (React Native) as `UIStream` | Compatible | `streaming` goldens (`uiStream` cases, 31) |
 | Message parts (`buildSpecFromParts`, `getTextFromParts`) | Compatible | `hooks.test.ts` port, `streaming` goldens |
-| Render tree (element, type, resolved props, children, visibility, failures) | Compatible | `render` goldens: 33 scenarios, compared after every step |
+| Render tree (element, type, resolved props, children, visibility, failures) | Compatible | `render` goldens: 34 scenarios, compared after every step |
 | SwiftUI renderer and `defineRegistry` | Supported | `JSONRenderUITests` |
 | Standard components (26), standard catalog and standard actions | Compatible | `standard-catalog` goldens, `JSONRenderStandardTests` |
 
@@ -71,7 +71,7 @@ The React package has three more test files that were not in scope for this port
 
 ## Conformance harness
 
-`Conformance/` is a Node project that runs the corpus through the pinned upstream packages and writes goldens. The Swift `ConformanceTests` assert the Swift port gives the same results. 957 golden cases in 14 suites:
+`Conformance/` is a Node project that runs the corpus through the pinned upstream packages and writes goldens. The Swift `ConformanceTests` assert the Swift port gives the same results. 958 golden cases in 14 suites:
 
 | Suite | Cases | What it compares |
 |---|---|---|
@@ -88,7 +88,7 @@ The React package has three more test files that were not in scope for this port
 | `actions` | 23 | `resolveAction`, `interpolateString`, action builders, `executeAction` |
 | `state-store` | 9 | `createStateStore` results, notifications and snapshot identity |
 | `streaming` | 78 | SpecStream lines, spec patches, compilers, mixed streams, the AI SDK transform, nested specs, message parts, `useUIStream` |
-| `render` | 33 | The normalised render tree from the React renderer, state, action log, diagnostics, confirmations and field states after every step of a scenario |
+| `render` | 34 | The normalised render tree from the React renderer, state, action log, diagnostics, confirmations and field states after every step of a scenario |
 
 The render harness renders each scenario with the real `JSONUIProvider` and `Renderer` in jsdom and walks React's fibre tree to build a normalised tree: element ID, component type, resolved props, bindings, children, slots and status (rendered, hidden, no renderer or failed). The Swift runtime builds the same tree before SwiftUI draws it.
 

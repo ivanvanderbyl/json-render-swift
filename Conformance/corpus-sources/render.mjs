@@ -492,6 +492,23 @@ add({
 });
 
 add({
+  name: "out-of-order patches build elements from parts",
+  components: common,
+  loading: true,
+  spec: { root: "", elements: {} },
+  steps: [
+    { patches: [{ op: "add", path: "/root", value: "main" }, { op: "add", path: "/elements/main/children", value: ["c", "d"] }] },
+    { patches: [{ op: "add", path: "/elements/c/props/text", value: "early props" }] },
+    { patches: [{ op: "add", path: "/elements/main/type", value: "Stack" }, { op: "add", path: "/elements/main/props", value: {} }] },
+    { patches: [{ op: "add", path: "/elements/c/type", value: "Text" }] },
+    { patches: [{ op: "add", path: "/elements/d", value: { type: "Text", props: { text: { $state: "/late" } } } }] },
+    { patches: [{ op: "add", path: "/state/late", value: "state last" }] },
+    { patches: [{ op: "add", path: "/elements/main/children/-", value: "missing" }] },
+    { loading: false },
+  ],
+});
+
+add({
   name: "spec state sync overwrites and clears store keys",
   components: common,
   spec: { root: "t", state: { a: 1, b: { c: 2 } }, elements: { t: el("Text", { a: { $state: "/a" }, c: { $state: "/b/c" }, d: { $state: "/d" } }) } },

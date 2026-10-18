@@ -8,7 +8,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
-  "corpusSHA256": "95f16f65144011acf6e1bff459165b17b97b8b0a59281bd17f5d050ceb74c257",
+  "corpusSHA256": "278294aaf28764e0ddb1b10a6f627438840e90e4c47c47ba1dd33fb1aa8cf923",
   "cases": [
     {
       "name": "visibility toggles with state",
@@ -6882,6 +6882,351 @@
               {
                 "level": "warning",
                 "text": "[json-render] Missing element \"t1\" referenced as child of \"Stack\". This element will not render."
+              }
+            ],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          }
+        ]
+      }
+    },
+    {
+      "name": "out-of-order patches build elements from parts",
+      "output": {
+        "steps": [
+          {
+            "step": "mount",
+            "tree": null,
+            "state": {},
+            "log": [],
+            "messages": [],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/root",
+                  "value": "main"
+                },
+                {
+                  "op": "add",
+                  "path": "/elements/main/children",
+                  "value": [
+                    "c",
+                    "d"
+                  ]
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": {
+                "$js": "undefined"
+              },
+              "status": "noRenderer"
+            },
+            "state": {},
+            "log": [],
+            "messages": [
+              {
+                "level": "warning",
+                "text": "No renderer for component type: undefined"
+              }
+            ],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/elements/c/props/text",
+                  "value": "early props"
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": {
+                "$js": "undefined"
+              },
+              "status": "noRenderer"
+            },
+            "state": {},
+            "log": [],
+            "messages": [
+              {
+                "level": "warning",
+                "text": "No renderer for component type: undefined"
+              }
+            ],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/elements/main/type",
+                  "value": "Stack"
+                },
+                {
+                  "op": "add",
+                  "path": "/elements/main/props",
+                  "value": {}
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": {
+                    "$js": "undefined"
+                  },
+                  "status": "noRenderer"
+                }
+              ]
+            },
+            "state": {},
+            "log": [],
+            "messages": [
+              {
+                "level": "warning",
+                "text": "No renderer for component type: undefined"
+              }
+            ],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/elements/c/type",
+                  "value": "Text"
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "early props"
+                  }
+                }
+              ]
+            },
+            "state": {},
+            "log": [],
+            "messages": [],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/elements/d",
+                  "value": {
+                    "type": "Text",
+                    "props": {
+                      "text": {
+                        "$state": "/late"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "early props"
+                  }
+                },
+                {
+                  "id": "main/d",
+                  "key": "d",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": {
+                      "$js": "undefined"
+                    }
+                  }
+                }
+              ]
+            },
+            "state": {},
+            "log": [],
+            "messages": [],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/state/late",
+                  "value": "state last"
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "early props"
+                  }
+                },
+                {
+                  "id": "main/d",
+                  "key": "d",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "state last"
+                  }
+                }
+              ]
+            },
+            "state": {
+              "late": "state last"
+            },
+            "log": [],
+            "messages": [],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "patches": [
+                {
+                  "op": "add",
+                  "path": "/elements/main/children/-",
+                  "value": "missing"
+                }
+              ]
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "early props"
+                  }
+                },
+                {
+                  "id": "main/d",
+                  "key": "d",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "state last"
+                  }
+                }
+              ]
+            },
+            "state": {
+              "late": "state last"
+            },
+            "log": [],
+            "messages": [],
+            "pendingConfirmation": null,
+            "fieldStates": {}
+          },
+          {
+            "step": {
+              "loading": false
+            },
+            "tree": {
+              "id": "main",
+              "key": "main",
+              "type": "Stack",
+              "status": "rendered",
+              "props": {},
+              "children": [
+                {
+                  "id": "main/c",
+                  "key": "c",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "early props"
+                  }
+                },
+                {
+                  "id": "main/d",
+                  "key": "d",
+                  "type": "Text",
+                  "status": "rendered",
+                  "props": {
+                    "text": "state last"
+                  }
+                }
+              ]
+            },
+            "state": {
+              "late": "state last"
+            },
+            "log": [],
+            "messages": [
+              {
+                "level": "warning",
+                "text": "[json-render] Missing element \"missing\" referenced as child of \"Stack\". This element will not render."
               }
             ],
             "pendingConfirmation": null,
