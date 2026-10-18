@@ -1,0 +1,1182 @@
+{
+  "description": "Structural spec validation, auto-fixing and issue formatting.",
+  "cases": [
+    {
+      "name": "validate: valid",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "Stack",
+            "props": {},
+            "children": [
+              "b"
+            ]
+          },
+          "b": {
+            "type": "Text",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: numeric root",
+      "op": "validate",
+      "spec": {
+        "root": 1,
+        "elements": {
+          "1": {
+            "type": "Stack",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: zero root is missing",
+      "op": "validate",
+      "spec": {
+        "root": 0,
+        "elements": {
+          "0": {
+            "type": "Stack",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: null root",
+      "op": "validate",
+      "spec": {
+        "root": null,
+        "elements": {}
+      }
+    },
+    {
+      "name": "validate: missing elements throws",
+      "op": "validate",
+      "spec": {
+        "root": "a"
+      }
+    },
+    {
+      "name": "validate: empty elements",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {}
+      }
+    },
+    {
+      "name": "validate: null element throws",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": null
+        }
+      }
+    },
+    {
+      "name": "validate: children not iterable throws",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": 5
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: children string iterates characters",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": "ab"
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: numeric child key",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "1": {
+            "type": "B",
+            "props": {},
+            "children": []
+          },
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: missing children in order",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "x",
+              "b",
+              "y"
+            ]
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: missing slot child",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "slots": {
+              "header": [
+                "h",
+                "z"
+              ]
+            }
+          },
+          "h": {
+            "type": "H",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: slots not iterable throws",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "slots": {
+              "header": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: props string throws",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": "abc",
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: props null is skipped",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": null,
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: props array is skipped",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": [
+              "visible"
+            ],
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: visible in props undefined is ignored",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "visible": {
+                "$js": "undefined"
+              }
+            },
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: all misplaced fields",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "visible": true,
+              "on": {},
+              "repeat": {},
+              "watch": {}
+            },
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: invalid visible message",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "visible": {
+              "$state": "/a",
+              "$item": "b"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: invalid visible string",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "visible": "yes"
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: valid visible array",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "visible": [
+              {
+                "$state": "/a"
+              },
+              {
+                "$index": true,
+                "gt": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: repeat without children",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "repeat": {
+              "statePath": "/items"
+            }
+          }
+        },
+        "state": {
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "validate: repeat with string children",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": "",
+            "repeat": {
+              "statePath": "/items"
+            }
+          }
+        },
+        "state": {
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "validate: repeat not an array in state",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": "/items"
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "items": {
+            "x": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: repeat missing in state",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": "/items"
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {}
+      }
+    },
+    {
+      "name": "validate: repeat null in state",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": "/items"
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "items": null
+        }
+      }
+    },
+    {
+      "name": "validate: repeat without spec state is not checked",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": "/items"
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: repeat empty path reads whole state",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": ""
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "x": 1
+        }
+      }
+    },
+    {
+      "name": "validate: relative repeat at root",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {
+              "statePath": {
+                "$item": "sub"
+              }
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {}
+      }
+    },
+    {
+      "name": "validate: nested relative repeat with sample",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "g"
+            ],
+            "repeat": {
+              "statePath": "/groups"
+            }
+          },
+          "g": {
+            "type": "G",
+            "props": {},
+            "children": [
+              "i"
+            ],
+            "repeat": {
+              "statePath": {
+                "$item": "items"
+              }
+            }
+          },
+          "i": {
+            "type": "I",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "groups": [
+            {
+              "items": "nope"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "validate: nested relative repeat without sample",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "g"
+            ],
+            "repeat": {
+              "statePath": "/groups"
+            }
+          },
+          "g": {
+            "type": "G",
+            "props": {},
+            "children": [
+              "i"
+            ],
+            "repeat": {
+              "statePath": {
+                "$item": "items"
+              }
+            }
+          },
+          "i": {
+            "type": "I",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "groups": []
+        }
+      }
+    },
+    {
+      "name": "validate: relative repeat under slot is outside scope",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "c"
+            ],
+            "repeat": {
+              "statePath": "/groups"
+            },
+            "slots": {
+              "header": [
+                "g"
+              ]
+            }
+          },
+          "c": {
+            "type": "C",
+            "props": {},
+            "children": []
+          },
+          "g": {
+            "type": "G",
+            "props": {},
+            "children": [
+              "i"
+            ],
+            "repeat": {
+              "statePath": {
+                "$item": "items"
+              }
+            }
+          },
+          "i": {
+            "type": "I",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "groups": [
+            {
+              "items": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "validate: repeat statePath missing",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": {}
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {}
+      }
+    },
+    {
+      "name": "validate: repeat null throws",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": null
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: repeat number",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ],
+            "repeat": 5
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: orphan repeat element still validated",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": []
+          },
+          "o": {
+            "type": "O",
+            "props": {},
+            "children": [
+              "a"
+            ],
+            "repeat": {
+              "statePath": {
+                "$item": "x"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: cycle terminates",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ]
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": [
+              "a"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: orphans reported",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b"
+            ]
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          },
+          "c": {
+            "type": "C",
+            "props": {},
+            "children": [
+              "d"
+            ]
+          },
+          "d": {
+            "type": "D",
+            "props": {},
+            "children": []
+          }
+        }
+      },
+      "options": {
+        "checkOrphans": true
+      }
+    },
+    {
+      "name": "validate: orphans with slot reachability",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "slots": {
+              "s": [
+                "b"
+              ]
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      },
+      "options": {
+        "checkOrphans": true
+      }
+    },
+    {
+      "name": "validate: orphans with missing root element",
+      "op": "validate",
+      "spec": {
+        "root": "zz",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": []
+          }
+        }
+      },
+      "options": {
+        "checkOrphans": true
+      }
+    },
+    {
+      "name": "validate: integer-like keys iterate first",
+      "op": "validate",
+      "spec": {
+        "root": "z",
+        "elements": {
+          "1": {
+            "type": "T",
+            "props": {},
+            "children": [
+              "m1"
+            ]
+          },
+          "2": {
+            "type": "T",
+            "props": {},
+            "children": [
+              "m2"
+            ]
+          },
+          "z": {
+            "type": "Z",
+            "props": {},
+            "children": [
+              "missing"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "validate: type is not checked",
+      "op": "validate",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: moves fields and keeps order",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "title": "x",
+              "visible": false,
+              "on": {
+                "press": {
+                  "action": "a"
+                }
+              }
+            },
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: existing element field is replaced",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "visible": true
+            },
+            "children": [],
+            "visible": false
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: prunes missing children",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "b",
+              "x",
+              "c"
+            ]
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          },
+          "c": {
+            "type": "C",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: lossless only",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "repeat": {
+                "statePath": "/i"
+              }
+            },
+            "children": [
+              "x"
+            ]
+          }
+        }
+      },
+      "options": {
+        "lossy": false
+      }
+    },
+    {
+      "name": "autoFix: repeat keeps all-missing children",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "x"
+            ],
+            "repeat": {
+              "statePath": "/i"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: repeat prunes some missing children",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [
+              "x",
+              "b"
+            ],
+            "repeat": {
+              "statePath": "/i"
+            }
+          },
+          "b": {
+            "type": "B",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: prunes slots",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "slots": {
+              "header": [
+                "h",
+                "x"
+              ],
+              "footer": [
+                "f"
+              ]
+            }
+          },
+          "h": {
+            "type": "H",
+            "props": {},
+            "children": []
+          },
+          "f": {
+            "type": "F",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: slots not arrays throws",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": [],
+            "slots": {
+              "header": 5
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: state is carried over",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": []
+          }
+        },
+        "state": {
+          "x": 1
+        }
+      }
+    },
+    {
+      "name": "autoFix: children not array is skipped",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {},
+            "children": "x"
+          }
+        }
+      }
+    },
+    {
+      "name": "autoFix: props string is skipped",
+      "op": "autoFix",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": "visible",
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "format: errors only",
+      "op": "format",
+      "issues": [
+        {
+          "severity": "error",
+          "message": "one",
+          "code": "missing_root"
+        },
+        {
+          "severity": "warning",
+          "message": "two",
+          "code": "orphaned_element"
+        },
+        {
+          "severity": "error",
+          "message": "three",
+          "code": "missing_child"
+        }
+      ]
+    },
+    {
+      "name": "format: warnings only",
+      "op": "format",
+      "issues": [
+        {
+          "severity": "warning",
+          "message": "two",
+          "code": "orphaned_element"
+        }
+      ]
+    },
+    {
+      "name": "format: empty",
+      "op": "format",
+      "issues": []
+    }
+  ]
+}

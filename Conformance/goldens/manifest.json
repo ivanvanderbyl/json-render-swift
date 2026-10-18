@@ -1,0 +1,30 @@
+{
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "suites": {
+    "js-semantics": {
+      "corpusSHA256": "14f0cb1083093b0bfa8c7ef07b31a92d54e8964ca5124ceb6afdc33850651f6b"
+    },
+    "paths": {
+      "corpusSHA256": "06fc60c3266ca3470a1f24479eb740e9533a7b8f4825d5831677aaef26f98c3f"
+    },
+    "props": {
+      "corpusSHA256": "2d724d4910024e5c1c56981aea0b8132f3b1d8917a5cc978c627cb195681914c"
+    },
+    "spec-validator": {
+      "corpusSHA256": "a6afd8a14176fac311b1e50e7cdadc55e501d23b756263c21d7b9ad657f23ce2"
+    },
+    "validation": {
+      "corpusSHA256": "b32ee2bb813bfb7614019721c50af21f82569464cd10040b2fef99561ce80d7e"
+    },
+    "visibility": {
+      "corpusSHA256": "8fd28b21294e8603e2a7d62ddbc4b2d1aadedf08704af616b9b65c777e04f66e"
+    }
+  }
+}

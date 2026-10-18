@@ -56,8 +56,11 @@ extension JSONValue {
             case .undefined, .null:
                 return .undefined
             case let .array(array):
-                let index = JavaScript.parseInt(segment)
-                current = index.flatMap { array.indices.contains($0) ? array[$0] : nil } ?? .undefined
+                if let index = JavaScript.parseInt(segment), array.indices.contains(index) {
+                    current = array[index]
+                } else {
+                    current = .undefined
+                }
             case let .object(object):
                 current = object[segment] ?? .undefined
             default:
@@ -139,9 +142,9 @@ extension JSONValue {
             }
             var child = array[index]
             array[index] = .undefined
+            defer { array[index] = child }
             if !child.isContainer, !child.isNull { child = container(for: rest.first!) }
             try write(value, into: &child, segments: rest, mode: mode)
-            array[index] = child
         case var .object(object):
             node = .undefined
             defer { node = .object(object) }
@@ -149,11 +152,12 @@ extension JSONValue {
                 object[segment] = value
                 return
             }
-            var child = object[segment] ?? .undefined
+            let original = object[segment]
+            var child = original ?? .undefined
             object[segment] = .undefined
+            defer { object[segment] = original == nil && child.isUndefined ? nil : child }
             if !child.isContainer, !child.isNull { child = container(for: rest.first!) }
             try write(value, into: &child, segments: rest, mode: mode)
-            object[segment] = child
         case .null:
             if rest.isEmpty {
                 throw JavaScriptError.typeError("Cannot set properties of null (setting '\(segment)')")

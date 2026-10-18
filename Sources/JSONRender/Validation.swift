@@ -152,8 +152,6 @@ public enum Validation {
     /// prop expressions against the state. An unknown function passes with a
     /// warning.
     public static func runCheck(_ check: JSONValue, context: ValidationContext) throws -> ValidationCheckResult {
-        let type = try JavaScript.member("type", of: check)
-        let message = try JavaScript.member("message", of: check)
         var arguments = JSONObject()
         let args = try JavaScript.member("args", of: check)
         if args.isTruthy {
@@ -162,6 +160,8 @@ public enum Validation {
                 arguments[key] = try PropExpression.resolve(argument, in: argumentContext)
             }
         }
+        let type = try JavaScript.member("type", of: check)
+        let message = try JavaScript.member("message", of: check)
         let name = type.javaScriptString
         guard let function = builtInFunctions[name] ?? context.customFunctions[name] else {
             Diagnostics.warn("Unknown validation function: \(name)")

@@ -1,0 +1,1371 @@
+{
+  "suite": "validation",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "b32ee2bb813bfb7614019721c50af21f82569464cd10040b2fef99561ce80d7e",
+  "cases": [
+    {
+      "name": "builtin required: zero",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin required: whitespace",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin required: nbsp",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin required: empty object",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin required: NaN",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin required: undefined",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: plain",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: no dot",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: dot at end",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: dot at start of domain",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: two ats",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: space",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: nbsp",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: bom",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: next line char",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: unicode",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: dots",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: only dot domain",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: number",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin email: subdomain dot first",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin minLength: utf16 length of emoji",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin minLength: string min",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin minLength: missing args",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin minLength: NaN min",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin minLength: array value",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin maxLength: combining mark counts",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin maxLength: equal",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: anchored",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: trailing newline rejected by dollar",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: unanchored search",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: arabic digits are not \\\\d",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: word class ascii",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: whitespace class includes bom",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: next line is not whitespace",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: dot excludes line separator",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: dot matches next line",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: invalid pattern",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: literal brace",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: quantifier",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: bracket any",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: empty class",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: case sensitive",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: revision pattern",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: revision leading zero",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: word boundary",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: unicode word boundary",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: backreference",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: named group",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: lookbehind",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: escaped slash",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: astral dot",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: astral two dots",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin pattern: non-string pattern",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin min: string value",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin min: equal",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin max: NaN value",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: number",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: NaN",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: infinity string",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: hex",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: spaces",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: padded",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: letters",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: exponent",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: boolean",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: binary",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: plus sign",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin numeric: dot",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: https",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: no scheme",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: mailto",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: custom scheme",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: http no host",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: http colon only",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: http single slash",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: backslashes",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: space in host",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: port too big",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: port max",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: port letters",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: empty port",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv4",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv4 out of range",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv4 hex",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv4 too many parts",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv6",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv6 bad",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv6 unclosed",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: ipv6 embedded ipv4",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: userinfo",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: at with empty host",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: file",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: file host",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: leading space",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: tab inside",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: scheme with plus",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: scheme starting with digit",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: unicode host",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: percent in host",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: relative path",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: number",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: javascript",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: data",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: opaque host forbidden char",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: non-special empty host",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: http trailing dot host",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: host ends in number",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: wss",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin url: caret in host",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin matches: same primitive",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin matches: objects never match",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin matches: missing other matches undefined",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin equalTo: NaN",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: numbers",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: numbers",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: strings",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: strings",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: iso dates",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: iso dates",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: mixed numeric",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: mixed numeric",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: mixed non-numeric",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: mixed non-numeric",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: null",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: null",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: booleans",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: booleans",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: array coercion",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: array coercion",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: object",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: object",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: whitespace string coerces to zero",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: whitespace string coerces to zero",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin lessThan: string compare not numeric",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin greaterThan: string compare not numeric",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition falsy",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition truthy empty",
+      "output": {
+        "value": false,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition truthy filled",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "builtin requiredIf: missing args",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "check: dynamic args",
+      "output": {
+        "value": {
+          "type": "minLength",
+          "valid": false,
+          "message": "short"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: args with nested expressions",
+      "output": {
+        "value": {
+          "type": "lessThan",
+          "valid": true,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: unknown function warns",
+      "output": {
+        "value": {
+          "type": "nope",
+          "valid": true,
+          "message": "m"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown validation function: nope"
+          }
+        ]
+      }
+    },
+    {
+      "name": "check: custom function",
+      "output": {
+        "value": {
+          "type": "startsWithA",
+          "valid": true,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: builtin wins over custom",
+      "output": {
+        "value": {
+          "type": "required",
+          "valid": false,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: custom receives args",
+      "output": {
+        "value": {
+          "type": "hasArg",
+          "valid": true,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: custom without args gets empty object",
+      "output": {
+        "value": {
+          "type": "hasArg",
+          "valid": false,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: non-string message",
+      "output": {
+        "value": {
+          "type": "required",
+          "valid": false,
+          "message": 5
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: missing message",
+      "output": {
+        "value": {
+          "type": "required",
+          "valid": false,
+          "message": {
+            "$js": "undefined"
+          }
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: numeric type",
+      "output": {
+        "value": {
+          "type": 5,
+          "valid": true,
+          "message": "m"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown validation function: 5"
+          }
+        ]
+      }
+    },
+    {
+      "name": "check: string args",
+      "output": {
+        "value": {
+          "type": "minLength",
+          "valid": false,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "check: null check throws",
+      "output": {
+        "threw": "Cannot read properties of null (reading 'args')",
+        "messages": []
+      }
+    },
+    {
+      "name": "check: string check",
+      "output": {
+        "value": {
+          "type": {
+            "$js": "undefined"
+          },
+          "valid": true,
+          "message": {
+            "$js": "undefined"
+          }
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown validation function: undefined"
+          }
+        ]
+      }
+    },
+    {
+      "name": "check: template in args is resolved",
+      "output": {
+        "value": {
+          "type": "pattern",
+          "valid": true,
+          "message": "m"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: all pass",
+      "output": {
+        "value": {
+          "valid": true,
+          "errors": [],
+          "checks": [
+            {
+              "type": "required",
+              "valid": true,
+              "message": "a"
+            },
+            {
+              "type": "email",
+              "valid": true,
+              "message": "b"
+            }
+          ]
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: collects errors in order",
+      "output": {
+        "value": {
+          "valid": false,
+          "errors": [
+            "a",
+            "b"
+          ],
+          "checks": [
+            {
+              "type": "required",
+              "valid": false,
+              "message": "a"
+            },
+            {
+              "type": "minLength",
+              "valid": false,
+              "message": "b"
+            }
+          ]
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: disabled by state",
+      "output": {
+        "value": {
+          "valid": true,
+          "errors": [],
+          "checks": []
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: enabled false literal is ignored",
+      "output": {
+        "value": {
+          "valid": false,
+          "errors": [
+            "a"
+          ],
+          "checks": [
+            {
+              "type": "required",
+              "valid": false,
+              "message": "a"
+            }
+          ]
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: enabled zero is ignored",
+      "output": {
+        "value": {
+          "valid": false,
+          "errors": [
+            "a"
+          ],
+          "checks": [
+            {
+              "type": "required",
+              "valid": false,
+              "message": "a"
+            }
+          ]
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: enabled malformed throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in 5",
+        "messages": []
+      }
+    },
+    {
+      "name": "run: no checks",
+      "output": {
+        "value": {
+          "valid": true,
+          "errors": [],
+          "checks": []
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "run: checks not iterable throws",
+      "output": {
+        "threw": "config.checks is not iterable",
+        "messages": []
+      }
+    },
+    {
+      "name": "run: checks string iterates characters",
+      "output": {
+        "value": {
+          "valid": true,
+          "errors": [],
+          "checks": [
+            {
+              "type": {
+                "$js": "undefined"
+              },
+              "valid": true,
+              "message": {
+                "$js": "undefined"
+              }
+            },
+            {
+              "type": {
+                "$js": "undefined"
+              },
+              "valid": true,
+              "message": {
+                "$js": "undefined"
+              }
+            }
+          ]
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown validation function: undefined"
+          },
+          {
+            "level": "warning",
+            "text": "Unknown validation function: undefined"
+          }
+        ]
+      }
+    },
+    {
+      "name": "run: null config throws",
+      "output": {
+        "threw": "Cannot read properties of null (reading 'enabled')",
+        "messages": []
+      }
+    },
+    {
+      "name": "run: enabled item condition without scope",
+      "output": {
+        "value": {
+          "valid": true,
+          "errors": [],
+          "checks": []
+        },
+        "messages": []
+      }
+    }
+  ]
+}

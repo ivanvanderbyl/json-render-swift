@@ -31,10 +31,10 @@ let stale = 0;
 
 for (const file of suites) {
   const name = file.replace(/\.mjs$/, "");
+  if (only && only !== name) continue;
   const corpusText = await readFile(path.join(corpusDir, `${name}.json`), "utf8");
   const corpusSHA256 = createHash("sha256").update(corpusText).digest("hex");
   manifest.suites[name] = { corpusSHA256 };
-  if (only && only !== name) continue;
 
   const suite = await import(pathToFileURL(path.join(suiteDir, file)).href);
   const corpus = JSON.parse(corpusText);

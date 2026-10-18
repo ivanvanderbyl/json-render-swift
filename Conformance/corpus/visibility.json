@@ -1,0 +1,982 @@
+{
+  "description": "Visibility conditions: evaluation, item-scope detection, repeat splitting and strict validation.",
+  "cases": [
+    {
+      "name": "evaluate: undefined is visible",
+      "op": "evaluate",
+      "condition": {
+        "$js": "undefined"
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: null throws",
+      "op": "evaluate",
+      "condition": null,
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: number throws",
+      "op": "evaluate",
+      "condition": 5,
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: string throws",
+      "op": "evaluate",
+      "condition": "abc",
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: empty object reads the whole state",
+      "op": "evaluate",
+      "condition": {},
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: empty array is visible",
+      "op": "evaluate",
+      "condition": [],
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: array of null throws",
+      "op": "evaluate",
+      "condition": [
+        null
+      ],
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: nested array in implicit and",
+      "op": "evaluate",
+      "condition": [
+        []
+      ],
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: eq with object literal is never equal",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": {
+          "x": 1
+        }
+      },
+      "context": {
+        "stateModel": {
+          "a": {
+            "x": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "evaluate: eq with same state reference",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": {
+          "$state": "/a"
+        }
+      },
+      "context": {
+        "stateModel": {
+          "a": {
+            "x": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "evaluate: eq with aliased state reference",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": {
+          "$state": "/b"
+        }
+      },
+      "context": {
+        "stateModel": {
+          "a": {
+            "x": 1
+          },
+          "b": {
+            "x": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "evaluate: eq null matches null",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": null
+      },
+      "context": {
+        "stateModel": {
+          "a": null
+        }
+      }
+    },
+    {
+      "name": "evaluate: eq null does not match missing",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": null
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: eq zero with negative zero",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": 0
+      },
+      "context": {
+        "stateModel": {
+          "a": {
+            "$js": "-0"
+          }
+        }
+      }
+    },
+    {
+      "name": "evaluate: neq takes precedence after eq",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "neq": 1,
+        "gt": 0
+      },
+      "context": {
+        "stateModel": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: eq wins over neq",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": 1,
+        "neq": 1
+      },
+      "context": {
+        "stateModel": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: gt with string values is false",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "gt": "1"
+      },
+      "context": {
+        "stateModel": {
+          "a": "2"
+        }
+      }
+    },
+    {
+      "name": "evaluate: gt with state operand",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "gt": {
+          "$state": "/b"
+        }
+      },
+      "context": {
+        "stateModel": {
+          "a": 3,
+          "b": 2
+        }
+      }
+    },
+    {
+      "name": "evaluate: gte equal",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "gte": 2
+      },
+      "context": {
+        "stateModel": {
+          "a": 2
+        }
+      }
+    },
+    {
+      "name": "evaluate: lt false for missing",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "lt": 2
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: lte not inverts false",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "lte": 2,
+        "not": true
+      },
+      "context": {
+        "stateModel": {
+          "a": "x"
+        }
+      }
+    },
+    {
+      "name": "evaluate: not must be exactly true",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "not": "yes"
+      },
+      "context": {
+        "stateModel": {
+          "a": true
+        }
+      }
+    },
+    {
+      "name": "evaluate: not false is ignored",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "not": false
+      },
+      "context": {
+        "stateModel": {
+          "a": true
+        }
+      }
+    },
+    {
+      "name": "evaluate: state number path throws",
+      "op": "evaluate",
+      "condition": {
+        "$state": 5
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: state null path reads root",
+      "op": "evaluate",
+      "condition": {
+        "$state": null
+      },
+      "context": {
+        "stateModel": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: state empty path reads root",
+      "op": "evaluate",
+      "condition": {
+        "$state": ""
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: item without scope",
+      "op": "evaluate",
+      "condition": {
+        "$item": "x"
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: item field",
+      "op": "evaluate",
+      "condition": {
+        "$item": "x",
+        "eq": 1
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": {
+          "x": 1
+        },
+        "repeatIndex": 0
+      }
+    },
+    {
+      "name": "evaluate: item empty path is the whole item",
+      "op": "evaluate",
+      "condition": {
+        "$item": ""
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": 0,
+        "repeatIndex": 0
+      }
+    },
+    {
+      "name": "evaluate: item through primitive",
+      "op": "evaluate",
+      "condition": {
+        "$item": "x"
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": "str",
+        "repeatIndex": 0
+      }
+    },
+    {
+      "name": "evaluate: index true",
+      "op": "evaluate",
+      "condition": {
+        "$index": true,
+        "eq": 2
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": {},
+        "repeatIndex": 2
+      }
+    },
+    {
+      "name": "evaluate: index false still reads index",
+      "op": "evaluate",
+      "condition": {
+        "$index": false
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": {},
+        "repeatIndex": 1
+      }
+    },
+    {
+      "name": "evaluate: index outside scope",
+      "op": "evaluate",
+      "condition": {
+        "$index": true
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: index zero is falsy",
+      "op": "evaluate",
+      "condition": {
+        "$index": true
+      },
+      "context": {
+        "stateModel": {},
+        "repeatItem": {},
+        "repeatIndex": 0
+      }
+    },
+    {
+      "name": "evaluate: index takes precedence over state",
+      "op": "evaluate",
+      "condition": {
+        "$index": true,
+        "$state": "/a"
+      },
+      "context": {
+        "stateModel": {
+          "a": false
+        },
+        "repeatItem": {},
+        "repeatIndex": 3
+      }
+    },
+    {
+      "name": "evaluate: item takes precedence over state",
+      "op": "evaluate",
+      "condition": {
+        "$item": "x",
+        "$state": "/a"
+      },
+      "context": {
+        "stateModel": {
+          "a": true
+        },
+        "repeatItem": {
+          "x": false
+        },
+        "repeatIndex": 0
+      }
+    },
+    {
+      "name": "evaluate: and with non-array throws",
+      "op": "evaluate",
+      "condition": {
+        "$and": "x"
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: and with undefined throws",
+      "op": "evaluate",
+      "condition": {
+        "$and": {
+          "$js": "undefined"
+        }
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: or with non-array throws",
+      "op": "evaluate",
+      "condition": {
+        "$or": 5
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: and wins over or",
+      "op": "evaluate",
+      "condition": {
+        "$and": [
+          true
+        ],
+        "$or": [
+          false
+        ]
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: empty and is true",
+      "op": "evaluate",
+      "condition": {
+        "$and": []
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: empty or is false",
+      "op": "evaluate",
+      "condition": {
+        "$or": []
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: nested or in and",
+      "op": "evaluate",
+      "condition": {
+        "$and": [
+          {
+            "$or": [
+              false,
+              {
+                "$state": "/a"
+              }
+            ]
+          },
+          true
+        ]
+      },
+      "context": {
+        "stateModel": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: implicit and short circuits before a throwing condition",
+      "op": "evaluate",
+      "condition": [
+        {
+          "$state": "/a"
+        },
+        null
+      ],
+      "context": {
+        "stateModel": {
+          "a": false
+        }
+      }
+    },
+    {
+      "name": "evaluate: or short circuits",
+      "op": "evaluate",
+      "condition": {
+        "$or": [
+          true,
+          null
+        ]
+      },
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "evaluate: eq with state operand that is not a string",
+      "op": "evaluate",
+      "condition": {
+        "$state": "/a",
+        "eq": {
+          "$state": 5
+        }
+      },
+      "context": {
+        "stateModel": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: array condition with eq",
+      "op": "evaluate",
+      "condition": [
+        {
+          "$state": "/a",
+          "eq": "x"
+        },
+        {
+          "$state": "/b"
+        }
+      ],
+      "context": {
+        "stateModel": {
+          "a": "x",
+          "b": 1
+        }
+      }
+    },
+    {
+      "name": "evaluate: boolean false",
+      "op": "evaluate",
+      "condition": false,
+      "context": {
+        "stateModel": {}
+      }
+    },
+    {
+      "name": "usesItemScope: undefined",
+      "op": "usesItemScope",
+      "condition": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "usesItemScope: boolean",
+      "op": "usesItemScope",
+      "condition": true
+    },
+    {
+      "name": "usesItemScope: state",
+      "op": "usesItemScope",
+      "condition": {
+        "$state": "/a"
+      }
+    },
+    {
+      "name": "usesItemScope: item",
+      "op": "usesItemScope",
+      "condition": {
+        "$item": "a"
+      }
+    },
+    {
+      "name": "usesItemScope: index",
+      "op": "usesItemScope",
+      "condition": {
+        "$index": true
+      }
+    },
+    {
+      "name": "usesItemScope: nested in and",
+      "op": "usesItemScope",
+      "condition": {
+        "$and": [
+          {
+            "$state": "/a"
+          },
+          {
+            "$or": [
+              {
+                "$item": "x"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "usesItemScope: array",
+      "op": "usesItemScope",
+      "condition": [
+        {
+          "$state": "/a"
+        },
+        {
+          "$index": true
+        }
+      ]
+    },
+    {
+      "name": "usesItemScope: and not an array throws",
+      "op": "usesItemScope",
+      "condition": {
+        "$and": "x"
+      }
+    },
+    {
+      "name": "usesItemScope: string",
+      "op": "usesItemScope",
+      "condition": "x"
+    },
+    {
+      "name": "usesItemScope: null",
+      "op": "usesItemScope",
+      "condition": null
+    },
+    {
+      "name": "split: undefined",
+      "op": "split",
+      "condition": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "split: state only",
+      "op": "split",
+      "condition": {
+        "$state": "/a"
+      }
+    },
+    {
+      "name": "split: item only",
+      "op": "split",
+      "condition": {
+        "$item": "status",
+        "eq": "todo"
+      }
+    },
+    {
+      "name": "split: array mixed",
+      "op": "split",
+      "condition": [
+        {
+          "$state": "/show"
+        },
+        {
+          "$item": "done",
+          "eq": false
+        }
+      ]
+    },
+    {
+      "name": "split: and mixed",
+      "op": "split",
+      "condition": {
+        "$and": [
+          {
+            "$state": "/show"
+          },
+          {
+            "$item": "done"
+          }
+        ]
+      }
+    },
+    {
+      "name": "split: and item only",
+      "op": "split",
+      "condition": {
+        "$and": [
+          {
+            "$item": "done"
+          }
+        ]
+      }
+    },
+    {
+      "name": "split: or mixed",
+      "op": "split",
+      "condition": {
+        "$or": [
+          {
+            "$state": "/show"
+          },
+          {
+            "$item": "done"
+          }
+        ]
+      }
+    },
+    {
+      "name": "split: and with extra or key",
+      "op": "split",
+      "condition": {
+        "$and": [
+          {
+            "$item": "x"
+          }
+        ],
+        "$or": [
+          true
+        ]
+      }
+    },
+    {
+      "name": "strictValid: true",
+      "op": "strictValid",
+      "condition": true
+    },
+    {
+      "name": "strictValid: state",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a"
+      }
+    },
+    {
+      "name": "strictValid: state with all operators",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "eq": 1,
+        "neq": 2,
+        "gt": 1,
+        "gte": {
+          "$state": "/b"
+        },
+        "lt": 3,
+        "lte": 4,
+        "not": true
+      }
+    },
+    {
+      "name": "strictValid: mixed sources",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "$item": "b"
+      }
+    },
+    {
+      "name": "strictValid: unknown key",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "foo": 1
+      }
+    },
+    {
+      "name": "strictValid: item",
+      "op": "strictValid",
+      "condition": {
+        "$item": "a",
+        "eq": null
+      }
+    },
+    {
+      "name": "strictValid: index must be true",
+      "op": "strictValid",
+      "condition": {
+        "$index": false
+      }
+    },
+    {
+      "name": "strictValid: not must be true",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "not": false
+      }
+    },
+    {
+      "name": "strictValid: gt string",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "gt": "1"
+      }
+    },
+    {
+      "name": "strictValid: gt state ref with extra keys",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "gt": {
+          "$state": "/b",
+          "extra": 1
+        }
+      }
+    },
+    {
+      "name": "strictValid: gt state ref non-string",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "gt": {
+          "$state": 1
+        }
+      }
+    },
+    {
+      "name": "strictValid: gt array",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "gt": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "strictValid: array of singles",
+      "op": "strictValid",
+      "condition": [
+        {
+          "$state": "/a"
+        },
+        {
+          "$item": "b"
+        }
+      ]
+    },
+    {
+      "name": "strictValid: array containing and",
+      "op": "strictValid",
+      "condition": [
+        {
+          "$and": []
+        }
+      ]
+    },
+    {
+      "name": "strictValid: and of mixed",
+      "op": "strictValid",
+      "condition": {
+        "$and": [
+          true,
+          [
+            {
+              "$state": "/a"
+            }
+          ],
+          {
+            "$or": [
+              false
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "strictValid: and with extra key",
+      "op": "strictValid",
+      "condition": {
+        "$and": [],
+        "extra": 1
+      }
+    },
+    {
+      "name": "strictValid: and and or together",
+      "op": "strictValid",
+      "condition": {
+        "$and": [],
+        "$or": []
+      }
+    },
+    {
+      "name": "strictValid: and not array",
+      "op": "strictValid",
+      "condition": {
+        "$and": true
+      }
+    },
+    {
+      "name": "strictValid: null",
+      "op": "strictValid",
+      "condition": null
+    },
+    {
+      "name": "strictValid: string",
+      "op": "strictValid",
+      "condition": "x"
+    },
+    {
+      "name": "strictValid: number",
+      "op": "strictValid",
+      "condition": 1
+    },
+    {
+      "name": "strictValid: empty object",
+      "op": "strictValid",
+      "condition": {}
+    },
+    {
+      "name": "strictValid: state non-string",
+      "op": "strictValid",
+      "condition": {
+        "$state": 1
+      }
+    },
+    {
+      "name": "strictValid: eq undefined member",
+      "op": "strictValid",
+      "condition": {
+        "$state": "/a",
+        "eq": {
+          "$js": "undefined"
+        }
+      }
+    }
+  ]
+}

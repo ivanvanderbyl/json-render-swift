@@ -1,0 +1,903 @@
+{
+  "suite": "paths",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "06fc60c3266ca3470a1f24479eb740e9533a7b8f4825d5831677aaef26f98c3f",
+  "cases": [
+    {
+      "name": "get: nested object",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "get: array index",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: leading zero index uses parseInt",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: trailing junk index uses parseInt",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: negative index",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: array length is not a member",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: index with leading space",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: through a string",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: empty segments",
+      "output": {
+        "value": 5
+      }
+    },
+    {
+      "name": "get: key with space",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "get: escaped tilde",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "get: ~01 decodes to ~1",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "get: through null",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: through number",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: empty path returns root",
+      "output": {
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "get: slash path returns root",
+      "output": {
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "get: path without leading slash",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: root array",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "get: undefined member",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "get: trailing slash",
+      "output": {
+        "value": 3
+      }
+    },
+    {
+      "name": "get: prototype-like key",
+      "output": {
+        "value": {
+          "$js": "function"
+        }
+      }
+    },
+    {
+      "name": "set: creates nested objects",
+      "output": {
+        "value": {
+          "a": {
+            "b": {
+              "c": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "set: creates an array for a numeric segment",
+      "output": {
+        "value": {
+          "a": [
+            {
+              "b": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: creates an array for a dash segment",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: writes past the end of an array",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            {
+              "$js": "hole"
+            },
+            {
+              "$js": "hole"
+            },
+            9
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: negative index is dropped",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: non-numeric index is dropped",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: non-numeric intermediate index is dropped",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: through null throws",
+      "output": {
+        "threw": "Cannot set properties of null (setting 'b')",
+        "partial": {
+          "a": null
+        }
+      }
+    },
+    {
+      "name": "set: replaces a primitive intermediate",
+      "output": {
+        "value": {
+          "a": {
+            "b": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "set: sets undefined",
+      "output": {
+        "value": {
+          "a": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "set: empty path writes the empty key",
+      "output": {
+        "value": {
+          "": 1
+        }
+      }
+    },
+    {
+      "name": "set: nested arrays",
+      "output": {
+        "value": {
+          "a": [
+            [
+              2
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: exponent index uses parseInt",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: leading zero index uses parseInt",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: dash appends",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "set: root array",
+      "output": {
+        "value": [
+          9,
+          2
+        ]
+      }
+    },
+    {
+      "name": "set: null element in array throws",
+      "output": {
+        "threw": "Cannot set properties of null (setting 'b')",
+        "partial": {
+          "a": [
+            null
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: inserts at start",
+      "output": {
+        "value": {
+          "a": [
+            0,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: index past the end appends",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: negative index inserts from the end",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            9,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: non-numeric index inserts at start",
+      "output": {
+        "value": {
+          "a": [
+            9,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: into empty array",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: creates array for numeric segment",
+      "output": {
+        "value": {
+          "a": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "add: through null throws",
+      "output": {
+        "threw": "Cannot set properties of null (setting 'b')",
+        "partial": {
+          "a": null
+        }
+      }
+    },
+    {
+      "name": "add: replaces object member",
+      "output": {
+        "value": {
+          "a": {
+            "b": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "remove: negative index is a no-op",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove: index past the end is a no-op",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove: non-numeric index is a no-op",
+      "output": {
+        "value": {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove: missing member",
+      "output": {
+        "value": {
+          "a": {
+            "b": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "remove: through null",
+      "output": {
+        "threw": "Cannot convert undefined or null to object",
+        "partial": {
+          "a": null
+        }
+      }
+    },
+    {
+      "name": "remove: parent is null throws",
+      "output": {
+        "threw": "Cannot convert undefined or null to object",
+        "partial": {
+          "a": {
+            "b": null
+          }
+        }
+      }
+    },
+    {
+      "name": "remove: nested in array",
+      "output": {
+        "value": {
+          "a": [
+            {}
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove: array element",
+      "output": {
+        "value": {
+          "a": [
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "name": "remove: empty key",
+      "output": {
+        "value": {
+          "b": 2
+        }
+      }
+    },
+    {
+      "name": "immutableSet: structural sharing",
+      "output": {
+        "value": {
+          "result": {
+            "a": {
+              "x": 9
+            },
+            "b": {
+              "y": 2
+            }
+          },
+          "sameRoot": false,
+          "sharedKeys": [
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "name": "immutableSet: creates an array for numeric segment",
+      "output": {
+        "value": {
+          "result": {
+            "a": [
+              1
+            ]
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: dash on a missing parent creates an object",
+      "output": {
+        "value": {
+          "result": {
+            "a": {
+              "-": 1
+            }
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: dash appends to an array",
+      "output": {
+        "value": {
+          "result": {
+            "a": [
+              1,
+              2
+            ]
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: past the end of an array",
+      "output": {
+        "value": {
+          "result": {
+            "a": [
+              1,
+              2,
+              {
+                "$js": "hole"
+              },
+              {
+                "$js": "hole"
+              },
+              {
+                "$js": "hole"
+              },
+              9
+            ]
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: non-canonical intermediate index is dropped",
+      "output": {
+        "value": {
+          "result": {
+            "a": [
+              1,
+              2
+            ]
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: replaces null intermediate",
+      "output": {
+        "value": {
+          "result": {
+            "a": {
+              "b": 1
+            }
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: canonical intermediate index",
+      "output": {
+        "value": {
+          "result": {
+            "a": [
+              {
+                "x": 1
+              },
+              {
+                "x": 3
+              }
+            ]
+          },
+          "sameRoot": false,
+          "sharedKeys": []
+        }
+      }
+    },
+    {
+      "name": "immutableSet: top level",
+      "output": {
+        "value": {
+          "result": {
+            "a": 2,
+            "b": {
+              "c": 1
+            }
+          },
+          "sameRoot": false,
+          "sharedKeys": [
+            "b"
+          ]
+        }
+      }
+    },
+    {
+      "name": "repeatStatePath: string",
+      "output": {
+        "value": "/items"
+      }
+    },
+    {
+      "name": "repeatStatePath: item field",
+      "output": {
+        "value": "/a/0/x"
+      }
+    },
+    {
+      "name": "repeatStatePath: item field with slash",
+      "output": {
+        "value": "/a/0/x"
+      }
+    },
+    {
+      "name": "repeatStatePath: empty item",
+      "output": {
+        "value": "/a/0"
+      }
+    },
+    {
+      "name": "repeatStatePath: slash item",
+      "output": {
+        "value": "/a/0"
+      }
+    },
+    {
+      "name": "repeatStatePath: outside scope",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        }
+      }
+    },
+    {
+      "name": "repeatStatePath: non-string item throws",
+      "output": {
+        "threw": "childPath.startsWith is not a function"
+      }
+    },
+    {
+      "name": "repeatStatePath: null throws",
+      "output": {
+        "threw": "Cannot read properties of null (reading '$item')"
+      }
+    },
+    {
+      "name": "repeatStatePath: object without item throws",
+      "output": {
+        "threw": "Cannot read properties of undefined (reading 'startsWith')"
+      }
+    },
+    {
+      "name": "repeatStatePath: root base",
+      "output": {
+        "value": "/x"
+      }
+    },
+    {
+      "name": "repeatStatePath: empty base",
+      "output": {
+        "value": "/x"
+      }
+    },
+    {
+      "name": "repeatStatePath: number throws",
+      "output": {
+        "threw": "Cannot read properties of undefined (reading 'startsWith')"
+      }
+    },
+    {
+      "name": "repeatItemStatePath: absolute",
+      "output": {
+        "value": "/items/0"
+      }
+    },
+    {
+      "name": "repeatItemStatePath: empty base",
+      "output": {
+        "value": "/3"
+      }
+    },
+    {
+      "name": "repeatItemStatePath: root base",
+      "output": {
+        "value": "/1"
+      }
+    },
+    {
+      "name": "repeatItemStatePath: relative",
+      "output": {
+        "value": "a/2"
+      }
+    },
+    {
+      "name": "findFormValue: nested slash path",
+      "output": {
+        "value": "x@y"
+      }
+    },
+    {
+      "name": "findFormValue: empty field reads root",
+      "output": {
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "findFormValue: suffix with dots",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "findFormValue: state exact before dotted",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "resolveDynamicValue: state path",
+      "output": {
+        "value": 1
+      }
+    },
+    {
+      "name": "resolveDynamicValue: empty path reads root",
+      "output": {
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "resolveDynamicValue: null path reads root",
+      "output": {
+        "value": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "resolveDynamicValue: number path throws",
+      "output": {
+        "threw": "path.startsWith is not a function"
+      }
+    },
+    {
+      "name": "resolveDynamicValue: array literal",
+      "output": {
+        "value": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "name": "resolveDynamicValue: object literal",
+      "output": {
+        "value": {
+          "other": 1
+        }
+      }
+    },
+    {
+      "name": "resolveDynamicValue: zero",
+      "output": {
+        "value": 0
+      }
+    },
+    {
+      "name": "resolveDynamicValue: empty string",
+      "output": {
+        "value": ""
+      }
+    },
+    {
+      "name": "resolveDynamicValue: false",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "resolveDynamicValue: extra keys still read state",
+      "output": {
+        "value": 2
+      }
+    },
+    {
+      "name": "flatten: nested and arrays",
+      "output": {
+        "value": {
+          "/a/b/c": 1,
+          "/d": [
+            1
+          ]
+        }
+      }
+    },
+    {
+      "name": "flatten: keys are not escaped",
+      "output": {
+        "value": {
+          "/a/b/c": 1
+        }
+      }
+    },
+    {
+      "name": "flatten: empty nested object disappears",
+      "output": {
+        "value": {
+          "/b": 1
+        }
+      }
+    },
+    {
+      "name": "flatten: null leaf",
+      "output": {
+        "value": {
+          "/a": null
+        }
+      }
+    }
+  ]
+}

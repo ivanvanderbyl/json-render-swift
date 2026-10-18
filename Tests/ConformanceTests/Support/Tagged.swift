@@ -52,6 +52,27 @@ enum Tagged {
         }
     }
 
+    /// True when `actual` (a Swift capture) matches `golden` (an upstream
+    /// capture): both are decoded and compared member by member, numbers by
+    /// SameValue (NaN equals NaN, 0 differs from -0) and array holes as
+    /// `undefined`.
+    static func matches(_ golden: JSONValue, _ actual: JSONValue) -> Bool {
+        sameValue(decode(golden), decode(actual))
+    }
+
+    private static func sameValue(_ a: JSONValue, _ b: JSONValue) -> Bool {
+        switch (a, b) {
+        case let (.number(x), .number(y)):
+            return (x.isNaN && y.isNaN) || (x == y && x.sign == y.sign)
+        case let (.array(x), .array(y)):
+            return x.count == y.count && zip(x, y).allSatisfy(sameValue)
+        case let (.object(x), .object(y)):
+            return x.count == y.count && x.allSatisfy { key, value in y[key].map { sameValue(value, $0) } ?? false }
+        default:
+            return a == b
+        }
+    }
+
     /// Runs `body` and encodes its result like `capture()` in encoding.mjs.
     static func capture(_ body: () throws -> JSONValue) -> JSONValue {
         do {

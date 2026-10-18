@@ -68,7 +68,7 @@ public enum SpecValidator {
         let rootKey = root.javaScriptString
         func element(_ key: String) -> JSONValue { elements.objectValue?[key] ?? .undefined }
 
-        if !element(rootKey).isTruthy {
+        if try !JavaScript.member(rootKey, of: elements).isTruthy {
             issues.append(SpecIssue(
                 severity: .error, message: "Root element \"\(rootKey)\" not found in elements map.", code: "root_not_found"
             ))
@@ -269,7 +269,10 @@ public enum SpecValidator {
         if lossy {
             for (key, element) in fixed {
                 let children = element["children"]
-                guard children.isTruthy, case let .array(childKeys) = children, !childKeys.isEmpty else { continue }
+                guard children.isTruthy, try JavaScript.length(of: children) != 0 else { continue }
+                guard case let .array(childKeys) = children else {
+                    throw JavaScriptError.typeError("element.children.filter is not a function")
+                }
                 let present = childKeys.filter { fixed.hasKey($0.javaScriptString) }
                 if present.count == childKeys.count { continue }
                 if !element["repeat"].isUndefined, present.isEmpty { continue }

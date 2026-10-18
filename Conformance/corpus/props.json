@@ -1,0 +1,968 @@
+{
+  "description": "Prop expressions, bindings and action params. Unknown $computed names are unique per case because upstream deduplicates their warnings for the whole process.",
+  "cases": [
+    {
+      "name": "resolve: null passes through",
+      "op": "resolve",
+      "value": null,
+      "context": {}
+    },
+    {
+      "name": "resolve: undefined passes through",
+      "op": "resolve",
+      "value": {
+        "$js": "undefined"
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: nested literal object",
+      "op": "resolve",
+      "value": {
+        "a": {
+          "b": [
+            1,
+            {
+              "c": "x"
+            }
+          ]
+        }
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: state wins over item",
+      "op": "resolve",
+      "value": {
+        "$state": "/a",
+        "$item": "x"
+      },
+      "context": {
+        "state": {
+          "a": 1
+        },
+        "repeatItem": {
+          "x": 2
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: non-string state is a plain object",
+      "op": "resolve",
+      "value": {
+        "$state": 5
+      },
+      "context": {
+        "state": {}
+      }
+    },
+    {
+      "name": "resolve: non-string state with nested expression",
+      "op": "resolve",
+      "value": {
+        "$state": 5,
+        "other": {
+          "$state": "/a"
+        }
+      },
+      "context": {
+        "state": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "resolve: item without scope",
+      "op": "resolve",
+      "value": {
+        "$item": "x"
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: item empty path",
+      "op": "resolve",
+      "value": {
+        "$item": ""
+      },
+      "context": {
+        "repeatItem": {
+          "x": 1
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: item nested path",
+      "op": "resolve",
+      "value": {
+        "$item": "a/b"
+      },
+      "context": {
+        "repeatItem": {
+          "a": {
+            "b": 3
+          }
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: item with leading slash",
+      "op": "resolve",
+      "value": {
+        "$item": "/a"
+      },
+      "context": {
+        "repeatItem": {
+          "a": 4
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: item of primitive",
+      "op": "resolve",
+      "value": {
+        "$item": "a"
+      },
+      "context": {
+        "repeatItem": "text",
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: index",
+      "op": "resolve",
+      "value": {
+        "$index": true
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 3,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: index outside scope",
+      "op": "resolve",
+      "value": {
+        "$index": true
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: index not true is a plain object",
+      "op": "resolve",
+      "value": {
+        "$index": 1
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 3,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: bindState",
+      "op": "resolve",
+      "value": {
+        "$bindState": "/a/b"
+      },
+      "context": {
+        "state": {
+          "a": {
+            "b": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "resolve: bindItem",
+      "op": "resolve",
+      "value": {
+        "$bindItem": "done"
+      },
+      "context": {
+        "state": {
+          "items": [
+            {
+              "done": true
+            }
+          ]
+        },
+        "repeatItem": {
+          "done": false
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: bindItem empty path",
+      "op": "resolve",
+      "value": {
+        "$bindItem": ""
+      },
+      "context": {
+        "state": {
+          "items": [
+            {
+              "done": true
+            }
+          ]
+        },
+        "repeatItem": {},
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: bindItem outside scope warns",
+      "op": "resolve",
+      "value": {
+        "$bindItem": "done"
+      },
+      "context": {
+        "state": {}
+      }
+    },
+    {
+      "name": "resolve: cond picks then",
+      "op": "resolve",
+      "value": {
+        "$cond": {
+          "$state": "/a"
+        },
+        "$then": {
+          "$state": "/b"
+        },
+        "$else": "no"
+      },
+      "context": {
+        "state": {
+          "a": 1,
+          "b": "yes"
+        }
+      }
+    },
+    {
+      "name": "resolve: cond picks else",
+      "op": "resolve",
+      "value": {
+        "$cond": false,
+        "$then": 1,
+        "$else": {
+          "$state": "/b"
+        }
+      },
+      "context": {
+        "state": {
+          "b": 2
+        }
+      }
+    },
+    {
+      "name": "resolve: cond without else is a plain object",
+      "op": "resolve",
+      "value": {
+        "$cond": true,
+        "$then": 1
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: cond with malformed condition throws",
+      "op": "resolve",
+      "value": {
+        "$cond": null,
+        "$then": 1,
+        "$else": 2
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: cond with item condition",
+      "op": "resolve",
+      "value": {
+        "$cond": {
+          "$item": "on"
+        },
+        "$then": "on",
+        "$else": "off"
+      },
+      "context": {
+        "repeatItem": {
+          "on": true
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: cond with undefined then",
+      "op": "resolve",
+      "value": {
+        "$cond": true,
+        "$then": {
+          "$js": "undefined"
+        },
+        "$else": 1
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: computed",
+      "op": "resolve",
+      "value": {
+        "$computed": "fullName",
+        "args": {
+          "first": {
+            "$state": "/f"
+          },
+          "last": "Smith"
+        }
+      },
+      "context": {
+        "state": {
+          "f": "Jo"
+        },
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed without args",
+      "op": "resolve",
+      "value": {
+        "$computed": "argCount"
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed with null args",
+      "op": "resolve",
+      "value": {
+        "$computed": "argCount",
+        "args": null
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed with string args",
+      "op": "resolve",
+      "value": {
+        "$computed": "echo",
+        "args": "ab"
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed with array args",
+      "op": "resolve",
+      "value": {
+        "$computed": "echo",
+        "args": [
+          {
+            "$state": "/x"
+          }
+        ]
+      },
+      "context": {
+        "state": {
+          "x": 1
+        },
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed that throws",
+      "op": "resolve",
+      "value": {
+        "$computed": "fails"
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed unknown without functions warns",
+      "op": "resolve",
+      "value": {
+        "$computed": "unknownOne"
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: computed unknown with functions warns",
+      "op": "resolve",
+      "value": {
+        "$computed": "unknownTwo"
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed non-string name is a plain object",
+      "op": "resolve",
+      "value": {
+        "$computed": 5
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: computed nested in args",
+      "op": "resolve",
+      "value": {
+        "$computed": "double",
+        "args": {
+          "value": {
+            "$computed": "double",
+            "args": {
+              "value": 2
+            }
+          }
+        }
+      },
+      "context": {
+        "functions": true
+      }
+    },
+    {
+      "name": "resolve: template absolute",
+      "op": "resolve",
+      "value": {
+        "$template": "Hi ${/name}!"
+      },
+      "context": {
+        "state": {
+          "name": "Ann"
+        }
+      }
+    },
+    {
+      "name": "resolve: template missing becomes empty",
+      "op": "resolve",
+      "value": {
+        "$template": "[${/missing}]"
+      },
+      "context": {
+        "state": {}
+      }
+    },
+    {
+      "name": "resolve: template null becomes empty",
+      "op": "resolve",
+      "value": {
+        "$template": "[${/n}]"
+      },
+      "context": {
+        "state": {
+          "n": null
+        }
+      }
+    },
+    {
+      "name": "resolve: template number formatting",
+      "op": "resolve",
+      "value": {
+        "$template": "${/a} ${/b} ${/c}"
+      },
+      "context": {
+        "state": {
+          "a": 0.1,
+          "b": 1e+21,
+          "c": 0
+        }
+      }
+    },
+    {
+      "name": "resolve: template object and array",
+      "op": "resolve",
+      "value": {
+        "$template": "${/o}|${/a}"
+      },
+      "context": {
+        "state": {
+          "o": {
+            "x": 1
+          },
+          "a": [
+            1,
+            [
+              2,
+              3
+            ],
+            null
+          ]
+        }
+      }
+    },
+    {
+      "name": "resolve: template bare name from item",
+      "op": "resolve",
+      "value": {
+        "$template": "${name}"
+      },
+      "context": {
+        "state": {
+          "name": "state"
+        },
+        "repeatItem": {
+          "name": "item"
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: template bare name falls back to state",
+      "op": "resolve",
+      "value": {
+        "$template": "${name}"
+      },
+      "context": {
+        "state": {
+          "name": "state"
+        },
+        "repeatItem": {
+          "other": 1
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: template bare name item null falls back",
+      "op": "resolve",
+      "value": {
+        "$template": "${name}"
+      },
+      "context": {
+        "state": {
+          "name": "state"
+        },
+        "repeatItem": {
+          "name": null
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: template bare nested path",
+      "op": "resolve",
+      "value": {
+        "$template": "${a/b}"
+      },
+      "context": {
+        "state": {
+          "a": {
+            "b": "deep"
+          }
+        }
+      }
+    },
+    {
+      "name": "resolve: template empty placeholder is literal",
+      "op": "resolve",
+      "value": {
+        "$template": "${} and ${"
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: template nested braces",
+      "op": "resolve",
+      "value": {
+        "$template": "${${x}}"
+      },
+      "context": {
+        "state": {
+          "${x": "odd"
+        }
+      }
+    },
+    {
+      "name": "resolve: template dollar without brace",
+      "op": "resolve",
+      "value": {
+        "$template": "$5 and $ {x}"
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: template root path",
+      "op": "resolve",
+      "value": {
+        "$template": "${/}"
+      },
+      "context": {
+        "state": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "resolve: template whole item via bare name",
+      "op": "resolve",
+      "value": {
+        "$template": "${0}"
+      },
+      "context": {
+        "state": {},
+        "repeatItem": [
+          "first"
+        ],
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolve: template non-string is a plain object",
+      "op": "resolve",
+      "value": {
+        "$template": 5
+      },
+      "context": {}
+    },
+    {
+      "name": "resolve: directive",
+      "op": "resolve",
+      "value": {
+        "$double": {
+          "$state": "/n"
+        }
+      },
+      "context": {
+        "state": {
+          "n": 4
+        },
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: directive composed",
+      "op": "resolve",
+      "value": {
+        "$upper": {
+          "$join": [
+            "a",
+            {
+              "$state": "/b"
+            }
+          ],
+          "separator": "-"
+        }
+      },
+      "context": {
+        "state": {
+          "b": "c"
+        },
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: directive ambiguous throws",
+      "op": "resolve",
+      "value": {
+        "$double": 1,
+        "$upper": "x"
+      },
+      "context": {
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: directive that throws",
+      "op": "resolve",
+      "value": {
+        "$fails": 1
+      },
+      "context": {
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: directive without registry is a plain object",
+      "op": "resolve",
+      "value": {
+        "$double": {
+          "$state": "/n"
+        }
+      },
+      "context": {
+        "state": {
+          "n": 4
+        }
+      }
+    },
+    {
+      "name": "resolve: built-in wins over directive",
+      "op": "resolve",
+      "value": {
+        "$state": "/n",
+        "$double": 1
+      },
+      "context": {
+        "state": {
+          "n": 4
+        },
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: directive inside array",
+      "op": "resolve",
+      "value": [
+        {
+          "$double": 2
+        },
+        {
+          "$upper": "x"
+        }
+      ],
+      "context": {
+        "directives": true
+      }
+    },
+    {
+      "name": "resolve: array of expressions",
+      "op": "resolve",
+      "value": [
+        {
+          "$state": "/a"
+        },
+        {
+          "$index": true
+        },
+        "lit"
+      ],
+      "context": {
+        "state": {
+          "a": 1
+        },
+        "repeatItem": {},
+        "repeatIndex": 7,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolveProps: mixed props",
+      "op": "resolveProps",
+      "value": {
+        "title": {
+          "$state": "/t"
+        },
+        "count": {
+          "$index": true
+        },
+        "style": {
+          "color": {
+            "$cond": true,
+            "$then": "red",
+            "$else": "blue"
+          }
+        }
+      },
+      "context": {
+        "state": {
+          "t": "T"
+        },
+        "repeatItem": {},
+        "repeatIndex": 2,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "resolveProps: empty props",
+      "op": "resolveProps",
+      "value": {},
+      "context": {}
+    },
+    {
+      "name": "resolveProps: throwing prop",
+      "op": "resolveProps",
+      "value": {
+        "ok": 1,
+        "bad": {
+          "$cond": 5,
+          "$then": 1,
+          "$else": 2
+        }
+      },
+      "context": {}
+    },
+    {
+      "name": "bindings: state and item",
+      "op": "bindings",
+      "value": {
+        "value": {
+          "$bindState": "/form/a"
+        },
+        "checked": {
+          "$bindItem": "done"
+        },
+        "label": "x"
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "bindings: none",
+      "op": "bindings",
+      "value": {
+        "value": {
+          "$state": "/a"
+        }
+      },
+      "context": {}
+    },
+    {
+      "name": "bindings: bind item outside scope warns",
+      "op": "bindings",
+      "value": {
+        "checked": {
+          "$bindItem": "done"
+        }
+      },
+      "context": {}
+    },
+    {
+      "name": "bindings: bind item empty path",
+      "op": "bindings",
+      "value": {
+        "value": {
+          "$bindItem": ""
+        }
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 0,
+        "repeatBasePath": "/list/3"
+      }
+    },
+    {
+      "name": "bindings: non-string bind is ignored",
+      "op": "bindings",
+      "value": {
+        "value": {
+          "$bindState": 5
+        }
+      },
+      "context": {}
+    },
+    {
+      "name": "bindings: both keys prefers bindState",
+      "op": "bindings",
+      "value": {
+        "value": {
+          "$bindState": "/a",
+          "$bindItem": "b"
+        }
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 0,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "actionParam: item gives a path",
+      "op": "actionParam",
+      "value": {
+        "$item": "title"
+      },
+      "context": {
+        "repeatItem": {
+          "title": "x"
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/todos/0"
+      }
+    },
+    {
+      "name": "actionParam: item empty gives the base path",
+      "op": "actionParam",
+      "value": {
+        "$item": ""
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 0,
+        "repeatBasePath": "/todos/0"
+      }
+    },
+    {
+      "name": "actionParam: item outside scope warns",
+      "op": "actionParam",
+      "value": {
+        "$item": "title"
+      },
+      "context": {}
+    },
+    {
+      "name": "actionParam: index",
+      "op": "actionParam",
+      "value": {
+        "$index": true
+      },
+      "context": {
+        "repeatItem": {},
+        "repeatIndex": 5,
+        "repeatBasePath": "/items/0"
+      }
+    },
+    {
+      "name": "actionParam: state",
+      "op": "actionParam",
+      "value": {
+        "$state": "/a"
+      },
+      "context": {
+        "state": {
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "actionParam: nested item is a value",
+      "op": "actionParam",
+      "value": {
+        "nested": {
+          "$item": "title"
+        }
+      },
+      "context": {
+        "repeatItem": {
+          "title": "x"
+        },
+        "repeatIndex": 0,
+        "repeatBasePath": "/todos/0"
+      }
+    },
+    {
+      "name": "actionParam: literal",
+      "op": "actionParam",
+      "value": "x",
+      "context": {}
+    }
+  ]
+}
