@@ -265,3 +265,47 @@ public enum JavaScriptError: Error, Sendable, Equatable, CustomStringConvertible
 
     public var description: String { message }
 }
+
+extension JSONValue {
+    /// `Number(value)`: ECMAScript ToNumber. Arrays convert through their
+    /// string form, so `[5]` is 5 and `[]` is 0; objects are NaN.
+    public var javaScriptNumber: Double {
+        switch self {
+        case .undefined: .nan
+        case .null: 0
+        case let .bool(value): value ? 1 : 0
+        case let .number(value): value
+        case let .string(value): JavaScript.stringToNumber(value)
+        case .array: JavaScript.stringToNumber(javaScriptString)
+        case .object: .nan
+        }
+    }
+}
+
+extension JavaScript {
+    /// `value.member`: `undefined` for primitives and missing members, and the
+    /// TypeError JavaScript throws when reading a member of null or undefined.
+    static func member(_ key: String, of value: JSONValue) throws -> JSONValue {
+        switch value {
+        case .undefined, .null:
+            throw JavaScriptError.typeError("Cannot read properties of \(value.javaScriptString) (reading '\(key)')")
+        case let .object(object):
+            return object[key] ?? .undefined
+        default:
+            return .undefined
+        }
+    }
+
+    /// `for (const x of value)`: arrays yield elements and strings yield their
+    /// characters; anything else is the TypeError "x is not iterable".
+    static func iterate(_ value: JSONValue, expression: String) throws -> [JSONValue] {
+        switch value {
+        case let .array(array):
+            return array.elements
+        case let .string(string):
+            return string.unicodeScalars.map { .string(String($0)) }
+        default:
+            throw JavaScriptError.typeError("\(expression) is not iterable")
+        }
+    }
+}
