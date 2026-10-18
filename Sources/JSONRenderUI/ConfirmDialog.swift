@@ -36,10 +36,10 @@ struct ConfirmationPresenter: ViewModifier {
         let dialog = ConfirmDialogContent(confirm)
         content.alert(
             dialog.title,
-            isPresented: Binding(
-                get: { isEnabled && confirm.isTruthy },
-                set: { presented in if !presented, runtime.pendingConfirmation != nil { runtime.cancel() } }
-            )
+            // The buttons settle the confirmation. Dismissing the alert also
+            // writes false here, so the setter must not cancel: it can run
+            // before the confirm button's action.
+            isPresented: Binding(get: { isEnabled && confirm.isTruthy }, set: { _ in })
         ) {
             Button(dialog.cancelLabel, role: .cancel) { runtime.cancel() }
             Button(dialog.confirmLabel, role: dialog.isDestructive ? .destructive : nil) { runtime.confirm() }

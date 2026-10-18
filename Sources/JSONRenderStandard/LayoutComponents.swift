@@ -277,8 +277,9 @@ public struct DividerComponent: View {
     }
 }
 
-/// A tappable area that dims while pressed, like a React Native `Pressable`
-/// with `onPress` and `onLongPress`: a long press does not also tap.
+/// A tappable area that dims while pressed, like a React Native `Pressable`.
+/// With `onLongPress`, holding for half a second runs it instead of
+/// `onPress`, as React Native does when a pressable has `onLongPress`.
 struct PressArea<Content: View>: View {
     var dimming: Double
     var pressedBackground: Color?
@@ -297,27 +298,28 @@ struct PressArea<Content: View>: View {
     }
 
     @State private var pressed = false
-    @State private var longPressed = false
 
     var body: some View {
-        Button {
-            if longPressed {
-                longPressed = false
-            } else {
-                onPress()
-            }
-        } label: {
-            content.contentShape(Rectangle())
+        if let onLongPress {
+            content
+                .contentShape(Rectangle())
+                .opacity(pressed ? dimming : 1)
+                .background(pressed ? pressedBackground : nil)
+                .onTapGesture { if isEnabled { onPress() } }
+                .onLongPressGesture(minimumDuration: 0.5) {
+                    if isEnabled { onLongPress() }
+                } onPressingChanged: { pressing in
+                    pressed = pressing && isEnabled
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.isButton)
+                .accessibilityAction { if isEnabled { onPress() } }
+                .accessibilityAction(named: Text("Long press")) { if isEnabled { onLongPress() } }
+        } else {
+            Button(action: onPress) { content.contentShape(Rectangle()) }
+                .buttonStyle(PressStyle(dimming: dimming, pressedBackground: pressedBackground))
+                .disabled(!isEnabled)
         }
-        .buttonStyle(PressStyle(dimming: dimming, pressedBackground: pressedBackground))
-        .disabled(!isEnabled)
-        .simultaneousGesture(
-            LongPressGesture(minimumDuration: 0.5).onEnded { _ in
-                guard let onLongPress, isEnabled else { return }
-                longPressed = true
-                onLongPress()
-            }
-        )
     }
 }
 
