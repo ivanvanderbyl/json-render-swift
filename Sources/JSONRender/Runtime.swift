@@ -51,6 +51,7 @@ public final class Runtime {
         get { storedFunctions }
         set {
             storedFunctions = newValue
+            functionsVersion += 1
             contextChanged()
         }
     }
@@ -61,6 +62,7 @@ public final class Runtime {
         set {
             storedDirectives = newValue
             directiveRegistry = newValue.isEmpty ? nil : DirectiveRegistry(newValue)
+            directivesVersion += 1
             contextChanged()
         }
     }
@@ -110,7 +112,18 @@ public final class Runtime {
     @ObservationIgnored var componentFailures: [String: Int] = [:]
     @ObservationIgnored var renderScheduled = false
     @ObservationIgnored var progress = 0
-    @ObservationIgnored var confirmation: CheckedContinuation<Void, any Error>?
+    @ObservationIgnored var confirmation: (@MainActor (Bool) -> Void)?
+    @ObservationIgnored var microtasks: [@MainActor () -> Void] = []
+    @ObservationIgnored var isDraining = false
+    @ObservationIgnored var activeTasks = 0
+    @ObservationIgnored var operationDepth = 0
+    @ObservationIgnored var forcedRenders: Set<String> = []
+    /// Versions of the inputs a watch effect depends on (upstream's effect
+    /// dependencies): state, functions, directives and `execute`.
+    @ObservationIgnored var stateVersion = 0
+    @ObservationIgnored var functionsVersion = 0
+    @ObservationIgnored var directivesVersion = 0
+    @ObservationIgnored var executeVersion = 0
     @ObservationIgnored var watchStates: [String: WatchState] = [:]
     @ObservationIgnored var lastMountOrder: [String] = []
     @ObservationIgnored var scopeTokenCounter = 0
@@ -139,7 +152,11 @@ public final class Runtime {
         state = backing.snapshot
         validation = FormValidation(customFunctions: validationFunctions)
         validation.currentState = { [unowned self] in self.store.snapshot }
-        validation.onChange = { [unowned self] in self.contextChanged() }
+        validation.onChange = { [unowned self] in
+            // The validation context feeds upstream's `execute`.
+            self.executeVersion += 1
+            self.contextChanged()
+        }
         unsubscribe = backing.subscribe { [weak self] in self?.storeChanged() }
     }
 
@@ -152,20 +169,33 @@ public final class Runtime {
     /// change to `onStateChange` when the store is not external.
     public func set(_ path: String, _ value: JSONValue) {
         let previous = store.snapshot
-        store.set(path, value)
-        if !isControlled, !store.snapshot.isIdentical(to: previous) {
-            onStateChange?([StateChange(path: path, value: value)])
+        operation {
+            store.set(path, value)
+            if !isControlled, !store.snapshot.isIdentical(to: previous) {
+                onStateChange?([StateChange(path: path, value: value)])
+            }
         }
+    }
+
+    /// Runs a state operation, then any render it scheduled. Upstream
+    /// renders after `set` returns, so `onStateChange` comes first.
+    func operation(_ body: () -> Void) {
+        operationDepth += 1
+        body()
+        operationDepth -= 1
+        if operationDepth == 0 { drain() }
     }
 
     /// Writes several paths at once, like upstream `useStateStore().update`.
     public func update(_ updates: JSONObject) {
         let previous = store.snapshot
-        store.update(updates)
-        if !isControlled, !store.snapshot.isIdentical(to: previous) {
-            let changes = updates.filter { !JSONValue.object(previous).value(atPath: $0.key).strictEquals($0.value) }
-                .map { StateChange(path: $0.key, value: $0.value) }
-            if !changes.isEmpty { onStateChange?(changes) }
+        operation {
+            store.update(updates)
+            if !isControlled, !store.snapshot.isIdentical(to: previous) {
+                let changes = updates.filter { !JSONValue.object(previous).value(atPath: $0.key).strictEquals($0.value) }
+                    .map { StateChange(path: $0.key, value: $0.value) }
+                if !changes.isEmpty { onStateChange?(changes) }
+            }
         }
     }
 
@@ -190,7 +220,7 @@ public final class Runtime {
                 updates[key] = nextFlat.hasKey(key) ? after : .undefined
             }
         }
-        if !updates.isEmpty { store.update(updates) }
+        if !updates.isEmpty { operation { store.update(updates) } }
     }
 
     /// The visibility context, like upstream `useVisibility().ctx`.
@@ -209,6 +239,7 @@ public final class Runtime {
 
     private func storeChanged() {
         state = store.snapshot
+        stateVersion += 1
         contextChanged()
     }
 
@@ -219,28 +250,28 @@ public final class Runtime {
     }
 
     func scheduleRender() {
-        guard !renderScheduled, spec != nil else { return }
-        renderScheduled = true
-        Task { @MainActor [weak self] in
-            guard let self, self.renderScheduled else { return }
-            self.renderNow()
+        guard spec != nil else { return }
+        if !renderScheduled {
+            renderScheduled = true
+            enqueue { [weak self] in
+                guard let self, self.renderScheduled else { return }
+                self.renderNow()
+            }
         }
+        if operationDepth == 0 { drain() }
     }
 
     // MARK: Settling
 
-    /// Waits until scheduled renders and watcher actions have run, like
-    /// React's `act`. Actions blocked on outside work are left running.
+    /// Waits until scheduled renders and action handlers have finished, like
+    /// React's `act`. Handlers blocked on outside work are left running.
     public func settle() async {
         var idleTurns = 0
         for _ in 0..<1000 {
-            if renderScheduled {
-                renderNow()
-                idleTurns = 0
-            }
+            drain()
             let before = progress
             await Task.yield()
-            if progress == before, !renderScheduled {
+            if progress == before, microtasks.isEmpty {
                 idleTurns += 1
                 if idleTurns >= 3 { return }
             } else {

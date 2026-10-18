@@ -51,10 +51,17 @@ public struct ActionObserver {
     }
 }
 
+/// Limits observers to the task that registered them, so concurrent tests do
+/// not see each other's dispatches. Observers registered outside any scope
+/// see every dispatch, as upstream's registry does.
+enum ActionObserverScope {
+    @TaskLocal static var current: String?
+}
+
 /// The process-wide observer registry, like upstream `action-observer.ts`.
 @MainActor
 public enum ActionObservers {
-    private static var observers: [(id: Int, observer: ActionObserver)] = []
+    private static var observers: [(id: Int, scope: String?, observer: ActionObserver)] = []
     private static var nextObserverID = 0
     private static var dispatchCounter = 0
 
@@ -63,14 +70,14 @@ public enum ActionObservers {
     public static func register(_ observer: ActionObserver) -> @MainActor () -> Void {
         let id = nextObserverID
         nextObserverID += 1
-        observers.append((id, observer))
+        observers.append((id, ActionObserverScope.current, observer))
         return { observers.removeAll { $0.id == id } }
     }
 
     /// Sends a dispatch event to every observer, like upstream
     /// `notifyActionDispatch`. An observer that throws is reported and skipped.
     public static func notifyDispatch(_ info: ActionDispatchInfo) {
-        for entry in observers {
+        for entry in observers where entry.scope == nil || entry.scope == ActionObserverScope.current {
             guard let onDispatch = entry.observer.onDispatch else { continue }
             do {
                 try onDispatch(info)
@@ -82,7 +89,7 @@ public enum ActionObservers {
 
     /// Sends a settle event, like upstream `notifyActionSettle`.
     public static func notifySettle(_ info: ActionSettleInfo) {
-        for entry in observers {
+        for entry in observers where entry.scope == nil || entry.scope == ActionObserverScope.current {
             guard let onSettle = entry.observer.onSettle else { continue }
             do {
                 try onSettle(info)

@@ -4,11 +4,6 @@ import Foundation
 /// Helpers for tests that drive the UI-free runtime the way upstream's React
 /// tests drive JSONUIProvider and Renderer.
 extension RenderNode {
-    /// Every node in the tree, depth first, children before slots.
-    var allNodes: [RenderNode] {
-        [self] + children.flatMap(\.allNodes) + slots.flatMap { $0.nodes.flatMap(\.allNodes) }
-    }
-
     /// Rendered nodes of a component type, in tree order.
     func rendered(_ type: String) -> [RenderNode] {
         allNodes.filter { $0.status == .rendered && $0.type == .string(type) }

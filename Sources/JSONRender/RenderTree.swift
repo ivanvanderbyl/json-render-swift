@@ -46,6 +46,21 @@ public struct RenderNode: Sendable, Identifiable, Equatable {
     public var loading: Bool
 }
 
+extension RenderNode {
+    /// This node and every node below it, depth first, children before slots.
+    public var allNodes: [RenderNode] {
+        [self] + children.flatMap(\.allNodes) + slots.flatMap { $0.nodes.flatMap(\.allNodes) }
+    }
+
+    /// The node with an id, searching this node and its descendants.
+    public func node(id: String) -> RenderNode? {
+        if self.id == id { return self }
+        for child in children { if let found = child.node(id: id) { return found } }
+        for slot in slots { for child in slot.nodes { if let found = child.node(id: id) { return found } } }
+        return nil
+    }
+}
+
 /// What the runtime needs to know about the component registry, like upstream
 /// `registry` and `fallback`.
 public protocol ComponentLookup {

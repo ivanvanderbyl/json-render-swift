@@ -10,6 +10,8 @@ struct ElementInstance {
     var componentsEpoch: Int
     var loading: Bool
     var scopeToken: Int
+    /// The watch effect's dependencies when this instance rendered.
+    var effectKey: [Int]
     var node: RenderNode
 }
 
@@ -34,6 +36,7 @@ extension Runtime {
             componentsEpoch += 1
         }
         renderNow()
+        drain()
     }
 
     /// Records that a component failed to render, like a React error boundary
@@ -43,9 +46,10 @@ extension Runtime {
         guard let instance = instances[nodeID] else { return }
         Diagnostics.error("[json-render] Rendering error in <\(instance.node.type.javaScriptString)>: \(Actions.message(of: error).javaScriptString)")
         boundaryErrors[nodeID] = instance.signature
-        // Force this element to re-render so the boundary takes effect.
-        instances[nodeID]?.epoch = -1
+        // Re-render only this element so the boundary takes effect.
+        forcedRenders.insert(nodeID)
         renderNow()
+        drain()
     }
 
     // MARK: Rendering
@@ -64,6 +68,7 @@ extension Runtime {
         }
         // An error outside every boundary unmounts the whole tree upstream.
         instances = error == nil ? pass.mounted : [:]
+        forcedRenders = []
         if renderError != error { renderError = error }
         if tree != newTree { tree = newTree }
         for id in boundaryErrors.keys where instances[id] == nil { boundaryErrors[id] = nil }
@@ -290,14 +295,55 @@ struct RenderPass {
               prior.epoch == runtime.contextEpoch,
               prior.componentsEpoch == runtime.componentsEpoch,
               prior.loading == runtime.loading,
-              prior.scopeToken == (scope?.token ?? 0)
+              prior.scopeToken == (scope?.token ?? 0),
+              !runtime.forcedRenders.contains(id)
         else { return nil }
+        if runtime.forcedRenders.contains(where: { $0.hasPrefix(id + "/") }) {
+            return rebuild(prior)
+        }
         // The whole subtree stays mounted as it was.
         for (childID, instance) in previous where childID.hasPrefix(id + "/") { mounted[childID] = instance }
         for childID in previousOrder(below: id) { mountOrder.append(childID) }
         mounted[id] = prior
         mountOrder.append(id)
         return prior.node
+    }
+
+    /// Keeps an unchanged element but re-renders the descendants that must
+    /// update, as React re-renders only the error boundary that caught.
+    private mutating func rebuild(_ prior: ElementInstance) -> RenderNode {
+        var node = prior.node
+        var children: [RenderNode] = []
+        for child in node.children { children.append(refresh(child)) }
+        node.children = children
+        var slots: [RenderNode.Slot] = []
+        for slot in node.slots {
+            var nodes: [RenderNode] = []
+            for child in slot.nodes { nodes.append(refresh(child)) }
+            slots.append(RenderNode.Slot(name: slot.name, nodes: nodes))
+        }
+        node.slots = slots
+        var kept = prior
+        kept.node = node
+        mounted[prior.id] = kept
+        mountOrder.append(prior.id)
+        return node
+    }
+
+    private mutating func refresh(_ child: RenderNode) -> RenderNode {
+        guard let instance = previous[child.id] else { return child }
+        let forced = runtime.forcedRenders
+        if forced.contains(child.id) {
+            let scope = child.repeatScope.map { ScopeFrame(scope: $0, token: instance.scopeToken) }
+            if let node = try? renderElement(instance.element, key: instance.key, id: child.id, scope: scope) { return node }
+            return child
+        }
+        if forced.contains(where: { $0.hasPrefix(child.id + "/") }) { return rebuild(instance) }
+        for (id, kept) in previous where id.hasPrefix(child.id + "/") { mounted[id] = kept }
+        for id in previousOrder(below: child.id) { mountOrder.append(id) }
+        mounted[child.id] = instance
+        mountOrder.append(child.id)
+        return child
     }
 
     private func previousOrder(below id: String) -> [String] {
@@ -308,7 +354,9 @@ struct RenderPass {
         mounted[node.id] = ElementInstance(
             id: node.id, key: node.key, element: element, context: context, signature: signature,
             epoch: runtime.contextEpoch, componentsEpoch: runtime.componentsEpoch, loading: runtime.loading,
-            scopeToken: scope?.token ?? 0, node: node
+            scopeToken: scope?.token ?? 0,
+            effectKey: [runtime.stateVersion, runtime.functionsVersion, runtime.directivesVersion, runtime.executeVersion, scope?.token ?? 0],
+            node: node
         )
         mountOrder.append(node.id)
         return node

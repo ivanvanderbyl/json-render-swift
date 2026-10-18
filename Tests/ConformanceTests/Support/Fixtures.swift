@@ -13,9 +13,11 @@ enum Fixtures {
         "fails": { _ in throw JavaScriptError.error("computed failed") },
     ]
 
-    static let directives: DirectiveRegistry = {
+    static let directives = DirectiveRegistry(directiveDefinitions)
+
+    static let directiveDefinitions: [DirectiveDefinition] = {
         // The names are valid, so these initialisers cannot throw.
-        try! DirectiveRegistry([
+        try! [
             DirectiveDefinition(name: "$double") { value, context in
                 .number(try PropExpression.resolve(value["$double"], in: context).javaScriptNumber * 2)
             },
@@ -28,7 +30,7 @@ enum Fixtures {
                 return .string(parts.map { $0.isNullish ? "" : $0.javaScriptString }.joined(separator: separator))
             },
             DirectiveDefinition(name: "$fails") { _, _ in throw JavaScriptError.error("directive failed") },
-        ])
+        ]
     }()
 
     static let validationFunctions: [String: ValidationFunction] = [

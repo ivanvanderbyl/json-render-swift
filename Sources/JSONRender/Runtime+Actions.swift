@@ -1,9 +1,51 @@
+/// A sequence of action bindings running one after another, like upstream's
+/// `for (const b of bindings) await execute(b)` loops in `emit` and in the
+/// watch effect.
+@MainActor
+final class ActionChain {
+    let bindings: [JSONValue]
+    let context: ResolutionContext
+    let cancellation: WatchCancellation?
+    var index = 0
+    var completion: ((any Error)?) -> Void
+
+    init(bindings: [JSONValue], context: ResolutionContext, cancellation: WatchCancellation?, completion: @escaping ((any Error)?) -> Void) {
+        self.bindings = bindings
+        self.context = context
+        self.cancellation = cancellation
+        self.completion = completion
+    }
+}
+
 extension Runtime {
+    // MARK: Microtasks
+
+    /// Queues work the way JavaScript queues microtasks. Renders scheduled by
+    /// a state change and the continuation of an action chain run in the
+    /// order they were queued, so, as upstream, a render (and its watch
+    /// effects) runs before the next binding of the chain that changed state.
+    func enqueue(_ job: @escaping @MainActor () -> Void) {
+        microtasks.append(job)
+    }
+
+    /// Runs queued work until none is left.
+    func drain() {
+        guard !isDraining else { return }
+        isDraining = true
+        defer { isDraining = false }
+        while !microtasks.isEmpty {
+            let job = microtasks.removeFirst()
+            job()
+            progress += 1
+        }
+    }
+
     // MARK: Handlers
 
     /// Adds or replaces an action handler, like upstream `registerHandler`.
     public func registerHandler(_ name: String, _ handler: @escaping ActionHandler) {
         handlers[name] = handler
+        executeVersion += 1
         contextChanged()
     }
 
@@ -18,7 +60,16 @@ extension Runtime {
     public func emit(_ event: String, nodeID: String) async throws {
         guard let instance = instances[nodeID] else { return }
         let on = try JavaScript.member("on", of: instance.element)
-        try await runBindings(on.isNullish ? .undefined : try JavaScript.member(event, of: on), context: instance.context)
+        let binding = on.isNullish ? JSONValue.undefined : try JavaScript.member(event, of: on)
+        guard binding.isTruthy else { return }
+        let bindings = binding.arrayValue?.elements ?? [binding]
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            let chain = ActionChain(bindings: bindings, context: instance.context, cancellation: nil) { error in
+                if let error { continuation.resume(throwing: error) } else { continuation.resume() }
+            }
+            step(chain)
+            drain()
+        }
     }
 
     /// The handle for one event of an element, like upstream `on(event)`.
@@ -35,27 +86,41 @@ extension Runtime {
         )
     }
 
-    /// Runs one `on` or `watch` entry: a binding or an array of bindings.
-    func runBindings(_ binding: JSONValue, context: ResolutionContext, isCancelled: @MainActor () -> Bool = { false }) async throws {
-        guard binding.isTruthy else { return }
-        let bindings = binding.arrayValue?.elements ?? [binding]
-        for entry in bindings {
-            if isCancelled() { return }
+    /// Runs the next binding of a chain. Built-in actions finish at once; the
+    /// chain's next step is then queued behind any render they caused.
+    func step(_ chain: ActionChain) {
+        if chain.cancellation?.isCancelled == true || chain.index >= chain.bindings.count {
+            chain.completion(nil)
+            return
+        }
+        let entry = chain.bindings[chain.index]
+        chain.index += 1
+        let binding: ActionBinding
+        do {
             let params = try JavaScript.member("params", of: entry)
-            guard params.isTruthy else {
-                try await execute(ActionBinding(entry.objectValue ?? [:]))
-                continue
+            if params.isTruthy {
+                var live = chain.context
+                live.state = .object(store.snapshot)
+                var resolved = JSONObject()
+                for (key, value) in try JavaScript.entries(params) {
+                    resolved[key] = try PropExpression.resolveActionParam(value, in: live)
+                }
+                var withParams = entry.objectValue.map(JSONObject.init(copying:)) ?? JSONObject()
+                withParams["params"] = .object(resolved)
+                binding = ActionBinding(withParams)
+            } else {
+                binding = ActionBinding(entry.objectValue ?? [:])
             }
-            var live = context
-            live.state = .object(store.snapshot)
-            var resolved = JSONObject()
-            for (key, value) in try JavaScript.entries(params) {
-                resolved[key] = try PropExpression.resolveActionParam(value, in: live)
+        } catch {
+            chain.completion(error)
+            return
+        }
+        perform(binding) { [weak self] error in
+            if let error {
+                chain.completion(error)
+                return
             }
-            var withParams = entry.objectValue.map(JSONObject.init(copying:)) ?? JSONObject()
-            withParams["params"] = .object(resolved)
-            try await execute(ActionBinding(withParams))
-            progress += 1
+            self?.enqueue { self?.step(chain) }
         }
     }
 
@@ -68,87 +133,132 @@ extension Runtime {
     /// registered handler, after confirmation when the binding has `confirm`,
     /// followed by `onSuccess` or `onError`. Observers see every dispatch.
     public func execute(_ binding: ActionBinding) async throws {
-        let resolved = try Actions.resolve(binding, state: .object(store.snapshot))
-        let dispatchID = ActionObservers.nextDispatchID()
-        let dispatchedAt = ActionObservers.now()
-        ActionObservers.notifyDispatch(ActionDispatchInfo(id: dispatchID, name: resolved.action, params: resolved.params, at: dispatchedAt))
-        func settle(ok: Bool, error: (any Error)?) {
-            let now = ActionObservers.now()
-            ActionObservers.notifySettle(ActionSettleInfo(
-                id: dispatchID, name: resolved.action, ok: ok, at: now, durationMs: now - dispatchedAt, error: error
-            ))
-        }
-
-        let name = resolved.action
-        let params = resolved.params
-        do {
-            if try performBuiltIn(name, params: params) {
-                settle(ok: true, error: nil)
-                return
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            perform(binding) { error in
+                if let error { continuation.resume(throwing: error) } else { continuation.resume() }
             }
-            guard let handler = handlers[name.javaScriptString] else {
-                Diagnostics.warn("No handler registered for action: \(name.javaScriptString)")
-                settle(ok: true, error: nil)
-                return
-            }
-            if resolved.confirm.isTruthy {
-                // Upstream reports the dispatch settled as soon as it starts
-                // waiting for confirmation.
-                settle(ok: true, error: nil)
-                try await waitForConfirmation(resolved)
-                try await runHandler(handler, for: resolved)
-                return
-            }
-            try await runHandler(handler, for: resolved)
-            settle(ok: true, error: nil)
-        } catch {
-            settle(ok: false, error: error)
-            throw error
+            drain()
         }
     }
 
-    private func runHandler(_ handler: @escaping ActionHandler, for resolved: ResolvedAction) async throws {
+    /// Executes one binding and calls `completion` when it settles: at once
+    /// for built-in actions, and after the handler, confirmation and
+    /// `onSuccess` / `onError` otherwise.
+    func perform(_ binding: ActionBinding, completion: @escaping ((any Error)?) -> Void) {
+        let resolved: ResolvedAction
+        do {
+            resolved = try Actions.resolve(binding, state: .object(store.snapshot))
+        } catch {
+            completion(error)
+            return
+        }
+        let dispatchID = ActionObservers.nextDispatchID()
+        let dispatchedAt = ActionObservers.now()
+        ActionObservers.notifyDispatch(ActionDispatchInfo(id: dispatchID, name: resolved.action, params: resolved.params, at: dispatchedAt))
+        let settle = { (error: (any Error)?) in
+            let now = ActionObservers.now()
+            ActionObservers.notifySettle(ActionSettleInfo(
+                id: dispatchID, name: resolved.action, ok: error == nil, at: now, durationMs: now - dispatchedAt, error: error
+            ))
+        }
+
+        do {
+            if try performBuiltIn(resolved.action, params: resolved.params) {
+                settle(nil)
+                completion(nil)
+                return
+            }
+        } catch {
+            settle(error)
+            completion(error)
+            return
+        }
+        guard let handler = handlers[resolved.action.javaScriptString] else {
+            Diagnostics.warn("No handler registered for action: \(resolved.action.javaScriptString)")
+            settle(nil)
+            completion(nil)
+            return
+        }
+        if resolved.confirm.isTruthy {
+            // Upstream reports the dispatch settled as soon as it starts
+            // waiting for confirmation.
+            settle(nil)
+            pendingConfirmation = PendingConfirmation(action: resolved)
+            confirmation = { [weak self] confirmed in
+                guard let self else { return }
+                guard confirmed else {
+                    completion(JavaScriptError.error("Action cancelled"))
+                    return
+                }
+                self.runHandler(handler, for: resolved) { error in completion(error) }
+            }
+            contextChanged()
+            return
+        }
+        runHandler(handler, for: resolved) { error in
+            settle(error)
+            completion(error)
+        }
+    }
+
+    /// Runs a handler with `onSuccess` and `onError`, marking the action
+    /// loading while it runs.
+    private func runHandler(_ handler: @escaping ActionHandler, for resolved: ResolvedAction, completion: @escaping ((any Error)?) -> Void) {
         let name = resolved.action.javaScriptString
         loadingActions.insert(name)
         contextChanged()
-        defer {
-            loadingActions.remove(name)
-            contextChanged()
-        }
-        try await Actions.execute(ActionExecutionContext(
+        let context = ActionExecutionContext(
             action: resolved,
             handler: handler,
             setState: { [unowned self] path, value in self.set(path, value) },
             navigate: navigate,
             executeAction: { [unowned self] binding in try await self.execute(binding) }
-        ))
-    }
-
-    private func waitForConfirmation(_ resolved: ResolvedAction) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
-            confirmation = continuation
-            pendingConfirmation = PendingConfirmation(action: resolved)
-            contextChanged()
+        )
+        activeTasks += 1
+        let work: @MainActor () async -> Void = { [weak self] in
+            var failure: (any Error)?
+            do {
+                try await Actions.execute(context)
+            } catch {
+                failure = error
+            }
+            guard let self else { return }
+            self.activeTasks -= 1
+            self.enqueue {
+                self.loadingActions.remove(name)
+                self.contextChanged()
+                completion(failure)
+            }
+            if self.operationDepth == 0 { self.drain() }
+        }
+        // Upstream calls the handler synchronously when the action runs.
+        // `Task.immediate` does the same, running the handler until it first
+        // suspends; earlier systems start it on the next main-actor turn.
+        if #available(macOS 26.0, iOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *) {
+            Task.immediate { @MainActor in await work() }
+        } else {
+            Task { @MainActor in await work() }
         }
     }
 
     /// Runs the action waiting for confirmation, like upstream `confirm`.
     public func confirm() {
-        guard let continuation = confirmation else { return }
-        confirmation = nil
-        pendingConfirmation = nil
-        contextChanged()
-        continuation.resume()
+        resolveConfirmation(true)
     }
 
     /// Cancels the action waiting for confirmation, like upstream `cancel`.
     /// Its `execute` throws "Action cancelled".
     public func cancel() {
-        guard let continuation = confirmation else { return }
+        resolveConfirmation(false)
+    }
+
+    private func resolveConfirmation(_ confirmed: Bool) {
+        guard let resume = confirmation else { return }
         confirmation = nil
         pendingConfirmation = nil
         contextChanged()
-        continuation.resume(throwing: JavaScriptError.error("Action cancelled"))
+        enqueue { resume(confirmed) }
+        drain()
     }
 
     // MARK: Built-in actions
@@ -179,8 +289,7 @@ extension Runtime {
             let index = params["index"] ?? .undefined
             if !statePath.isUndefined, !index.isUndefined {
                 let path = try path(statePath)
-                let current = get(path)
-                switch current {
+                switch get(path) {
                 case .undefined, .null:
                     set(path, [])
                 case let .array(array):
