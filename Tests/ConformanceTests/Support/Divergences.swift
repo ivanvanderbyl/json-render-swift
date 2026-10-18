@@ -10,6 +10,14 @@ enum Divergences {
             "get: prototype-like key":
                 "JavaScript objects inherit Object.prototype members such as toString; JSON values have no prototype.",
         ],
+        "actions": [
+            "execute: setState throwing in onError rejects":
+                "Swift setState callbacks cannot throw, so a failing setState inside onError cannot be reproduced.",
+        ],
+        "streaming": [
+            "applySpec: move and copy":
+                "After a JavaScript copy both paths share one object, so editing one edits both; Swift values are independent.",
+        ],
         "schemas": [
             "array min equals max #0":
                 "z.array().min(n).max(n) and .length(n) export the same JSON Schema; the import reads equal bounds as .length(n), so only the message differs.",

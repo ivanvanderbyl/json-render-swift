@@ -1,0 +1,4668 @@
+{
+  "suite": "streaming",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "e8afd8b2bafbb285aa7699301cdf0512e0fe40c8b653f484deae719ae0c40763",
+  "cases": [
+    {
+      "name": "parseLine: valid",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": "/a",
+          "value": 1
+        }
+      }
+    },
+    {
+      "name": "parseLine: leading spaces",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": "/a"
+        }
+      }
+    },
+    {
+      "name": "parseLine: crlf",
+      "output": {
+        "value": {
+          "op": "remove",
+          "path": "/a"
+        }
+      }
+    },
+    {
+      "name": "parseLine: empty",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: text",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: array",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: invalid json",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: missing op",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: empty op",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: numeric op",
+      "output": {
+        "value": {
+          "op": 5,
+          "path": "/a"
+        }
+      }
+    },
+    {
+      "name": "parseLine: missing path",
+      "output": {
+        "value": null
+      }
+    },
+    {
+      "name": "parseLine: null path",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": null
+        }
+      }
+    },
+    {
+      "name": "parseLine: empty path",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": ""
+        }
+      }
+    },
+    {
+      "name": "parseLine: unknown op",
+      "output": {
+        "value": {
+          "op": "merge",
+          "path": "/a"
+        }
+      }
+    },
+    {
+      "name": "parseLine: extra fields",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": "/a",
+          "value": 1,
+          "extra": true
+        }
+      }
+    },
+    {
+      "name": "parseLine: nbsp padding",
+      "output": {
+        "value": {
+          "op": "add",
+          "path": "/a"
+        }
+      }
+    },
+    {
+      "name": "applySpec: out of order patches",
+      "output": [
+        {
+          "value": {
+            "root": "",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              },
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "child",
+                  "later"
+                ]
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "main",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              },
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "child",
+                  "later"
+                ]
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "main",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              },
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "child",
+                  "later"
+                ]
+              },
+              "later": {
+                "type": "Text",
+                "props": {},
+                "children": []
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "main",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              },
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "child",
+                  "inserted",
+                  "later"
+                ]
+              },
+              "later": {
+                "type": "Text",
+                "props": {},
+                "children": []
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "main",
+            "elements": {
+              "child": {
+                "type": "Text",
+                "props": {
+                  "text": "hi"
+                },
+                "children": []
+              },
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "child",
+                  "inserted",
+                  "later",
+                  "appended"
+                ]
+              },
+              "later": {
+                "type": "Text",
+                "props": {},
+                "children": []
+              }
+            },
+            "state": {
+              "items": [
+                {
+                  "id": 1
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: replace and remove",
+      "output": [
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": 2
+                },
+                "children": [
+                  "b",
+                  "c"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": 2
+                },
+                "children": [
+                  "b",
+                  "c"
+                ]
+              },
+              "missing": {
+                "props": {
+                  "x": 3
+                }
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": 2
+                },
+                "children": [
+                  "c"
+                ]
+              },
+              "missing": {
+                "props": {
+                  "x": 3
+                }
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": 2
+                },
+                "children": [
+                  "c"
+                ]
+              },
+              "missing": {
+                "props": {
+                  "x": 3
+                }
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": 2
+                },
+                "children": [
+                  "c",
+                  {
+                    "$js": "hole"
+                  },
+                  {
+                    "$js": "hole"
+                  },
+                  {
+                    "$js": "hole"
+                  },
+                  {
+                    "$js": "hole"
+                  },
+                  "z"
+                ]
+              },
+              "missing": {
+                "props": {
+                  "x": 3
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: move and copy",
+      "output": [
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": {
+                    "deep": 1
+                  },
+                  "y": {
+                    "deep": 1
+                  }
+                },
+                "children": []
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "x": {
+                    "deep": 2
+                  },
+                  "y": {
+                    "deep": 2
+                  }
+                },
+                "children": []
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "y": {
+                    "deep": 2
+                  },
+                  "z": {
+                    "deep": 2
+                  }
+                },
+                "children": []
+              }
+            }
+          }
+        },
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "y": {
+                    "deep": 2
+                  },
+                  "z": {
+                    "deep": 2
+                  }
+                },
+                "children": []
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: failing test stops",
+      "output": [
+        {
+          "value": {
+            "root": "a",
+            "elements": {}
+          }
+        },
+        {
+          "threw": "Test operation failed: value at \"/root\" does not match",
+          "partial": {
+            "root": "a",
+            "elements": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: non-string path throws",
+      "output": [
+        {
+          "threw": "path.startsWith is not a function",
+          "partial": {
+            "root": "a",
+            "elements": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: through null throws",
+      "output": [
+        {
+          "threw": "Cannot set properties of null (setting 'y')",
+          "partial": {
+            "root": "a",
+            "elements": {},
+            "state": {
+              "x": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: dash on non-array",
+      "output": [
+        {
+          "value": {
+            "root": "a",
+            "elements": {
+              "a": {
+                "children": [
+                  "y"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "applySpec: unknown op is ignored",
+      "output": [
+        {
+          "value": {
+            "root": "a",
+            "elements": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "compile: crlf and junk lines",
+      "output": {
+        "value": {
+          "b": 2
+        }
+      }
+    },
+    {
+      "name": "compile: initial is shallow copied",
+      "output": {
+        "value": {
+          "a": 1,
+          "b": {
+            "x": 1,
+            "c": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "compile: test failure throws",
+      "output": {
+        "threw": "Test operation failed: value at \"/a\" does not match"
+      }
+    },
+    {
+      "name": "compiler: duplicate lines are applied once",
+      "output": {
+        "pushes": [
+          {
+            "value": {
+              "result": {
+                "n": [
+                  1
+                ]
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/n/-",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "n": [
+                  1
+                ]
+              },
+              "newPatches": []
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "n": [
+                  1,
+                  2
+                ]
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/n/-",
+                  "value": 2
+                }
+              ]
+            }
+          }
+        ],
+        "result": {
+          "value": {
+            "n": [
+              1,
+              2
+            ]
+          }
+        },
+        "patches": [
+          {
+            "op": "add",
+            "path": "/n/-",
+            "value": 1
+          },
+          {
+            "op": "add",
+            "path": "/n/-",
+            "value": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "compiler: lines split across chunks",
+      "output": {
+        "pushes": [
+          {
+            "value": {
+              "result": {},
+              "newPatches": []
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "a": 1
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/a",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "a": 1
+              },
+              "newPatches": []
+            }
+          }
+        ],
+        "result": {
+          "value": {
+            "a": 1,
+            "b": 2
+          }
+        },
+        "patches": [
+          {
+            "op": "add",
+            "path": "/a",
+            "value": 1
+          },
+          {
+            "op": "add",
+            "path": "/b",
+            "value": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "compiler: text and blank chunks",
+      "output": {
+        "pushes": [
+          {
+            "value": {
+              "result": {},
+              "newPatches": []
+            }
+          },
+          {
+            "value": {
+              "result": {},
+              "newPatches": []
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "a": true
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/a",
+                  "value": true
+                }
+              ]
+            }
+          }
+        ],
+        "result": {
+          "value": {
+            "a": true
+          }
+        },
+        "patches": [
+          {
+            "op": "add",
+            "path": "/a",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "compiler: final buffer that duplicates a line",
+      "output": {
+        "pushes": [
+          {
+            "value": {
+              "result": {
+                "x": [
+                  1
+                ]
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/x/-",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "value": {
+              "result": {
+                "x": [
+                  1
+                ]
+              },
+              "newPatches": []
+            }
+          }
+        ],
+        "result": {
+          "value": {
+            "x": [
+              1
+            ]
+          }
+        },
+        "patches": [
+          {
+            "op": "add",
+            "path": "/x/-",
+            "value": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "compiler: test failure throws from push",
+      "output": {
+        "pushes": [
+          {
+            "threw": "Test operation failed: value at \"/a\" does not match"
+          },
+          {
+            "value": {
+              "result": {
+                "a": 1,
+                "c": 1
+              },
+              "newPatches": [
+                {
+                  "op": "add",
+                  "path": "/c",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ],
+        "result": {
+          "value": {
+            "a": 1,
+            "c": 1
+          }
+        },
+        "patches": [
+          {
+            "op": "add",
+            "path": "/a",
+            "value": 1
+          },
+          {
+            "op": "add",
+            "path": "/c",
+            "value": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "mixed: fences and heuristics",
+      "output": [
+        {
+          "text": "Intro"
+        },
+        {
+          "patch": {
+            "op": "add",
+            "path": "/root",
+            "value": "a"
+          }
+        },
+        {
+          "patch": {
+            "op": "add",
+            "path": "/x",
+            "value": 1
+          }
+        },
+        {
+          "text": "{\"not\":\"patch\"}"
+        },
+        {
+          "text": "  indented text"
+        },
+        {
+          "patch": {
+            "op": "add",
+            "path": "/y",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "mixed: no flush",
+      "output": []
+    },
+    {
+      "name": "mixed: fence closing needs exact backticks",
+      "output": [
+        {
+          "patch": {
+            "op": "add",
+            "path": "/a",
+            "value": 1
+          }
+        },
+        {
+          "text": "````"
+        },
+        {
+          "text": "```"
+        },
+        {
+          "text": "after"
+        }
+      ]
+    },
+    {
+      "name": "transform: prose patches and fences",
+      "output": {
+        "value": [
+          {
+            "type": "text-start",
+            "id": "1"
+          },
+          {
+            "type": "text-delta",
+            "id": "1",
+            "delta": "H"
+          },
+          {
+            "type": "text-delta",
+            "id": "1",
+            "delta": "i"
+          },
+          {
+            "type": "text-delta",
+            "id": "1",
+            "delta": "\n"
+          },
+          {
+            "type": "text-end",
+            "id": "1"
+          },
+          {
+            "type": "data-spec",
+            "data": {
+              "type": "patch",
+              "patch": {
+                "op": "add",
+                "path": "/root",
+                "value": "a"
+              }
+            }
+          },
+          {
+            "type": "text-start",
+            "id": "2"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "M"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "o"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "r"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "e"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": " "
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "t"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "e"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "x"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "t"
+          },
+          {
+            "type": "text-delta",
+            "id": "2",
+            "delta": "\n"
+          },
+          {
+            "type": "text-end",
+            "id": "2"
+          },
+          {
+            "type": "data-spec",
+            "data": {
+              "type": "patch",
+              "patch": {
+                "op": "add",
+                "path": "/b",
+                "value": 1
+              }
+            }
+          },
+          {
+            "type": "text-start",
+            "id": "3"
+          },
+          {
+            "type": "text-delta",
+            "id": "3",
+            "delta": "E"
+          },
+          {
+            "type": "text-delta",
+            "id": "3",
+            "delta": "n"
+          },
+          {
+            "type": "text-delta",
+            "id": "3",
+            "delta": "d"
+          },
+          {
+            "type": "text-end",
+            "id": "3"
+          },
+          {
+            "type": "finish"
+          }
+        ]
+      }
+    },
+    {
+      "name": "transform: braces that are not patches",
+      "output": {
+        "value": [
+          {
+            "type": "text-start",
+            "id": "0"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "{x}\n"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "`code`\n"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "\n"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "p"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "l"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "a"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "i"
+          },
+          {
+            "type": "text-delta",
+            "id": "0",
+            "delta": "n"
+          },
+          {
+            "type": "text-end",
+            "id": "0"
+          }
+        ]
+      }
+    },
+    {
+      "name": "transform: missing text-end",
+      "output": {
+        "value": [
+          {
+            "type": "text-start",
+            "id": "t"
+          },
+          {
+            "type": "text-delta",
+            "id": "t",
+            "delta": "a"
+          },
+          {
+            "type": "text-delta",
+            "id": "t",
+            "delta": "b"
+          },
+          {
+            "type": "text-delta",
+            "id": "t",
+            "delta": "c"
+          },
+          {
+            "type": "text-delta",
+            "id": "t",
+            "delta": "\n"
+          },
+          {
+            "type": "text-end",
+            "id": "t"
+          },
+          {
+            "type": "data-spec",
+            "data": {
+              "type": "patch",
+              "patch": {
+                "op": "add",
+                "path": "/a",
+                "value": 1
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "transform: numeric ids continue the counter",
+      "output": {
+        "value": [
+          {
+            "type": "text-start",
+            "id": "5"
+          },
+          {
+            "type": "text-end",
+            "id": "5"
+          },
+          {
+            "type": "data-spec",
+            "data": {
+              "type": "patch",
+              "patch": {
+                "op": "add",
+                "path": "/a",
+                "value": 1
+              }
+            }
+          },
+          {
+            "type": "text-start",
+            "id": "6"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "a"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "f"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "t"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "e"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "r"
+          },
+          {
+            "type": "text-delta",
+            "id": "6",
+            "delta": "\n"
+          },
+          {
+            "type": "text-end",
+            "id": "6"
+          }
+        ]
+      }
+    },
+    {
+      "name": "nested: missing props and type",
+      "output": {
+        "value": {
+          "root": "el-0",
+          "elements": {
+            "el-1": {
+              "type": "A",
+              "props": {},
+              "children": []
+            },
+            "el-0": {
+              "type": "unknown",
+              "props": {},
+              "children": [
+                "el-1"
+              ],
+              "visible": true
+            }
+          },
+          "state": {
+            "s": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "nested: slots skip non arrays",
+      "output": {
+        "value": {
+          "root": "el-0",
+          "elements": {
+            "el-1": {
+              "type": "X",
+              "props": {},
+              "children": []
+            },
+            "el-2": {
+              "type": "Y",
+              "props": {},
+              "children": []
+            },
+            "el-0": {
+              "type": "L",
+              "props": {},
+              "children": [],
+              "slots": {
+                "a": [
+                  "el-1"
+                ],
+                "c": [
+                  "el-2"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "nested: array state is not hoisted",
+      "output": {
+        "value": {
+          "root": "el-0",
+          "elements": {
+            "el-0": {
+              "type": "A",
+              "props": {},
+              "children": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "specFromParts: malformed parts are skipped",
+      "output": {
+        "value": {
+          "root": "r",
+          "elements": {}
+        }
+      }
+    },
+    {
+      "name": "specFromParts: flat merges onto patches",
+      "output": {
+        "value": {
+          "root": "x",
+          "elements": {
+            "x": {
+              "type": "X",
+              "props": {},
+              "children": []
+            }
+          },
+          "state": {
+            "a": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "specFromParts: test failure throws",
+      "output": {
+        "threw": "Test operation failed: value at \"/root\" does not match"
+      }
+    },
+    {
+      "name": "textFromParts: mixed",
+      "output": {
+        "value": "a\n\nb"
+      }
+    },
+    {
+      "name": "flatToTree: missing parents and duplicate keys",
+      "output": {
+        "value": {
+          "root": "a",
+          "elements": {
+            "a": {
+              "type": "A2",
+              "props": {
+                "v": 2
+              },
+              "children": [
+                "c"
+              ],
+              "visible": {
+                "$js": "undefined"
+              }
+            },
+            "b": {
+              "type": "B",
+              "props": {},
+              "children": [],
+              "visible": {
+                "$js": "undefined"
+              }
+            },
+            "c": {
+              "type": "C",
+              "props": {},
+              "children": [],
+              "visible": {
+                "$js": "undefined"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "uiStream: patches build a spec",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "a"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "a"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "a"
+                  ]
+                },
+                "a": {
+                  "type": "Text",
+                  "props": {
+                    "text": "hi"
+                  }
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "a"
+                  ]
+                },
+                "a": {
+                  "type": "Text",
+                  "props": {
+                    "text": "hi"
+                  }
+                }
+              },
+              "state": {
+                "items": [
+                  "x"
+                ]
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                },
+                "a": {
+                  "type": "Text",
+                  "props": {
+                    "text": "bye"
+                  }
+                }
+              },
+              "state": {
+                "items": [
+                  "x"
+                ]
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                }
+              },
+              "state": {
+                "moved": [
+                  "x"
+                ]
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/a\"}",
+              "{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}",
+              "{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                }
+              },
+              "state": {
+                "moved": [
+                  "x"
+                ],
+                "rootCopy": "main"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/a\"}",
+              "{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}",
+              "{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/state/rootCopy\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/ghost/props/x\",\"value\":1}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                }
+              },
+              "state": {
+                "moved": [
+                  "x"
+                ],
+                "rootCopy": "main"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/a\"}",
+              "{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}",
+              "{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/state/rootCopy\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/ghost/props/x\",\"value\":1}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                }
+              },
+              "state": {
+                "moved": [
+                  "x"
+                ],
+                "rootCopy": "main",
+                "last": true
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/a\"}",
+              "{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}",
+              "{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/state/rootCopy\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/ghost/props/x\",\"value\":1}",
+              "{\"op\":\"add\",\"path\":\"/state/last\",\"value\":true}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "main",
+              "elements": {
+                "main": {
+                  "type": "Stack",
+                  "props": {},
+                  "children": [
+                    "z"
+                  ]
+                }
+              },
+              "state": {
+                "moved": [
+                  "x"
+                ],
+                "rootCopy": "main",
+                "last": true
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}",
+              "// comment",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}",
+              "{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}",
+              "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}",
+              "not json",
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/a\"}",
+              "{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}",
+              "{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/state/rootCopy\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/ghost/props/x\",\"value\":1}",
+              "{\"op\":\"add\",\"path\":\"/state/last\",\"value\":true}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "main",
+            "elements": {
+              "main": {
+                "type": "Stack",
+                "props": {},
+                "children": [
+                  "z"
+                ]
+              }
+            },
+            "state": {
+              "moved": [
+                "x"
+              ],
+              "rootCopy": "main",
+              "last": true
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: continues a previous spec",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "v": 1
+                  },
+                  "children": []
+                }
+              },
+              "state": {
+                "keep": 1
+              }
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "v": 2
+                  },
+                  "children": []
+                }
+              },
+              "state": {
+                "keep": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/v\",\"value\":2}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "v": 2
+                  },
+                  "children": []
+                }
+              },
+              "state": {
+                "fresh": true
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/v\",\"value\":2}",
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"fresh\":true}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "v": 2
+                  },
+                  "children": []
+                }
+              },
+              "state": {
+                "fresh": true
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/v\",\"value\":2}",
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"fresh\":true}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "v": 2
+                  },
+                  "children": []
+                }
+              },
+              "state": {
+                "fresh": true
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"replace\",\"path\":\"/elements/a/props/v\",\"value\":2}",
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"fresh\":true}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {
+                  "v": 2
+                },
+                "children": []
+              }
+            },
+            "state": {
+              "fresh": true
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "context": {
+                "previousSpec": {
+                  "root": "a",
+                  "elements": {
+                    "a": {
+                      "type": "A",
+                      "props": {
+                        "v": 1
+                      },
+                      "children": []
+                    }
+                  },
+                  "state": {
+                    "keep": 1
+                  }
+                },
+                "tone": "warm"
+              },
+              "currentSpec": {
+                "root": "a",
+                "elements": {
+                  "a": {
+                    "type": "A",
+                    "props": {
+                      "v": 1
+                    },
+                    "children": []
+                  }
+                },
+                "state": {
+                  "keep": 1
+                }
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: previous spec without root starts empty",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {}
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "context": {
+                "previousSpec": {
+                  "root": "",
+                  "elements": {
+                    "a": {
+                      "type": "A"
+                    }
+                  }
+                }
+              },
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error uses the message",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Server exploded"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Server exploded"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Server exploded"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error uses the error field",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Bad prompt"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Bad prompt"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Bad prompt"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error without a body message",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 404"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 404"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "HTTP error: 404"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error with a non-JSON body",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 502"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 502"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "HTTP error: 502"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error with a null body",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 503"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "HTTP error: 503"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "HTTP error: 503"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error with a numeric message",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "42"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "42"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "42"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: http error with an empty message falls back to error",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "fallback"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "fallback"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "fallback"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: CRLF lines keep the carriage return in raw lines",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "r",
+              "elements": {
+                "r": {
+                  "type": "T"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"r\"}\r",
+              "{\"op\":\"add\",\"path\":\"/elements/r\",\"value\":{\"type\":\"T\"}}\r"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "r",
+              "elements": {
+                "r": {
+                  "type": "T"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"r\"}\r",
+              "{\"op\":\"add\",\"path\":\"/elements/r\",\"value\":{\"type\":\"T\"}}\r"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "r",
+              "elements": {
+                "r": {
+                  "type": "T"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"r\"}\r",
+              "{\"op\":\"add\",\"path\":\"/elements/r\",\"value\":{\"type\":\"T\"}}\r"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "r",
+            "elements": {
+              "r": {
+                "type": "T"
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: multi-byte characters split across chunks",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "café 😀",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"café 😀\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "café 😀",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"café 😀\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "café 😀",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"café 😀\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "café 😀",
+            "elements": {}
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: a leading byte order mark is dropped",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {},
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "﻿{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {},
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "﻿{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {},
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "﻿{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {},
+            "state": {
+              "x": 1
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: an unfinished character at the end is dropped",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "x",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"x\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "x",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"x\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "x",
+            "elements": {}
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: invalid bytes become replacement characters",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a��",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a��\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a��",
+              "elements": {},
+              "state": {
+                "x": "�"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a��\"}",
+              "{\"op\":\"add\",\"path\":\"/state/x\",\"value\":\"�\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a��",
+              "elements": {},
+              "state": {
+                "x": "�"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a��\"}",
+              "{\"op\":\"add\",\"path\":\"/state/x\",\"value\":\"�\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a��",
+            "elements": {},
+            "state": {
+              "x": "�"
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: recovers lines with extra closing braces",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": []
+                }
+              },
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[]}}]}}",
+              "{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}}}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": []
+                }
+              },
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[]}}]}}",
+              "{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}}}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": []
+                }
+              },
+              "state": {
+                "x": 1
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[]}}]}}",
+              "{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}}}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "children": []
+              }
+            },
+            "state": {
+              "x": 1
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": [
+          {
+            "level": "warning",
+            "text": "[json-render] Recovered malformed JSONL line by removing 1 trailing '}'"
+          },
+          {
+            "level": "warning",
+            "text": "[json-render] Recovered malformed JSONL line by removing 3 trailing ']'"
+          },
+          {
+            "level": "warning",
+            "text": "[json-render] Recovered malformed JSONL line by removing 3 trailing '}'"
+          }
+        ]
+      }
+    },
+    {
+      "name": "uiStream: malformed lines are skipped without validation",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":",
+              "[1,2]",
+              "{}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":",
+              "[1,2]",
+              "{}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\"}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":",
+              "[1,2]",
+              "{}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\"}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":",
+              "[1,2]",
+              "{}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\"}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A"
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: non-JSON lines and usage metadata are raw lines only",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "Here is your UI:",
+              "{\"__meta\":\"usage\",\"promptTokens\":3}",
+              "// note",
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "Here is your UI:",
+              "{\"__meta\":\"usage\",\"promptTokens\":3}",
+              "// note",
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "Here is your UI:",
+              "{\"__meta\":\"usage\",\"promptTokens\":3}",
+              "// note",
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "trailing text"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "Here is your UI:",
+              "{\"__meta\":\"usage\",\"promptTokens\":3}",
+              "// note",
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "trailing text"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {}
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: patch without a path fails the stream",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot read properties of undefined (reading 'startsWith')"
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot read properties of undefined (reading 'startsWith')"
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot read properties of undefined (reading 'startsWith')"
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot read properties of undefined (reading 'startsWith')"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Cannot read properties of undefined (reading 'startsWith')"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: patch with a numeric path fails the stream",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "path.startsWith is not a function"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "path.startsWith is not a function"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "path.startsWith is not a function"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "path.startsWith is not a function"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: state path through null fails the stream",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "a": null
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"a\":null}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "a": null
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"a\":null}}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot set properties of null (setting 'b')"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "a": null
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"a\":null}}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot set properties of null (setting 'b')"
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "a": null
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"a\":null}}"
+            ],
+            "isStreaming": false,
+            "error": "Cannot set properties of null (setting 'b')"
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Cannot set properties of null (setting 'b')"
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: element moves, removes and missing sources",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "b": {
+                  "type": "A",
+                  "props": {
+                    "root": "a"
+                  },
+                  "children": []
+                },
+                "c": {
+                  "$js": "undefined"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"t\":\"x\"},\"children\":[]}}",
+              "{\"op\":\"move\",\"from\":\"/elements/a\",\"path\":\"/elements/b\"}",
+              "{\"op\":\"move\",\"from\":\"/elements/missing\",\"path\":\"/elements/c\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/elements/b/props/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/b/props/t\"}",
+              "{\"op\":\"move\",\"path\":\"/root\"}",
+              "{\"op\":\"copy\",\"from\":\"\",\"path\":\"/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/nope/props/x\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/\",\"value\":1}",
+              "{\"op\":\"add\",\"path\":\"/other\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/root\"}",
+              "{\"op\":\"nope\",\"path\":\"/root\",\"value\":\"z\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "b": {
+                  "type": "A",
+                  "props": {
+                    "root": "a"
+                  },
+                  "children": []
+                },
+                "c": {
+                  "$js": "undefined"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"t\":\"x\"},\"children\":[]}}",
+              "{\"op\":\"move\",\"from\":\"/elements/a\",\"path\":\"/elements/b\"}",
+              "{\"op\":\"move\",\"from\":\"/elements/missing\",\"path\":\"/elements/c\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/elements/b/props/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/b/props/t\"}",
+              "{\"op\":\"move\",\"path\":\"/root\"}",
+              "{\"op\":\"copy\",\"from\":\"\",\"path\":\"/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/nope/props/x\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/\",\"value\":1}",
+              "{\"op\":\"add\",\"path\":\"/other\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/root\"}",
+              "{\"op\":\"nope\",\"path\":\"/root\",\"value\":\"z\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "b": {
+                  "type": "A",
+                  "props": {
+                    "root": "a"
+                  },
+                  "children": []
+                },
+                "c": {
+                  "$js": "undefined"
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"t\":\"x\"},\"children\":[]}}",
+              "{\"op\":\"move\",\"from\":\"/elements/a\",\"path\":\"/elements/b\"}",
+              "{\"op\":\"move\",\"from\":\"/elements/missing\",\"path\":\"/elements/c\"}",
+              "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/elements/b/props/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/b/props/t\"}",
+              "{\"op\":\"move\",\"path\":\"/root\"}",
+              "{\"op\":\"copy\",\"from\":\"\",\"path\":\"/root\"}",
+              "{\"op\":\"remove\",\"path\":\"/elements/nope/props/x\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/\",\"value\":1}",
+              "{\"op\":\"add\",\"path\":\"/other\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/root\"}",
+              "{\"op\":\"nope\",\"path\":\"/root\",\"value\":\"z\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "b": {
+                "type": "A",
+                "props": {
+                  "root": "a"
+                },
+                "children": []
+              },
+              "c": {
+                "$js": "undefined"
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: state removal leaves an undefined state",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "d": 2
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state/a/0/b\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/state/a/0\"}",
+              "{\"op\":\"copy\",\"from\":\"/state/a\",\"path\":\"/state/c\"}",
+              "{\"op\":\"remove\",\"path\":\"/state\"}",
+              "{\"op\":\"remove\",\"path\":\"/state/c\"}",
+              "{\"op\":\"add\",\"path\":\"/state/d\",\"value\":2}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "d": 2
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state/a/0/b\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/state/a/0\"}",
+              "{\"op\":\"copy\",\"from\":\"/state/a\",\"path\":\"/state/c\"}",
+              "{\"op\":\"remove\",\"path\":\"/state\"}",
+              "{\"op\":\"remove\",\"path\":\"/state/c\"}",
+              "{\"op\":\"add\",\"path\":\"/state/d\",\"value\":2}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {},
+              "state": {
+                "d": 2
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/state/a/0/b\",\"value\":1}",
+              "{\"op\":\"remove\",\"path\":\"/state/a/0\"}",
+              "{\"op\":\"copy\",\"from\":\"/state/a\",\"path\":\"/state/c\"}",
+              "{\"op\":\"remove\",\"path\":\"/state\"}",
+              "{\"op\":\"remove\",\"path\":\"/state/c\"}",
+              "{\"op\":\"add\",\"path\":\"/state/d\",\"value\":2}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "",
+            "elements": {},
+            "state": {
+              "d": 2
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: stop keeps the partial spec",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: validation retries after a malformed line",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {},
+                "children": []
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "context": {
+                "tone": "warm"
+              },
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          },
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "The previous generation contained malformed JSON that could not be parsed. The line was:\n{\"op\":\"add\",\"path\":\"/elements/a\",\"va\n\nThe current spec state is provided. Continue generating from where you left off. Output ONLY the remaining patches needed to complete the UI.",
+              "context": {
+                "tone": "warm",
+                "previousSpec": {
+                  "root": "a",
+                  "elements": {}
+                }
+              },
+              "currentSpec": {
+                "root": "a",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: validation auto-fixes and completes",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {
+                    "visible": {
+                      "$state": "/show"
+                    },
+                    "on": {
+                      "press": {
+                        "action": "x"
+                      }
+                    }
+                  },
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"visible\":{\"$state\":\"/show\"},\"on\":{\"press\":{\"action\":\"x\"}}},\"children\":[]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [],
+                  "visible": {
+                    "$state": "/show"
+                  },
+                  "on": {
+                    "press": {
+                      "action": "x"
+                    }
+                  }
+                }
+              },
+              "state": {
+                "$js": "undefined"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"visible\":{\"$state\":\"/show\"},\"on\":{\"press\":{\"action\":\"x\"}}},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [],
+                  "visible": {
+                    "$state": "/show"
+                  },
+                  "on": {
+                    "press": {
+                      "action": "x"
+                    }
+                  }
+                }
+              },
+              "state": {
+                "$js": "undefined"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"visible\":{\"$state\":\"/show\"},\"on\":{\"press\":{\"action\":\"x\"}}},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {},
+                "children": [],
+                "visible": {
+                  "$state": "/show"
+                },
+                "on": {
+                  "press": {
+                    "action": "x"
+                  }
+                }
+              }
+            },
+            "state": {
+              "$js": "undefined"
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: validation asks for fixes then gives up",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}",
+              "// still broken"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": []
+                }
+              },
+              "state": {
+                "$js": "undefined"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}",
+              "// still broken"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": []
+                }
+              },
+              "state": {
+                "$js": "undefined"
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}",
+              "// still broken"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {},
+                "children": []
+              }
+            },
+            "state": {
+              "$js": "undefined"
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          },
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "FIX THE FOLLOWING ERRORS in the current UI spec. Output ONLY the patches needed to fix these issues, do not recreate the entire UI.\n\nThe generated UI spec has the following errors:\n- Element \"a\" references child \"ghost\" which does not exist in the elements map.",
+              "context": {
+                "previousSpec": {
+                  "root": "a",
+                  "elements": {
+                    "a": {
+                      "type": "A",
+                      "props": {},
+                      "children": [
+                        "ghost"
+                      ]
+                    }
+                  }
+                }
+              },
+              "currentSpec": {
+                "root": "a",
+                "elements": {
+                  "a": {
+                    "type": "A",
+                    "props": {},
+                    "children": [
+                      "ghost"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: validation fixes on retry",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "b"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "b"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "b"
+                  ]
+                },
+                "b": {
+                  "type": "B",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}",
+              "{\"op\":\"add\",\"path\":\"/elements/b\",\"value\":{\"type\":\"B\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "b"
+                  ]
+                },
+                "b": {
+                  "type": "B",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}",
+              "{\"op\":\"add\",\"path\":\"/elements/b\",\"value\":{\"type\":\"B\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "props": {},
+                  "children": [
+                    "b"
+                  ]
+                },
+                "b": {
+                  "type": "B",
+                  "props": {},
+                  "children": []
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}",
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}",
+              "{\"op\":\"add\",\"path\":\"/elements/b\",\"value\":{\"type\":\"B\",\"props\":{},\"children\":[]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "a",
+            "elements": {
+              "a": {
+                "type": "A",
+                "props": {},
+                "children": [
+                  "b"
+                ]
+              },
+              "b": {
+                "type": "B",
+                "props": {},
+                "children": []
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          },
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "FIX THE FOLLOWING ERRORS in the current UI spec. Output ONLY the patches needed to fix these issues, do not recreate the entire UI.\n\nThe generated UI spec has the following errors:\n- Element \"a\" references child \"b\" which does not exist in the elements map.",
+              "context": {
+                "previousSpec": {
+                  "root": "a",
+                  "elements": {
+                    "a": {
+                      "type": "A",
+                      "props": {},
+                      "children": [
+                        "b"
+                      ]
+                    }
+                  }
+                }
+              },
+              "currentSpec": {
+                "root": "a",
+                "elements": {
+                  "a": {
+                    "type": "A",
+                    "props": {},
+                    "children": [
+                      "b"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: validation skips a spec without a root",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[\"ghost\"]}}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[\"ghost\"]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "",
+              "elements": {
+                "a": {
+                  "type": "A",
+                  "children": [
+                    "ghost"
+                  ]
+                }
+              }
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[\"ghost\"]}}"
+            ],
+            "isStreaming": false,
+            "error": null
+          }
+        ],
+        "completed": [
+          {
+            "root": "",
+            "elements": {
+              "a": {
+                "type": "A",
+                "children": [
+                  "ghost"
+                ]
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: zero retries still validates",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": false,
+            "error": "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "uiStream: zero retries fails validation",
+      "output": {
+        "steps": [
+          {
+            "spec": {
+              "root": "",
+              "elements": {}
+            },
+            "rawLines": [],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": true,
+            "error": null
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+          },
+          {
+            "spec": {
+              "root": "a",
+              "elements": {}
+            },
+            "rawLines": [
+              "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}"
+            ],
+            "isStreaming": false,
+            "error": "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+          }
+        ],
+        "completed": [],
+        "errors": [
+          "Spec validation failed after 0 retries:\nThe generated UI spec has the following errors:\n- Root element \"a\" not found in elements map.\n- Spec has no elements."
+        ],
+        "requests": [
+          {
+            "url": "/stream",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "prompt": "prompt",
+              "currentSpec": {
+                "root": "",
+                "elements": {}
+              }
+            }
+          }
+        ],
+        "messages": []
+      }
+    }
+  ]
+}

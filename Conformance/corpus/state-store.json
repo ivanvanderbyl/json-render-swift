@@ -1,0 +1,202 @@
+{
+  "description": "createStateStore reads and writes with notifications and structural sharing.",
+  "cases": [
+    {
+      "name": "set and no-op set",
+      "initial": {
+        "a": 1,
+        "b": {
+          "c": 2
+        }
+      },
+      "steps": [
+        {
+          "op": "set",
+          "path": "/a",
+          "value": 1
+        },
+        {
+          "op": "set",
+          "path": "/a",
+          "value": 2
+        },
+        {
+          "op": "set",
+          "path": "/b/c",
+          "value": 3
+        },
+        {
+          "op": "get",
+          "path": "/b"
+        }
+      ]
+    },
+    {
+      "name": "set an equal object still changes",
+      "initial": {
+        "o": {
+          "x": 1
+        }
+      },
+      "steps": [
+        {
+          "op": "set",
+          "path": "/o",
+          "value": {
+            "x": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "set creates arrays and objects",
+      "initial": {},
+      "steps": [
+        {
+          "op": "set",
+          "path": "/list/0/name",
+          "value": "a"
+        },
+        {
+          "op": "set",
+          "path": "/list/-",
+          "value": "b"
+        },
+        {
+          "op": "set",
+          "path": "/map/-",
+          "value": "c"
+        },
+        {
+          "op": "set",
+          "path": "/list/3",
+          "value": "d"
+        }
+      ]
+    },
+    {
+      "name": "update applies only changed paths",
+      "initial": {
+        "a": 1,
+        "b": 2
+      },
+      "steps": [
+        {
+          "op": "update",
+          "updates": {
+            "/a": 1,
+            "/b": 3,
+            "/c": 4
+          }
+        },
+        {
+          "op": "update",
+          "updates": {
+            "/a": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "update sees earlier updates in the batch",
+      "initial": {},
+      "steps": [
+        {
+          "op": "update",
+          "updates": {
+            "/a": {
+              "x": 1
+            },
+            "/a/y": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "set undefined",
+      "initial": {
+        "a": 1
+      },
+      "steps": [
+        {
+          "op": "set",
+          "path": "/a",
+          "value": {
+            "$js": "undefined"
+          }
+        },
+        {
+          "op": "get",
+          "path": "/a"
+        },
+        {
+          "op": "set",
+          "path": "/a",
+          "value": {
+            "$js": "undefined"
+          }
+        }
+      ]
+    },
+    {
+      "name": "root paths",
+      "initial": {
+        "a": 1
+      },
+      "steps": [
+        {
+          "op": "get",
+          "path": ""
+        },
+        {
+          "op": "set",
+          "path": "",
+          "value": 5
+        },
+        {
+          "op": "set",
+          "path": "/",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "name": "set through a primitive replaces it",
+      "initial": {
+        "a": 5
+      },
+      "steps": [
+        {
+          "op": "set",
+          "path": "/a/b",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "set on array with bad index",
+      "initial": {
+        "arr": [
+          1
+        ]
+      },
+      "steps": [
+        {
+          "op": "set",
+          "path": "/arr/x",
+          "value": 2
+        },
+        {
+          "op": "set",
+          "path": "/arr/-1",
+          "value": 3
+        },
+        {
+          "op": "set",
+          "path": "/arr/01/z",
+          "value": 4
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,9 @@
     "react-dom": "19.2.3"
   },
   "suites": {
+    "actions": {
+      "corpusSHA256": "115f1e66560c3d7f52e570ebf8c7ecd9b26cdd64a70cb2c0813350797a10398f"
+    },
     "catalog": {
       "corpusSHA256": "f6aede03a3aae59bda5830ba6e4f8997ad36a88372ff4b24dff1d16615497a45"
     },
@@ -28,6 +31,12 @@
     },
     "spec-validator": {
       "corpusSHA256": "a6afd8a14176fac311b1e50e7cdadc55e501d23b756263c21d7b9ad657f23ce2"
+    },
+    "state-store": {
+      "corpusSHA256": "cda49962e34a78ae6f121e166d53d2f43b89db790dd8aebf31b038f3fb436949"
+    },
+    "streaming": {
+      "corpusSHA256": "e8afd8b2bafbb285aa7699301cdf0512e0fe40c8b653f484deae719ae0c40763"
     },
     "upstream-schemas": {
       "corpusSHA256": "f3643478b6eb0f086fef81fc81e2ae7328127af21c66465d26a0479a37ecf3e6"
