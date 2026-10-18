@@ -4,8 +4,8 @@
   "type": "module",
   "description": "Runs the conformance corpus through the pinned upstream json-render packages and writes golden JSON for the Swift tests.",
   "scripts": {
-    "generate": "node src/generate.mjs",
-    "check": "node src/generate.mjs --check"
+    "generate": "node src/generate.mjs && node src/embed.mjs",
+    "check": "node src/generate.mjs --check && node src/embed.mjs --check"
   },
   "dependencies": {
     "@json-render/core": "0.21.1",
