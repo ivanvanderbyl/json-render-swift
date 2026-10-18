@@ -32,6 +32,9 @@
     "spec-validator": {
       "corpusSHA256": "a6afd8a14176fac311b1e50e7cdadc55e501d23b756263c21d7b9ad657f23ce2"
     },
+    "standard-catalog": {
+      "corpusSHA256": "51bfb410046418182c7d7c4e1de38faf0a41dbe84bf8c420301f8840ca585533"
+    },
     "state-store": {
       "corpusSHA256": "cda49962e34a78ae6f121e166d53d2f43b89db790dd8aebf31b038f3fb436949"
     },
