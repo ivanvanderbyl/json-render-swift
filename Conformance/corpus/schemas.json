@@ -1,0 +1,1379 @@
+{
+  "description": "zod schemas exported to JSON Schema (io: input) and zod verdicts for sample values. Each zod field describes a schema; see Conformance/src/zod-dsl.mjs.",
+  "cases": [
+    {
+      "name": "string",
+      "zod": [
+        "string"
+      ],
+      "values": [
+        "a",
+        "",
+        1,
+        null,
+        {
+          "$js": "undefined"
+        },
+        [],
+        {},
+        true
+      ]
+    },
+    {
+      "name": "string length checks",
+      "zod": [
+        "string",
+        {
+          "min": 2,
+          "max": 4
+        }
+      ],
+      "values": [
+        "a",
+        "ab",
+        "abcde",
+        "😀",
+        "😀😀😀"
+      ]
+    },
+    {
+      "name": "string exact length",
+      "zod": [
+        "string",
+        {
+          "length": 2
+        }
+      ],
+      "values": [
+        "a",
+        "ab",
+        "abc"
+      ]
+    },
+    {
+      "name": "string min and regex both fail",
+      "zod": [
+        "string",
+        {
+          "min": 3,
+          "regex": "^[0-9]+$"
+        }
+      ],
+      "values": [
+        "a",
+        "12",
+        "123",
+        "abc"
+      ]
+    },
+    {
+      "name": "regex anchors",
+      "zod": [
+        "string",
+        {
+          "regex": "^[1-9][0-9]{0,18}$"
+        }
+      ],
+      "values": [
+        "1",
+        "0",
+        "12\n",
+        "1234567890123456789",
+        "12345678901234567890"
+      ]
+    },
+    {
+      "name": "number",
+      "zod": [
+        "number"
+      ],
+      "values": [
+        1,
+        -0.5,
+        "1",
+        null,
+        {
+          "$js": "undefined"
+        },
+        true
+      ]
+    },
+    {
+      "name": "number bounds",
+      "zod": [
+        "number",
+        {
+          "min": 1,
+          "max": 3
+        }
+      ],
+      "values": [
+        0,
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "name": "number exclusive bounds",
+      "zod": [
+        "number",
+        {
+          "gt": 1,
+          "lt": 3
+        }
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "multiple of",
+      "zod": [
+        "number",
+        {
+          "multipleOf": 0.5
+        }
+      ],
+      "values": [
+        1,
+        1.25,
+        1.5
+      ]
+    },
+    {
+      "name": "int",
+      "zod": [
+        "int"
+      ],
+      "values": [
+        1,
+        1.5,
+        -3,
+        9007199254740992,
+        "1"
+      ]
+    },
+    {
+      "name": "int bounds",
+      "zod": [
+        "int",
+        {
+          "min": 0
+        }
+      ],
+      "values": [
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "boolean",
+      "zod": [
+        "boolean"
+      ],
+      "values": [
+        true,
+        false,
+        0,
+        "true"
+      ]
+    },
+    {
+      "name": "null",
+      "zod": [
+        "null"
+      ],
+      "values": [
+        null,
+        {
+          "$js": "undefined"
+        },
+        0
+      ]
+    },
+    {
+      "name": "literal string",
+      "zod": [
+        "literal",
+        "x"
+      ],
+      "values": [
+        "x",
+        "y",
+        1
+      ]
+    },
+    {
+      "name": "literal number",
+      "zod": [
+        "literal",
+        3
+      ],
+      "values": [
+        3,
+        "3"
+      ]
+    },
+    {
+      "name": "literal true",
+      "zod": [
+        "literal",
+        true
+      ],
+      "values": [
+        true,
+        false
+      ]
+    },
+    {
+      "name": "enum",
+      "zod": [
+        "enum",
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "values": [
+        "a",
+        "c",
+        1
+      ]
+    },
+    {
+      "name": "email",
+      "zod": [
+        "email"
+      ],
+      "values": [
+        "a@b.co",
+        "a@b",
+        "x",
+        "a.b+c@sub.example.org",
+        1
+      ]
+    },
+    {
+      "name": "url",
+      "zod": [
+        "url"
+      ],
+      "values": [
+        "https://example.com",
+        "mailto:a@b.c",
+        "x",
+        "http://",
+        "foo:bar",
+        "https://a b.com",
+        1
+      ]
+    },
+    {
+      "name": "uuid",
+      "zod": [
+        "uuid"
+      ],
+      "values": [
+        "123e4567-e89b-12d3-a456-426614174000",
+        "x",
+        "123e4567-e89b-92d3-a456-426614174000"
+      ]
+    },
+    {
+      "name": "array",
+      "zod": [
+        "array",
+        [
+          "string"
+        ]
+      ],
+      "values": [
+        [],
+        [
+          "a"
+        ],
+        [
+          "a",
+          1,
+          2
+        ],
+        "a",
+        null
+      ]
+    },
+    {
+      "name": "array bounds",
+      "zod": [
+        "array",
+        [
+          "number"
+        ],
+        {
+          "min": 1,
+          "max": 2
+        }
+      ],
+      "values": [
+        [],
+        [
+          1
+        ],
+        [
+          1,
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "tuple",
+      "zod": [
+        "tuple",
+        [
+          [
+            "string"
+          ],
+          [
+            "number"
+          ]
+        ]
+      ],
+      "values": [
+        [
+          "a",
+          1
+        ],
+        [
+          "a"
+        ],
+        [
+          "a",
+          1,
+          2
+        ],
+        [
+          1,
+          "a"
+        ],
+        "x"
+      ]
+    },
+    {
+      "name": "tuple with rest",
+      "zod": [
+        "tuple",
+        [
+          [
+            "string"
+          ]
+        ],
+        [
+          "number"
+        ]
+      ],
+      "values": [
+        [
+          "a"
+        ],
+        [
+          "a",
+          1,
+          2
+        ],
+        [
+          "a",
+          "b"
+        ]
+      ]
+    },
+    {
+      "name": "object strips unknown keys",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "string"
+          ],
+          "b": [
+            "number"
+          ]
+        }
+      ],
+      "values": [
+        {
+          "a": "x",
+          "b": 1,
+          "c": 2
+        },
+        {
+          "b": 1,
+          "a": "x"
+        },
+        {},
+        {
+          "a": 1,
+          "b": "x"
+        },
+        [],
+        null,
+        "x"
+      ]
+    },
+    {
+      "name": "object optional key",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "optional",
+            [
+              "string"
+            ]
+          ]
+        }
+      ],
+      "values": [
+        {},
+        {
+          "a": "x"
+        },
+        {
+          "a": 1
+        },
+        {
+          "a": {
+            "$js": "undefined"
+          }
+        }
+      ]
+    },
+    {
+      "name": "object nullable key",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "nullable",
+            [
+              "string"
+            ]
+          ]
+        }
+      ],
+      "values": [
+        {},
+        {
+          "a": null
+        },
+        {
+          "a": "x"
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "object any key is required",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "any"
+          ]
+        }
+      ],
+      "values": [
+        {},
+        {
+          "a": null
+        },
+        {
+          "a": {
+            "$js": "undefined"
+          }
+        }
+      ]
+    },
+    {
+      "name": "object unknown key is required",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "unknown"
+          ]
+        }
+      ],
+      "values": [
+        {},
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "object default",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "default",
+            [
+              "string"
+            ],
+            "fallback"
+          ]
+        }
+      ],
+      "values": [
+        {},
+        {
+          "a": "x"
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "strict object",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "string"
+          ]
+        },
+        {
+          "strict": true
+        }
+      ],
+      "values": [
+        {
+          "a": "x"
+        },
+        {
+          "a": "x",
+          "b": 1
+        },
+        {
+          "a": "x",
+          "b": 1,
+          "c": 2
+        },
+        {
+          "b": 1
+        }
+      ]
+    },
+    {
+      "name": "loose object keeps unknown keys",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "string"
+          ]
+        },
+        {
+          "loose": true
+        }
+      ],
+      "values": [
+        {
+          "a": "x",
+          "b": 1
+        }
+      ]
+    },
+    {
+      "name": "object catchall",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "string"
+          ]
+        },
+        {
+          "catchall": [
+            "number"
+          ]
+        }
+      ],
+      "values": [
+        {
+          "a": "x",
+          "b": 1
+        },
+        {
+          "a": "x",
+          "b": "y"
+        }
+      ]
+    },
+    {
+      "name": "nested object paths",
+      "zod": [
+        "object",
+        {
+          "o": [
+            "object",
+            {
+              "p": [
+                "array",
+                [
+                  "string"
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "values": [
+        {
+          "o": {
+            "p": [
+              "a",
+              1
+            ]
+          }
+        },
+        {
+          "o": {}
+        },
+        {
+          "o": []
+        }
+      ]
+    },
+    {
+      "name": "record",
+      "zod": [
+        "record",
+        [
+          "string"
+        ],
+        [
+          "number"
+        ]
+      ],
+      "values": [
+        {},
+        {
+          "a": 1
+        },
+        {
+          "a": "x",
+          "b": 2,
+          "c": "y"
+        },
+        [],
+        null,
+        "x"
+      ]
+    },
+    {
+      "name": "record with key checks",
+      "zod": [
+        "record",
+        [
+          "string",
+          {
+            "min": 2
+          }
+        ],
+        [
+          "number"
+        ]
+      ],
+      "values": [
+        {
+          "ab": 1
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "record of unknown",
+      "zod": [
+        "record",
+        [
+          "string"
+        ],
+        [
+          "unknown"
+        ]
+      ],
+      "values": [
+        {
+          "a": {
+            "$js": "undefined"
+          },
+          "b": [
+            1
+          ]
+        },
+        [
+          1
+        ],
+        1
+      ]
+    },
+    {
+      "name": "union",
+      "zod": [
+        "union",
+        [
+          [
+            "string"
+          ],
+          [
+            "number"
+          ]
+        ]
+      ],
+      "values": [
+        "a",
+        1,
+        true,
+        null
+      ]
+    },
+    {
+      "name": "union first match wins",
+      "zod": [
+        "union",
+        [
+          [
+            "object",
+            {
+              "a": [
+                "string"
+              ]
+            }
+          ],
+          [
+            "object",
+            {
+              "a": [
+                "string"
+              ],
+              "b": [
+                "number"
+              ]
+            }
+          ]
+        ]
+      ],
+      "values": [
+        {
+          "a": "x",
+          "b": 1
+        }
+      ]
+    },
+    {
+      "name": "union of objects",
+      "zod": [
+        "union",
+        [
+          [
+            "object",
+            {
+              "t": [
+                "literal",
+                "a"
+              ]
+            }
+          ],
+          [
+            "object",
+            {
+              "t": [
+                "literal",
+                "b"
+              ]
+            }
+          ]
+        ]
+      ],
+      "values": [
+        {
+          "t": "a"
+        },
+        {
+          "t": "c"
+        },
+        "x"
+      ]
+    },
+    {
+      "name": "discriminated union",
+      "zod": [
+        "discriminated",
+        "t",
+        [
+          [
+            "object",
+            {
+              "t": [
+                "literal",
+                "a"
+              ],
+              "x": [
+                "string"
+              ]
+            }
+          ],
+          [
+            "object",
+            {
+              "t": [
+                "literal",
+                "b"
+              ]
+            }
+          ]
+        ]
+      ],
+      "values": [
+        {
+          "t": "a",
+          "x": "1"
+        },
+        {
+          "t": "a"
+        },
+        {
+          "t": "b"
+        },
+        {
+          "t": "c"
+        },
+        {},
+        "x",
+        null
+      ]
+    },
+    {
+      "name": "intersection",
+      "zod": [
+        "intersection",
+        [
+          "object",
+          {
+            "a": [
+              "string"
+            ]
+          }
+        ],
+        [
+          "object",
+          {
+            "b": [
+              "number"
+            ]
+          }
+        ]
+      ],
+      "values": [
+        {
+          "a": "x",
+          "b": 1
+        },
+        {
+          "a": "x"
+        },
+        {
+          "b": 1
+        }
+      ]
+    },
+    {
+      "name": "nullable",
+      "zod": [
+        "nullable",
+        [
+          "string"
+        ]
+      ],
+      "values": [
+        null,
+        "x",
+        1,
+        {
+          "$js": "undefined"
+        }
+      ]
+    },
+    {
+      "name": "optional",
+      "zod": [
+        "optional",
+        [
+          "string"
+        ]
+      ],
+      "values": [
+        {
+          "$js": "undefined"
+        },
+        "x",
+        null
+      ]
+    },
+    {
+      "name": "any",
+      "zod": [
+        "any"
+      ],
+      "values": [
+        1,
+        null,
+        {
+          "$js": "undefined"
+        },
+        {}
+      ]
+    },
+    {
+      "name": "brie fixed props",
+      "zod": [
+        "object",
+        {
+          "componentId": [
+            "string",
+            {
+              "min": 1,
+              "max": 256
+            }
+          ],
+          "revision": [
+            "string",
+            {
+              "regex": "^[1-9][0-9]{0,18}$"
+            }
+          ]
+        },
+        {
+          "strict": true
+        }
+      ],
+      "values": [
+        {
+          "componentId": "position",
+          "revision": "1"
+        },
+        {
+          "componentId": "",
+          "revision": "1"
+        },
+        {
+          "componentId": "a",
+          "revision": "01"
+        },
+        {
+          "componentId": "a"
+        },
+        {
+          "componentId": "a",
+          "revision": "1",
+          "extra": 1
+        }
+      ]
+    },
+    {
+      "name": "react native nullable props",
+      "zod": [
+        "object",
+        {
+          "text": [
+            "string"
+          ],
+          "level": [
+            "nullable",
+            [
+              "enum",
+              [
+                "h1",
+                "h2"
+              ]
+            ]
+          ]
+        }
+      ],
+      "values": [
+        {
+          "text": "x"
+        },
+        {
+          "text": "x",
+          "level": null
+        },
+        {
+          "text": "x",
+          "level": "h3"
+        },
+        {
+          "level": "h1"
+        }
+      ]
+    },
+    {
+      "name": "array element errors come before length errors",
+      "zod": [
+        "array",
+        [
+          "number"
+        ],
+        {
+          "min": 3
+        }
+      ],
+      "values": [
+        [
+          "x"
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          "a",
+          "b",
+          3
+        ]
+      ]
+    },
+    {
+      "name": "array exact length",
+      "zod": [
+        "array",
+        [
+          "number"
+        ],
+        {
+          "length": 2
+        }
+      ],
+      "values": [
+        [
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "string max then min",
+      "zod": [
+        "string",
+        {
+          "max": 2,
+          "min": 1
+        }
+      ],
+      "values": [
+        "abc",
+        ""
+      ]
+    },
+    {
+      "name": "multiple of a fraction",
+      "zod": [
+        "number",
+        {
+          "multipleOf": 0.1
+        }
+      ],
+      "values": [
+        0.3,
+        0.35,
+        1,
+        -0.2
+      ]
+    },
+    {
+      "name": "multiple of three",
+      "zod": [
+        "number",
+        {
+          "multipleOf": 3
+        }
+      ],
+      "values": [
+        9,
+        10,
+        -6
+      ]
+    },
+    {
+      "name": "strict object reports keys after properties",
+      "zod": [
+        "object",
+        {
+          "a": [
+            "number"
+          ]
+        },
+        {
+          "strict": true
+        }
+      ],
+      "values": [
+        {
+          "x": 1,
+          "a": "s"
+        }
+      ]
+    },
+    {
+      "name": "enum with one value",
+      "zod": [
+        "enum",
+        [
+          "a"
+        ]
+      ],
+      "values": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "literal with several values",
+      "zod": [
+        "literal",
+        [
+          "a",
+          1
+        ]
+      ],
+      "values": [
+        "a",
+        1,
+        "b"
+      ]
+    },
+    {
+      "name": "nullable object",
+      "zod": [
+        "nullable",
+        [
+          "object",
+          {
+            "a": [
+              "string"
+            ]
+          }
+        ]
+      ],
+      "values": [
+        null,
+        {
+          "a": "x"
+        },
+        5,
+        {}
+      ]
+    },
+    {
+      "name": "nullable union",
+      "zod": [
+        "nullable",
+        [
+          "union",
+          [
+            [
+              "string"
+            ],
+            [
+              "number"
+            ]
+          ]
+        ]
+      ],
+      "values": [
+        null,
+        "a",
+        true
+      ]
+    },
+    {
+      "name": "record with enum keys is exhaustive",
+      "zod": [
+        "record",
+        [
+          "enum",
+          [
+            "a",
+            "b"
+          ]
+        ],
+        [
+          "number"
+        ]
+      ],
+      "values": [
+        {
+          "a": 1,
+          "b": 2
+        },
+        {
+          "a": 1
+        },
+        {
+          "a": 1,
+          "b": 2,
+          "c": 3
+        }
+      ]
+    },
+    {
+      "name": "url trims whitespace",
+      "zod": [
+        "url"
+      ],
+      "values": [
+        " https://a.com ",
+        "https:",
+        "file:///x",
+        "\thttps://a.com"
+      ]
+    },
+    {
+      "name": "discriminated union with one option",
+      "zod": [
+        "discriminated",
+        "t",
+        [
+          [
+            "object",
+            {
+              "t": [
+                "literal",
+                "a"
+              ]
+            }
+          ]
+        ]
+      ],
+      "values": [
+        {},
+        [],
+        {
+          "t": "a"
+        }
+      ]
+    },
+    {
+      "name": "unicode lengths count code points",
+      "zod": [
+        "string",
+        {
+          "min": 2,
+          "max": 3
+        }
+      ],
+      "values": [
+        "é",
+        "🇦🇺",
+        "😀",
+        "abcd"
+      ]
+    },
+    {
+      "name": "recursive tree",
+      "zod": [
+        "tree"
+      ],
+      "values": [
+        {
+          "name": "a",
+          "children": [
+            {
+              "name": "b",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "a",
+          "children": [
+            {
+              "name": 1,
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "a"
+        }
+      ]
+    },
+    {
+      "name": "array min equals max",
+      "zod": [
+        "array",
+        [
+          "number"
+        ],
+        {
+          "min": 2,
+          "max": 2
+        }
+      ],
+      "values": [
+        [
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "string min equals max",
+      "zod": [
+        "string",
+        {
+          "min": 2,
+          "max": 2
+        }
+      ],
+      "values": [
+        "a",
+        "ab"
+      ]
+    },
+    {
+      "name": "regex then min",
+      "zod": [
+        "string",
+        {
+          "regex": "^a",
+          "min": 3
+        }
+      ],
+      "values": [
+        "b",
+        "abc"
+      ]
+    }
+  ]
+}
