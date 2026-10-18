@@ -86,6 +86,8 @@ struct RenderPass {
     var mountOrder: [String] = []
     var signatures: [String: Int] = [:]
     var elements = JSONObject()
+    /// Element keys from the root to the element being rendered.
+    var ancestors: [String] = []
 
     init(runtime: Runtime, previous: [String: ElementInstance]) {
         self.runtime = runtime
@@ -112,6 +114,13 @@ struct RenderPass {
     private func warn(_ message: String) { Diagnostics.warn(message) }
 
     mutating func renderElement(_ element: JSONValue, key: String, id: String, scope: ScopeFrame?) throws -> RenderNode {
+        // Upstream renders a cycle until it runs out of memory. Here the
+        // repeated element throws, so the element that reached it fails.
+        if ancestors.contains(key) {
+            throw JavaScriptError.error("Element \"\(key)\" is its own ancestor, so the spec has a cycle")
+        }
+        ancestors.append(key)
+        defer { ancestors.removeLast() }
         let signature = signatures[key] ?? 0
         if let reused = reuse(id: id, signature: signature, scope: scope) { return reused }
 
