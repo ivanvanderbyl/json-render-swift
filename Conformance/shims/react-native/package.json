@@ -1,0 +1,9 @@
+{
+  "name": "react-native",
+  "version": "0.81.0",
+  "private": true,
+  "description": "Minimal stand-in so @json-render/react-native can load in Node. Only the catalog definitions and renderer logic are used.",
+  "type": "module",
+  "main": "./index.js",
+  "exports": { ".": { "import": "./index.js", "default": "./index.cjs" } }
+}

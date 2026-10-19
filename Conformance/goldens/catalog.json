@@ -1,0 +1,856 @@
+{
+  "suite": "catalog",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "f6aede03a3aae59bda5830ba6e4f8997ad36a88372ff4b24dff1d16615497a45",
+  "cases": [
+    {
+      "name": "upstream test catalog",
+      "output": {
+        "manifest": {
+          "components": {
+            "Text": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            },
+            "Card": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              },
+              "description": "",
+              "slots": [
+                "default"
+              ]
+            }
+          },
+          "actions": {}
+        },
+        "componentNames": [
+          "Text",
+          "Card"
+        ],
+        "actionNames": [],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "card-1",
+              "elements": {
+                "card-1": {
+                  "type": "Card",
+                  "props": {
+                    "title": "Hello"
+                  },
+                  "children": [
+                    "text-1"
+                  ]
+                },
+                "text-1": {
+                  "type": "Text",
+                  "props": {
+                    "content": "World"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "text-1",
+                  "children"
+                ],
+                "message": "Invalid input: expected array, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "root"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "root"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "elements",
+                  "x",
+                  "type"
+                ],
+                "message": "Invalid option: expected one of \"Text\"|\"Card\""
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "root": "t",
+              "elements": {
+                "t": {
+                  "type": "Text",
+                  "props": {
+                    "content": "hi"
+                  },
+                  "children": [],
+                  "visible": {
+                    "$state": "/x"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "root": "t",
+              "elements": {
+                "t": {
+                  "type": "Text",
+                  "props": {
+                    "content": 5
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "props"
+                ],
+                "message": "Invalid input: expected record, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "slots",
+                  "header"
+                ],
+                "message": "Invalid input: expected array, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "children",
+                  0
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements"
+                ],
+                "message": "Invalid input: expected record, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received null"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "single component validates props",
+      "output": {
+        "manifest": {
+          "components": {
+            "Text": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            }
+          },
+          "actions": {}
+        },
+        "componentNames": [
+          "Text"
+        ],
+        "actionNames": [],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "t",
+              "elements": {
+                "t": {
+                  "type": "Text",
+                  "props": {
+                    "content": "hi"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "props",
+                  "content"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "props",
+                  "content"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "root": "t",
+              "elements": {
+                "t": {
+                  "type": "Text",
+                  "props": {
+                    "content": "hi"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "elements",
+                  "t",
+                  "type"
+                ],
+                "message": "Invalid input: expected \"Text\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty catalog accepts any type",
+      "output": {
+        "manifest": {
+          "components": {},
+          "actions": {}
+        },
+        "componentNames": [],
+        "actionNames": [],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "t",
+              "elements": {
+                "t": {
+                  "type": "Anything",
+                  "props": {
+                    "a": 1
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "t",
+                  "type"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "react schema",
+      "output": {
+        "manifest": {
+          "components": {
+            "Text": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            },
+            "Card": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              },
+              "description": "",
+              "slots": [
+                "default"
+              ]
+            }
+          },
+          "actions": {
+            "submit": {
+              "description": "Submit"
+            }
+          }
+        },
+        "componentNames": [
+          "Text",
+          "Card"
+        ],
+        "actionNames": [
+          "submit"
+        ],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "c",
+              "elements": {
+                "c": {
+                  "type": "Card",
+                  "props": {
+                    "title": "x"
+                  },
+                  "children": [],
+                  "slots": {
+                    "footer": [
+                      "t"
+                    ]
+                  },
+                  "repeat": {
+                    "statePath": "/items"
+                  }
+                },
+                "t": {
+                  "type": "Text",
+                  "props": {
+                    "content": "y"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "c",
+                  "slots",
+                  "footer",
+                  0
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "c",
+                  "props"
+                ],
+                "message": "Invalid input: expected record, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "react native schema",
+      "output": {
+        "manifest": {
+          "components": {
+            "Text": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            },
+            "Card": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              },
+              "description": "",
+              "slots": [
+                "default"
+              ]
+            }
+          },
+          "actions": {
+            "submit": {
+              "description": "Submit"
+            }
+          }
+        },
+        "componentNames": [
+          "Text",
+          "Card"
+        ],
+        "actionNames": [
+          "submit"
+        ],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "c",
+              "elements": {
+                "c": {
+                  "type": "Card",
+                  "props": {
+                    "title": "x"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "root": "c",
+              "elements": {
+                "c": {
+                  "type": "Card",
+                  "props": {
+                    "title": "x"
+                  },
+                  "children": []
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "integer-like component names order first",
+      "output": {
+        "manifest": {
+          "components": {
+            "1": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ]
+              },
+              "description": "",
+              "slots": [
+                "default"
+              ]
+            },
+            "2": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            },
+            "Zeta": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            }
+          },
+          "actions": {
+            "b": {
+              "description": ""
+            },
+            "a": {
+              "description": ""
+            }
+          }
+        },
+        "componentNames": [
+          "1",
+          "2",
+          "Zeta"
+        ],
+        "actionNames": [
+          "b",
+          "a"
+        ],
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "elements",
+                  "t",
+                  "type"
+                ],
+                "message": "Invalid option: expected one of \"1\"|\"2\"|\"Zeta\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "only one component has props",
+      "output": {
+        "manifest": {
+          "components": {
+            "Text": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "content"
+                ]
+              },
+              "description": "",
+              "slots": []
+            },
+            "Spacer": {
+              "description": "",
+              "slots": []
+            }
+          },
+          "actions": {}
+        },
+        "componentNames": [
+          "Text",
+          "Spacer"
+        ],
+        "actionNames": [],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "s",
+              "elements": {
+                "s": {
+                  "type": "Spacer",
+                  "props": {
+                    "content": "required everywhere"
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "elements",
+                  "s",
+                  "props",
+                  "content"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "react native standard components shape",
+      "output": {
+        "manifest": {
+          "components": {
+            "Heading": {
+              "props": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "h1",
+                          "h2",
+                          "h3",
+                          "h4"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "text",
+                  "level"
+                ]
+              },
+              "description": "",
+              "slots": []
+            }
+          },
+          "actions": {}
+        },
+        "componentNames": [
+          "Heading"
+        ],
+        "actionNames": [],
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "root": "h",
+              "elements": {
+                "h": {
+                  "type": "Heading",
+                  "props": {
+                    "text": "x",
+                    "level": null
+                  },
+                  "children": []
+                }
+              }
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "elements",
+                  "h",
+                  "props",
+                  "level"
+                ],
+                "message": "Invalid option: expected one of \"h1\"|\"h2\"|\"h3\"|\"h4\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "elements",
+                  "h",
+                  "props",
+                  "level"
+                ],
+                "message": "Invalid option: expected one of \"h1\"|\"h2\"|\"h3\"|\"h4\""
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

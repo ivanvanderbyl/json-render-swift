@@ -1,0 +1,643 @@
+{
+  "suite": "visibility",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "8fd28b21294e8603e2a7d62ddbc4b2d1aadedf08704af616b9b65c777e04f66e",
+  "cases": [
+    {
+      "name": "evaluate: undefined is visible",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: null throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in null"
+      }
+    },
+    {
+      "name": "evaluate: number throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in 5"
+      }
+    },
+    {
+      "name": "evaluate: string throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in abc"
+      }
+    },
+    {
+      "name": "evaluate: empty object reads the whole state",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: empty array is visible",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: array of null throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in null"
+      }
+    },
+    {
+      "name": "evaluate: nested array in implicit and",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: eq with object literal is never equal",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: eq with same state reference",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: eq with aliased state reference",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: eq null matches null",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: eq null does not match missing",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: eq zero with negative zero",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: neq takes precedence after eq",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: eq wins over neq",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: gt with string values is false",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: gt with state operand",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: gte equal",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: lt false for missing",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: lte not inverts false",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: not must be exactly true",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: not false is ignored",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: state number path throws",
+      "output": {
+        "threw": "path.startsWith is not a function"
+      }
+    },
+    {
+      "name": "evaluate: state null path reads root",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: state empty path reads root",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: item without scope",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: item field",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: item empty path is the whole item",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: item through primitive",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: index true",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: index false still reads index",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: index outside scope",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: index zero is falsy",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: index takes precedence over state",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: item takes precedence over state",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: and with non-array throws",
+      "output": {
+        "threw": "condition.$and.every is not a function"
+      }
+    },
+    {
+      "name": "evaluate: and with undefined throws",
+      "output": {
+        "threw": "Cannot read properties of undefined (reading 'every')"
+      }
+    },
+    {
+      "name": "evaluate: or with non-array throws",
+      "output": {
+        "threw": "condition.$or.some is not a function"
+      }
+    },
+    {
+      "name": "evaluate: and wins over or",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: empty and is true",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: empty or is false",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: nested or in and",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: implicit and short circuits before a throwing condition",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: or short circuits",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: eq with state operand that is not a string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "evaluate: array condition with eq",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "evaluate: boolean false",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "usesItemScope: undefined",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "usesItemScope: boolean",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "usesItemScope: state",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "usesItemScope: item",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "usesItemScope: index",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "usesItemScope: nested in and",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "usesItemScope: array",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "usesItemScope: and not an array throws",
+      "output": {
+        "threw": "condition.$and.some is not a function"
+      }
+    },
+    {
+      "name": "usesItemScope: string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "usesItemScope: null",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "split: undefined",
+      "output": {
+        "value": {
+          "container": {
+            "$js": "undefined"
+          },
+          "itemFilter": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "split: state only",
+      "output": {
+        "value": {
+          "container": {
+            "$state": "/a"
+          },
+          "itemFilter": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "split: item only",
+      "output": {
+        "value": {
+          "container": {
+            "$js": "undefined"
+          },
+          "itemFilter": {
+            "$item": "status",
+            "eq": "todo"
+          }
+        }
+      }
+    },
+    {
+      "name": "split: array mixed",
+      "output": {
+        "value": {
+          "container": {
+            "$and": [
+              {
+                "$state": "/show"
+              }
+            ]
+          },
+          "itemFilter": {
+            "$and": [
+              {
+                "$item": "done",
+                "eq": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "split: and mixed",
+      "output": {
+        "value": {
+          "container": {
+            "$and": [
+              {
+                "$state": "/show"
+              }
+            ]
+          },
+          "itemFilter": {
+            "$and": [
+              {
+                "$item": "done"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "split: and item only",
+      "output": {
+        "value": {
+          "container": {
+            "$js": "undefined"
+          },
+          "itemFilter": {
+            "$and": [
+              {
+                "$item": "done"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "split: or mixed",
+      "output": {
+        "value": {
+          "container": {
+            "$js": "undefined"
+          },
+          "itemFilter": {
+            "$or": [
+              {
+                "$state": "/show"
+              },
+              {
+                "$item": "done"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "split: and with extra or key",
+      "output": {
+        "value": {
+          "container": {
+            "$js": "undefined"
+          },
+          "itemFilter": {
+            "$and": [
+              {
+                "$item": "x"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "strictValid: true",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: state",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: state with all operators",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: mixed sources",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: unknown key",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: item",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: index must be true",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: not must be true",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: gt string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: gt state ref with extra keys",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: gt state ref non-string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: gt array",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: array of singles",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: array containing and",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: and of mixed",
+      "output": {
+        "value": true
+      }
+    },
+    {
+      "name": "strictValid: and with extra key",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: and and or together",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: and not array",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: null",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: number",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: empty object",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: state non-string",
+      "output": {
+        "value": false
+      }
+    },
+    {
+      "name": "strictValid: eq undefined member",
+      "output": {
+        "value": true
+      }
+    }
+  ]
+}

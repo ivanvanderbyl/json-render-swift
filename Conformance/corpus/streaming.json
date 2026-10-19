@@ -1,0 +1,1303 @@
+{
+  "description": "SpecStream lines and patches, compilers, mixed and AI SDK streams, nested specs, message parts and useUIStream.",
+  "cases": [
+    {
+      "name": "parseLine: valid",
+      "op": "parseLine",
+      "line": "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}"
+    },
+    {
+      "name": "parseLine: leading spaces",
+      "op": "parseLine",
+      "line": "   {\"op\":\"add\",\"path\":\"/a\"}"
+    },
+    {
+      "name": "parseLine: crlf",
+      "op": "parseLine",
+      "line": "{\"op\":\"remove\",\"path\":\"/a\"}\r"
+    },
+    {
+      "name": "parseLine: empty",
+      "op": "parseLine",
+      "line": ""
+    },
+    {
+      "name": "parseLine: text",
+      "op": "parseLine",
+      "line": "hello"
+    },
+    {
+      "name": "parseLine: array",
+      "op": "parseLine",
+      "line": "[1,2]"
+    },
+    {
+      "name": "parseLine: invalid json",
+      "op": "parseLine",
+      "line": "{\"op\":"
+    },
+    {
+      "name": "parseLine: missing op",
+      "op": "parseLine",
+      "line": "{\"path\":\"/a\"}"
+    },
+    {
+      "name": "parseLine: empty op",
+      "op": "parseLine",
+      "line": "{\"op\":\"\",\"path\":\"/a\"}"
+    },
+    {
+      "name": "parseLine: numeric op",
+      "op": "parseLine",
+      "line": "{\"op\":5,\"path\":\"/a\"}"
+    },
+    {
+      "name": "parseLine: missing path",
+      "op": "parseLine",
+      "line": "{\"op\":\"add\"}"
+    },
+    {
+      "name": "parseLine: null path",
+      "op": "parseLine",
+      "line": "{\"op\":\"add\",\"path\":null}"
+    },
+    {
+      "name": "parseLine: empty path",
+      "op": "parseLine",
+      "line": "{\"op\":\"add\",\"path\":\"\"}"
+    },
+    {
+      "name": "parseLine: unknown op",
+      "op": "parseLine",
+      "line": "{\"op\":\"merge\",\"path\":\"/a\"}"
+    },
+    {
+      "name": "parseLine: extra fields",
+      "op": "parseLine",
+      "line": "{\"op\":\"add\",\"path\":\"/a\",\"value\":1,\"extra\":true}"
+    },
+    {
+      "name": "parseLine: nbsp padding",
+      "op": "parseLine",
+      "line": " {\"op\":\"add\",\"path\":\"/a\"}"
+    },
+    {
+      "name": "applySpec: out of order patches",
+      "op": "applySpec",
+      "spec": {
+        "root": "",
+        "elements": {}
+      },
+      "patches": [
+        {
+          "op": "add",
+          "path": "/elements/child",
+          "value": {
+            "type": "Text",
+            "props": {
+              "text": "hi"
+            },
+            "children": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/state/items/0",
+          "value": {
+            "id": 1
+          }
+        },
+        {
+          "op": "add",
+          "path": "/elements/main",
+          "value": {
+            "type": "Stack",
+            "props": {},
+            "children": [
+              "child",
+              "later"
+            ]
+          }
+        },
+        {
+          "op": "add",
+          "path": "/root",
+          "value": "main"
+        },
+        {
+          "op": "add",
+          "path": "/elements/later",
+          "value": {
+            "type": "Text",
+            "props": {},
+            "children": []
+          }
+        },
+        {
+          "op": "add",
+          "path": "/elements/main/children/1",
+          "value": "inserted"
+        },
+        {
+          "op": "add",
+          "path": "/elements/main/children/-",
+          "value": "appended"
+        }
+      ]
+    },
+    {
+      "name": "applySpec: replace and remove",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "x": 1
+            },
+            "children": [
+              "b",
+              "c"
+            ]
+          }
+        }
+      },
+      "patches": [
+        {
+          "op": "replace",
+          "path": "/elements/a/props/x",
+          "value": 2
+        },
+        {
+          "op": "replace",
+          "path": "/elements/missing/props/x",
+          "value": 3
+        },
+        {
+          "op": "remove",
+          "path": "/elements/a/children/0"
+        },
+        {
+          "op": "remove",
+          "path": "/elements/nope"
+        },
+        {
+          "op": "replace",
+          "path": "/elements/a/children/5",
+          "value": "z"
+        }
+      ]
+    },
+    {
+      "name": "applySpec: move and copy",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "A",
+            "props": {
+              "x": {
+                "deep": 1
+              }
+            },
+            "children": []
+          }
+        }
+      },
+      "patches": [
+        {
+          "op": "copy",
+          "from": "/elements/a/props/x",
+          "path": "/elements/a/props/y"
+        },
+        {
+          "op": "replace",
+          "path": "/elements/a/props/y/deep",
+          "value": 2
+        },
+        {
+          "op": "move",
+          "from": "/elements/a/props/x",
+          "path": "/elements/a/props/z"
+        },
+        {
+          "op": "move",
+          "path": "/elements/a/props/w"
+        }
+      ]
+    },
+    {
+      "name": "applySpec: failing test stops",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {}
+      },
+      "patches": [
+        {
+          "op": "test",
+          "path": "/root",
+          "value": "a"
+        },
+        {
+          "op": "test",
+          "path": "/root",
+          "value": "b"
+        },
+        {
+          "op": "add",
+          "path": "/never",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "applySpec: non-string path throws",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {}
+      },
+      "patches": [
+        {
+          "op": "add",
+          "path": 5,
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "applySpec: through null throws",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {},
+        "state": {
+          "x": null
+        }
+      },
+      "patches": [
+        {
+          "op": "add",
+          "path": "/state/x/y",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "applySpec: dash on non-array",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "children": "x"
+          }
+        }
+      },
+      "patches": [
+        {
+          "op": "add",
+          "path": "/elements/a/children/-",
+          "value": "y"
+        }
+      ]
+    },
+    {
+      "name": "applySpec: unknown op is ignored",
+      "op": "applySpec",
+      "spec": {
+        "root": "a",
+        "elements": {}
+      },
+      "patches": [
+        {
+          "op": "merge",
+          "path": "/root",
+          "value": "b"
+        }
+      ]
+    },
+    {
+      "name": "compile: crlf and junk lines",
+      "op": "compile",
+      "stream": "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}\n\nnot json\n{\"op\":\"add\",\"path\":\"/b\",\"value\":2}\r\n   \n{\"op\":\"remove\",\"path\":\"/a\"}"
+    },
+    {
+      "name": "compile: initial is shallow copied",
+      "op": "compile",
+      "stream": "{\"op\":\"add\",\"path\":\"/b/c\",\"value\":2}",
+      "initial": {
+        "a": 1,
+        "b": {
+          "x": 1
+        }
+      }
+    },
+    {
+      "name": "compile: test failure throws",
+      "op": "compile",
+      "stream": "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}\n{\"op\":\"test\",\"path\":\"/a\",\"value\":2}"
+    },
+    {
+      "name": "compiler: duplicate lines are applied once",
+      "op": "compiler",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/n/-\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/n/-\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/n/-\",\"value\":2}\n"
+      ],
+      "initial": {
+        "n": []
+      }
+    },
+    {
+      "name": "compiler: lines split across chunks",
+      "op": "compiler",
+      "chunks": [
+        "{\"op\":\"add\",",
+        "\"path\":\"/a\",\"value\":1}\n{\"op\":\"add\",\"path\":\"/b\"",
+        ",\"value\":2}"
+      ]
+    },
+    {
+      "name": "compiler: text and blank chunks",
+      "op": "compiler",
+      "chunks": [
+        "hello\n",
+        "\n\n",
+        "{\"op\":\"add\",\"path\":\"/a\",\"value\":true}\n"
+      ]
+    },
+    {
+      "name": "compiler: final buffer that duplicates a line",
+      "op": "compiler",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/x/-\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/x/-\",\"value\":1}"
+      ],
+      "initial": {
+        "x": []
+      }
+    },
+    {
+      "name": "compiler: test failure throws from push",
+      "op": "compiler",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}\n{\"op\":\"test\",\"path\":\"/a\",\"value\":0}\n{\"op\":\"add\",\"path\":\"/b\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/c\",\"value\":1}\n"
+      ]
+    },
+    {
+      "name": "mixed: fences and heuristics",
+      "op": "mixed",
+      "chunks": [
+        "Intro\n```spec\n",
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\nnot a patch\n```\n",
+        "{\"op\":\"add\",\"path\":\"/x\",\"value\":1}\n{\"not\":\"patch\"}\n  indented text\n```spec extra\n",
+        "{\"op\":\"add\",\"path\":\"/y\",\"value\":2}"
+      ]
+    },
+    {
+      "name": "mixed: no flush",
+      "op": "mixed",
+      "chunks": [
+        "tail without newline"
+      ],
+      "flush": false
+    },
+    {
+      "name": "mixed: fence closing needs exact backticks",
+      "op": "mixed",
+      "chunks": [
+        "```spec\n",
+        "``` \n",
+        "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}\n",
+        "````\n",
+        "```\n",
+        "after\n"
+      ]
+    },
+    {
+      "name": "transform: prose patches and fences",
+      "op": "transform",
+      "chunks": [
+        {
+          "type": "text-start",
+          "id": "1"
+        },
+        {
+          "type": "text-delta",
+          "id": "1",
+          "delta": "Hi\n{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\nMore"
+        },
+        {
+          "type": "text-delta",
+          "id": "1",
+          "delta": " text\n```spec\n{\"op\":\"add\",\"path\":\"/b\",\"value\":1}\nbad\n```\nEnd"
+        },
+        {
+          "type": "text-end",
+          "id": "1"
+        },
+        {
+          "type": "finish"
+        }
+      ]
+    },
+    {
+      "name": "transform: braces that are not patches",
+      "op": "transform",
+      "chunks": [
+        {
+          "type": "text-start",
+          "id": "0"
+        },
+        {
+          "type": "text-delta",
+          "id": "0",
+          "delta": "{x}\n`code`\n\nplain"
+        },
+        {
+          "type": "text-end",
+          "id": "0"
+        }
+      ]
+    },
+    {
+      "name": "transform: missing text-end",
+      "op": "transform",
+      "chunks": [
+        {
+          "type": "text-start",
+          "id": "t"
+        },
+        {
+          "type": "text-delta",
+          "id": "t",
+          "delta": "abc\n{\"op\":\"add\",\"path\":\"/a\",\"value\":1}"
+        }
+      ]
+    },
+    {
+      "name": "transform: numeric ids continue the counter",
+      "op": "transform",
+      "chunks": [
+        {
+          "type": "text-start",
+          "id": "5"
+        },
+        {
+          "type": "text-delta",
+          "id": "5",
+          "delta": "{\"op\":\"add\",\"path\":\"/a\",\"value\":1}\nafter\n"
+        },
+        {
+          "type": "text-end",
+          "id": "5"
+        }
+      ]
+    },
+    {
+      "name": "nested: missing props and type",
+      "op": "nested",
+      "nested": {
+        "children": [
+          {
+            "type": "A"
+          },
+          {
+            "props": {
+              "a": 1
+            }
+          },
+          null,
+          "x"
+        ],
+        "visible": true,
+        "state": {
+          "s": 1
+        }
+      }
+    },
+    {
+      "name": "nested: slots skip non arrays",
+      "op": "nested",
+      "nested": {
+        "type": "L",
+        "props": null,
+        "slots": {
+          "a": [
+            {
+              "type": "X"
+            }
+          ],
+          "b": "nope",
+          "c": [
+            1,
+            {
+              "type": "Y",
+              "state": {
+                "no": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "nested: array state is not hoisted",
+      "op": "nested",
+      "nested": {
+        "type": "A",
+        "props": {},
+        "state": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "specFromParts: malformed parts are skipped",
+      "op": "specFromParts",
+      "parts": [
+        {
+          "type": "data-spec",
+          "data": null
+        },
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "patch"
+          }
+        },
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "flat",
+            "spec": "x"
+          }
+        },
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "other"
+          }
+        },
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "patch",
+            "patch": {
+              "op": "add",
+              "path": "/root",
+              "value": "r"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "specFromParts: flat merges onto patches",
+      "op": "specFromParts",
+      "parts": [
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "patch",
+            "patch": {
+              "op": "add",
+              "path": "/state",
+              "value": {
+                "a": 1
+              }
+            }
+          }
+        },
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "flat",
+            "spec": {
+              "root": "x",
+              "elements": {
+                "x": {
+                  "type": "X",
+                  "props": {},
+                  "children": []
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "specFromParts: test failure throws",
+      "op": "specFromParts",
+      "parts": [
+        {
+          "type": "data-spec",
+          "data": {
+            "type": "patch",
+            "patch": {
+              "op": "test",
+              "path": "/root",
+              "value": "nope"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "textFromParts: mixed",
+      "op": "textFromParts",
+      "parts": [
+        {
+          "type": "text",
+          "text": " a "
+        },
+        {
+          "type": "reasoning",
+          "text": "no"
+        },
+        {
+          "type": "text",
+          "text": ""
+        },
+        {
+          "type": "text",
+          "text": " b "
+        }
+      ]
+    },
+    {
+      "name": "flatToTree: missing parents and duplicate keys",
+      "op": "flatToTree",
+      "elements": [
+        {
+          "key": "a",
+          "type": "A",
+          "props": {},
+          "parentKey": "ghost"
+        },
+        {
+          "key": "b",
+          "type": "B",
+          "props": {}
+        },
+        {
+          "key": "a",
+          "type": "A2",
+          "props": {
+            "v": 2
+          },
+          "parentKey": null
+        },
+        {
+          "key": "c",
+          "type": "C",
+          "props": {},
+          "parentKey": "a"
+        }
+      ]
+    },
+    {
+      "name": "uiStream: patches build a spec",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"main\"}\n",
+        "{\"op\":\"add\",\"path\":\"/elements/main\",\"value\":{\"type\":\"Stack\",\"props\":{},\"children\":[\"a\"]}}\n// comment\n",
+        "{\"op\":\"add\",\"path\":\"/elements/a\",",
+        "\"value\":{\"type\":\"Text\",\"props\":{\"text\":\"hi\"}}}\n{\"__meta\":\"usage\",\"promptTokens\":3,\"completionTokens\":4,\"totalTokens\":7}\n",
+        "{\"op\":\"add\",\"path\":\"/state/items/0\",\"value\":\"x\"}\nnot json\n",
+        "{\"op\":\"replace\",\"path\":\"/elements/a/props/text\",\"value\":\"bye\"}\n{\"op\":\"add\",\"path\":\"/elements/main/children/0\",\"value\":\"z\"}\n",
+        "{\"op\":\"remove\",\"path\":\"/elements/a\"}\n{\"op\":\"test\",\"path\":\"/root\",\"value\":\"nope\"}\n{\"op\":\"move\",\"from\":\"/state/items\",\"path\":\"/state/moved\"}\n",
+        "{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/state/rootCopy\"}\n{\"op\":\"add\",\"path\":\"/elements/ghost/props/x\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/state/last\",\"value\":true}"
+      ]
+    },
+    {
+      "name": "uiStream: continues a previous spec",
+      "op": "uiStream",
+      "context": {
+        "previousSpec": {
+          "root": "a",
+          "elements": {
+            "a": {
+              "type": "A",
+              "props": {
+                "v": 1
+              },
+              "children": []
+            }
+          },
+          "state": {
+            "keep": 1
+          }
+        },
+        "tone": "warm"
+      },
+      "chunks": [
+        "{\"op\":\"replace\",\"path\":\"/elements/a/props/v\",\"value\":2}\n",
+        "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"fresh\":true}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: previous spec without root starts empty",
+      "op": "uiStream",
+      "context": {
+        "previousSpec": {
+          "root": "",
+          "elements": {
+            "a": {
+              "type": "A"
+            }
+          }
+        }
+      },
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n"
+      ]
+    },
+    {
+      "name": "uiStream: http error uses the message",
+      "op": "uiStream",
+      "status": 500,
+      "errorBody": {
+        "message": "Server exploded"
+      }
+    },
+    {
+      "name": "uiStream: http error uses the error field",
+      "op": "uiStream",
+      "status": 422,
+      "errorBody": {
+        "error": "Bad prompt"
+      }
+    },
+    {
+      "name": "uiStream: http error without a body message",
+      "op": "uiStream",
+      "status": 404,
+      "errorBody": {
+        "other": 1
+      }
+    },
+    {
+      "name": "uiStream: http error with a non-JSON body",
+      "op": "uiStream",
+      "status": 502,
+      "rawErrorBody": "<html>bad gateway</html>"
+    },
+    {
+      "name": "uiStream: http error with a null body",
+      "op": "uiStream",
+      "status": 503,
+      "rawErrorBody": "null"
+    },
+    {
+      "name": "uiStream: http error with a numeric message",
+      "op": "uiStream",
+      "status": 500,
+      "errorBody": {
+        "message": 42,
+        "error": "ignored"
+      }
+    },
+    {
+      "name": "uiStream: http error with an empty message falls back to error",
+      "op": "uiStream",
+      "status": 500,
+      "errorBody": {
+        "message": "",
+        "error": "fallback"
+      }
+    },
+    {
+      "name": "uiStream: CRLF lines keep the carriage return in raw lines",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"r\"}\r\n  \r\n{\"op\":\"add\",\"path\":\"/elements/r\",\"value\":{\"type\":\"T\"}}\r\n"
+      ]
+    },
+    {
+      "name": "uiStream: multi-byte characters split across chunks",
+      "op": "uiStream",
+      "chunks": [
+        {
+          "bytes": [
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            114,
+            111,
+            111,
+            116,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            34,
+            99,
+            97,
+            102,
+            195
+          ]
+        },
+        {
+          "bytes": [
+            169,
+            32,
+            240,
+            159
+          ]
+        },
+        {
+          "bytes": [
+            152,
+            128,
+            34,
+            125,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: a leading byte order mark is dropped",
+      "op": "uiStream",
+      "chunks": [
+        {
+          "bytes": [
+            239,
+            187,
+            191,
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            114,
+            111,
+            111,
+            116,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            34,
+            97,
+            34,
+            125,
+            10
+          ]
+        },
+        {
+          "bytes": [
+            239,
+            187,
+            191,
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            115,
+            116,
+            97,
+            116,
+            101,
+            47,
+            120,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            49,
+            125,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: an unfinished character at the end is dropped",
+      "op": "uiStream",
+      "chunks": [
+        {
+          "bytes": [
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            114,
+            111,
+            111,
+            116,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            34,
+            120,
+            34,
+            125,
+            226,
+            130
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: invalid bytes become replacement characters",
+      "op": "uiStream",
+      "chunks": [
+        {
+          "bytes": [
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            114,
+            111,
+            111,
+            116,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            34,
+            97,
+            255,
+            195,
+            34,
+            125,
+            10,
+            123,
+            34,
+            111,
+            112,
+            34,
+            58,
+            34,
+            97,
+            100,
+            100,
+            34,
+            44,
+            34,
+            112,
+            97,
+            116,
+            104,
+            34,
+            58,
+            34,
+            47,
+            115,
+            116,
+            97,
+            116,
+            101,
+            47,
+            120,
+            34,
+            44,
+            34,
+            118,
+            97,
+            108,
+            117,
+            101,
+            34,
+            58,
+            34,
+            226,
+            130,
+            34,
+            125
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: recovers lines with extra closing braces",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[]}}]}}\n{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}}}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: malformed lines are skipped without validation",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\n[1,2]\n{}\n",
+        "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\"}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: non-JSON lines and usage metadata are raw lines only",
+      "op": "uiStream",
+      "chunks": [
+        "Here is your UI:\n{\"__meta\":\"usage\",\"promptTokens\":3}\n// note\n{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n",
+        "trailing text"
+      ]
+    },
+    {
+      "name": "uiStream: patch without a path fails the stream",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n",
+        "{\"op\":\"add\",\"value\":1}\n",
+        "{\"op\":\"add\",\"path\":\"/state/never\",\"value\":1}\n"
+      ]
+    },
+    {
+      "name": "uiStream: patch with a numeric path fails the stream",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"replace\",\"path\":5,\"value\":1}\n"
+      ]
+    },
+    {
+      "name": "uiStream: state path through null fails the stream",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/state\",\"value\":{\"a\":null}}\n",
+        "{\"op\":\"add\",\"path\":\"/state/a/b\",\"value\":1}\n"
+      ]
+    },
+    {
+      "name": "uiStream: element moves, removes and missing sources",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"t\":\"x\"},\"children\":[]}}\n{\"op\":\"move\",\"from\":\"/elements/a\",\"path\":\"/elements/b\"}\n{\"op\":\"move\",\"from\":\"/elements/missing\",\"path\":\"/elements/c\"}\n{\"op\":\"copy\",\"from\":\"/root\",\"path\":\"/elements/b/props/root\"}\n{\"op\":\"remove\",\"path\":\"/elements/b/props/t\"}\n{\"op\":\"move\",\"path\":\"/root\"}\n{\"op\":\"copy\",\"from\":\"\",\"path\":\"/root\"}\n{\"op\":\"remove\",\"path\":\"/elements/nope/props/x\"}\n{\"op\":\"add\",\"path\":\"/elements/\",\"value\":1}\n{\"op\":\"add\",\"path\":\"/other\",\"value\":1}\n{\"op\":\"remove\",\"path\":\"/root\"}\n{\"op\":\"nope\",\"path\":\"/root\",\"value\":\"z\"}\n"
+      ]
+    },
+    {
+      "name": "uiStream: state removal leaves an undefined state",
+      "op": "uiStream",
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/state/a/0/b\",\"value\":1}\n{\"op\":\"remove\",\"path\":\"/state/a/0\"}\n{\"op\":\"copy\",\"from\":\"/state/a\",\"path\":\"/state/c\"}\n{\"op\":\"remove\",\"path\":\"/state\"}\n{\"op\":\"remove\",\"path\":\"/state/c\"}\n{\"op\":\"add\",\"path\":\"/state/d\",\"value\":2}\n"
+      ]
+    },
+    {
+      "name": "uiStream: stop keeps the partial spec",
+      "op": "uiStream",
+      "responses": [
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n"
+          ],
+          "stop": true
+        }
+      ]
+    },
+    {
+      "name": "uiStream: validation retries after a malformed line",
+      "op": "uiStream",
+      "validate": true,
+      "context": {
+        "tone": "warm"
+      },
+      "responses": [
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"va\n{\"op\":\"add\",\"path\":\"/state/x\",\"value\":1}\n",
+            "{\"op\":\"add\",\"path\":\"/state/late\",\"value\":1}\n"
+          ]
+        },
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[]}}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: validation auto-fixes and completes",
+      "op": "uiStream",
+      "validate": true,
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{\"visible\":{\"$state\":\"/show\"},\"on\":{\"press\":{\"action\":\"x\"}}},\"children\":[]}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: validation asks for fixes then gives up",
+      "op": "uiStream",
+      "validate": true,
+      "maxRetries": 1,
+      "responses": [
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"ghost\"]}}\n"
+          ]
+        },
+        {
+          "chunks": [
+            "// still broken\n"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: validation fixes on retry",
+      "op": "uiStream",
+      "validate": true,
+      "responses": [
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"props\":{},\"children\":[\"b\"]}}\n"
+          ]
+        },
+        {
+          "chunks": [
+            "{\"op\":\"add\",\"path\":\"/elements/b\",\"value\":{\"type\":\"B\",\"props\":{},\"children\":[]}}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uiStream: validation skips a spec without a root",
+      "op": "uiStream",
+      "validate": true,
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\",\"children\":[\"ghost\"]}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: zero retries still validates",
+      "op": "uiStream",
+      "validate": true,
+      "maxRetries": 0,
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n{bad\n{\"op\":\"add\",\"path\":\"/elements/a\",\"value\":{\"type\":\"A\"}}\n"
+      ]
+    },
+    {
+      "name": "uiStream: zero retries fails validation",
+      "op": "uiStream",
+      "validate": true,
+      "maxRetries": 0,
+      "chunks": [
+        "{\"op\":\"add\",\"path\":\"/root\",\"value\":\"a\"}\n"
+      ]
+    }
+  ]
+}

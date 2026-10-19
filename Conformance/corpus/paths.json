@@ -1,0 +1,1132 @@
+{
+  "description": "JSON Pointer reads and writes, repeat paths, findFormValue, resolveDynamicValue and flattenToPointers.",
+  "cases": [
+    {
+      "name": "get: nested object",
+      "op": "get",
+      "args": [
+        {
+          "a": {
+            "b": 1
+          }
+        },
+        "/a/b"
+      ]
+    },
+    {
+      "name": "get: array index",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/1"
+      ]
+    },
+    {
+      "name": "get: leading zero index uses parseInt",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/01"
+      ]
+    },
+    {
+      "name": "get: trailing junk index uses parseInt",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/1abc"
+      ]
+    },
+    {
+      "name": "get: negative index",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/-1"
+      ]
+    },
+    {
+      "name": "get: array length is not a member",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/length"
+      ]
+    },
+    {
+      "name": "get: index with leading space",
+      "op": "get",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/ 1"
+      ]
+    },
+    {
+      "name": "get: through a string",
+      "op": "get",
+      "args": [
+        {
+          "a": "str"
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "get: empty segments",
+      "op": "get",
+      "args": [
+        {
+          "": {
+            "": 5
+          }
+        },
+        "//"
+      ]
+    },
+    {
+      "name": "get: key with space",
+      "op": "get",
+      "args": [
+        {
+          "a b": 1
+        },
+        "/a b"
+      ]
+    },
+    {
+      "name": "get: escaped tilde",
+      "op": "get",
+      "args": [
+        {
+          "a": {
+            "~": 1
+          }
+        },
+        "/a/~0"
+      ]
+    },
+    {
+      "name": "get: ~01 decodes to ~1",
+      "op": "get",
+      "args": [
+        {
+          "a~1": 1,
+          "a/": 2
+        },
+        "/a~01"
+      ]
+    },
+    {
+      "name": "get: through null",
+      "op": "get",
+      "args": [
+        {
+          "a": null
+        },
+        "/a/b"
+      ]
+    },
+    {
+      "name": "get: through number",
+      "op": "get",
+      "args": [
+        {
+          "a": 5
+        },
+        "/a/b"
+      ]
+    },
+    {
+      "name": "get: empty path returns root",
+      "op": "get",
+      "args": [
+        {
+          "a": 1
+        },
+        ""
+      ]
+    },
+    {
+      "name": "get: slash path returns root",
+      "op": "get",
+      "args": [
+        {
+          "a": 1
+        },
+        "/"
+      ]
+    },
+    {
+      "name": "get: path without leading slash",
+      "op": "get",
+      "args": [
+        {
+          "a": {
+            "b": 2
+          }
+        },
+        "a/b"
+      ]
+    },
+    {
+      "name": "get: root array",
+      "op": "get",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        "/1"
+      ]
+    },
+    {
+      "name": "get: undefined member",
+      "op": "get",
+      "args": [
+        {
+          "a": {
+            "b": {
+              "$js": "undefined"
+            }
+          }
+        },
+        "/a/b"
+      ]
+    },
+    {
+      "name": "get: trailing slash",
+      "op": "get",
+      "args": [
+        {
+          "a": {
+            "": 3
+          }
+        },
+        "/a/"
+      ]
+    },
+    {
+      "name": "get: prototype-like key",
+      "op": "get",
+      "args": [
+        {
+          "a": 1
+        },
+        "/toString"
+      ]
+    },
+    {
+      "name": "set: creates nested objects",
+      "op": "set",
+      "args": [
+        {},
+        "/a/b/c",
+        1
+      ]
+    },
+    {
+      "name": "set: creates an array for a numeric segment",
+      "op": "set",
+      "args": [
+        {},
+        "/a/0/b",
+        1
+      ]
+    },
+    {
+      "name": "set: creates an array for a dash segment",
+      "op": "set",
+      "args": [
+        {},
+        "/a/-",
+        1
+      ]
+    },
+    {
+      "name": "set: writes past the end of an array",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/3",
+        9
+      ]
+    },
+    {
+      "name": "set: negative index is dropped",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/-1",
+        9
+      ]
+    },
+    {
+      "name": "set: non-numeric index is dropped",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/x",
+        9
+      ]
+    },
+    {
+      "name": "set: non-numeric intermediate index is dropped",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/x/y",
+        9
+      ]
+    },
+    {
+      "name": "set: through null throws",
+      "op": "set",
+      "args": [
+        {
+          "a": null
+        },
+        "/a/b",
+        1
+      ]
+    },
+    {
+      "name": "set: replaces a primitive intermediate",
+      "op": "set",
+      "args": [
+        {
+          "a": 5
+        },
+        "/a/b",
+        1
+      ]
+    },
+    {
+      "name": "set: sets undefined",
+      "op": "set",
+      "args": [
+        {
+          "a": {}
+        },
+        "/a",
+        {
+          "$js": "undefined"
+        }
+      ]
+    },
+    {
+      "name": "set: empty path writes the empty key",
+      "op": "set",
+      "args": [
+        {},
+        "",
+        1
+      ]
+    },
+    {
+      "name": "set: nested arrays",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            [
+              1
+            ]
+          ]
+        },
+        "/a/0/0",
+        2
+      ]
+    },
+    {
+      "name": "set: exponent index uses parseInt",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/1e0",
+        2
+      ]
+    },
+    {
+      "name": "set: leading zero index uses parseInt",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/01",
+        2
+      ]
+    },
+    {
+      "name": "set: dash appends",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/-",
+        2
+      ]
+    },
+    {
+      "name": "set: root array",
+      "op": "set",
+      "args": [
+        [
+          1,
+          2
+        ],
+        "/0",
+        9
+      ]
+    },
+    {
+      "name": "set: null element in array throws",
+      "op": "set",
+      "args": [
+        {
+          "a": [
+            null
+          ]
+        },
+        "/a/0/b",
+        1
+      ]
+    },
+    {
+      "name": "add: inserts at start",
+      "op": "add",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/0",
+        0
+      ]
+    },
+    {
+      "name": "add: index past the end appends",
+      "op": "add",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/5",
+        9
+      ]
+    },
+    {
+      "name": "add: negative index inserts from the end",
+      "op": "add",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/-1",
+        9
+      ]
+    },
+    {
+      "name": "add: non-numeric index inserts at start",
+      "op": "add",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/x",
+        9
+      ]
+    },
+    {
+      "name": "add: into empty array",
+      "op": "add",
+      "args": [
+        {
+          "a": []
+        },
+        "/a/3",
+        1
+      ]
+    },
+    {
+      "name": "add: creates array for numeric segment",
+      "op": "add",
+      "args": [
+        {},
+        "/a/0",
+        1
+      ]
+    },
+    {
+      "name": "add: through null throws",
+      "op": "add",
+      "args": [
+        {
+          "a": null
+        },
+        "/a/b",
+        1
+      ]
+    },
+    {
+      "name": "add: replaces object member",
+      "op": "add",
+      "args": [
+        {
+          "a": {
+            "b": 1
+          }
+        },
+        "/a/b",
+        2
+      ]
+    },
+    {
+      "name": "remove: negative index is a no-op",
+      "op": "remove",
+      "args": [
+        {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        },
+        "/a/-1"
+      ]
+    },
+    {
+      "name": "remove: index past the end is a no-op",
+      "op": "remove",
+      "args": [
+        {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        },
+        "/a/5"
+      ]
+    },
+    {
+      "name": "remove: non-numeric index is a no-op",
+      "op": "remove",
+      "args": [
+        {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        },
+        "/a/x"
+      ]
+    },
+    {
+      "name": "remove: missing member",
+      "op": "remove",
+      "args": [
+        {
+          "a": {
+            "b": 1
+          }
+        },
+        "/a/c"
+      ]
+    },
+    {
+      "name": "remove: through null",
+      "op": "remove",
+      "args": [
+        {
+          "a": null
+        },
+        "/a/b"
+      ]
+    },
+    {
+      "name": "remove: parent is null throws",
+      "op": "remove",
+      "args": [
+        {
+          "a": {
+            "b": null
+          }
+        },
+        "/a/b/c"
+      ]
+    },
+    {
+      "name": "remove: nested in array",
+      "op": "remove",
+      "args": [
+        {
+          "a": [
+            {
+              "b": 1
+            }
+          ]
+        },
+        "/a/0/b"
+      ]
+    },
+    {
+      "name": "remove: array element",
+      "op": "remove",
+      "args": [
+        {
+          "a": [
+            1,
+            2,
+            3
+          ]
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "remove: empty key",
+      "op": "remove",
+      "args": [
+        {
+          "": 1,
+          "b": 2
+        },
+        "/"
+      ]
+    },
+    {
+      "name": "immutableSet: structural sharing",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": {
+            "x": 1
+          },
+          "b": {
+            "y": 2
+          }
+        },
+        "/a/x",
+        9
+      ]
+    },
+    {
+      "name": "immutableSet: creates an array for numeric segment",
+      "op": "immutableSet",
+      "args": [
+        {},
+        "/a/0",
+        1
+      ]
+    },
+    {
+      "name": "immutableSet: dash on a missing parent creates an object",
+      "op": "immutableSet",
+      "args": [
+        {},
+        "/a/-",
+        1
+      ]
+    },
+    {
+      "name": "immutableSet: dash appends to an array",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": [
+            1
+          ]
+        },
+        "/a/-",
+        2
+      ]
+    },
+    {
+      "name": "immutableSet: past the end of an array",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/5",
+        9
+      ]
+    },
+    {
+      "name": "immutableSet: non-canonical intermediate index is dropped",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": [
+            1,
+            2
+          ]
+        },
+        "/a/01/x",
+        9
+      ]
+    },
+    {
+      "name": "immutableSet: replaces null intermediate",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": null
+        },
+        "/a/b",
+        1
+      ]
+    },
+    {
+      "name": "immutableSet: canonical intermediate index",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": [
+            {
+              "x": 1
+            },
+            {
+              "x": 2
+            }
+          ]
+        },
+        "/a/1/x",
+        3
+      ]
+    },
+    {
+      "name": "immutableSet: top level",
+      "op": "immutableSet",
+      "args": [
+        {
+          "a": 1,
+          "b": {
+            "c": 1
+          }
+        },
+        "/a",
+        2
+      ]
+    },
+    {
+      "name": "repeatStatePath: string",
+      "op": "repeatStatePath",
+      "args": [
+        "/items"
+      ]
+    },
+    {
+      "name": "repeatStatePath: item field",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "x"
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: item field with slash",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "/x"
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: empty item",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": ""
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: slash item",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "/"
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: outside scope",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "x"
+        }
+      ]
+    },
+    {
+      "name": "repeatStatePath: non-string item throws",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": 5
+        },
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: null throws",
+      "op": "repeatStatePath",
+      "args": [
+        null,
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: object without item throws",
+      "op": "repeatStatePath",
+      "args": [
+        {},
+        "/a/0"
+      ]
+    },
+    {
+      "name": "repeatStatePath: root base",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "x"
+        },
+        "/"
+      ]
+    },
+    {
+      "name": "repeatStatePath: empty base",
+      "op": "repeatStatePath",
+      "args": [
+        {
+          "$item": "x"
+        },
+        ""
+      ]
+    },
+    {
+      "name": "repeatStatePath: number throws",
+      "op": "repeatStatePath",
+      "args": [
+        5,
+        "/a"
+      ]
+    },
+    {
+      "name": "repeatItemStatePath: absolute",
+      "op": "repeatItemStatePath",
+      "args": [
+        "/items",
+        0
+      ]
+    },
+    {
+      "name": "repeatItemStatePath: empty base",
+      "op": "repeatItemStatePath",
+      "args": [
+        "",
+        3
+      ]
+    },
+    {
+      "name": "repeatItemStatePath: root base",
+      "op": "repeatItemStatePath",
+      "args": [
+        "/",
+        1
+      ]
+    },
+    {
+      "name": "repeatItemStatePath: relative",
+      "op": "repeatItemStatePath",
+      "args": [
+        "a",
+        2
+      ]
+    },
+    {
+      "name": "findFormValue: nested slash path",
+      "op": "findFormValue",
+      "args": [
+        "/form/email",
+        {
+          "$js": "undefined"
+        },
+        {
+          "form": {
+            "email": "x@y"
+          }
+        }
+      ]
+    },
+    {
+      "name": "findFormValue: empty field reads root",
+      "op": "findFormValue",
+      "args": [
+        "",
+        {
+          "$js": "undefined"
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "findFormValue: suffix with dots",
+      "op": "findFormValue",
+      "args": [
+        "email",
+        {
+          "a.b.email": 1,
+          "email.x": 2
+        }
+      ]
+    },
+    {
+      "name": "findFormValue: state exact before dotted",
+      "op": "findFormValue",
+      "args": [
+        "email",
+        {
+          "$js": "undefined"
+        },
+        {
+          "x.email": 1,
+          "email": 2
+        }
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: state path",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "$state": "/a"
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: empty path reads root",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "$state": ""
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: null path reads root",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "$state": null
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: number path throws",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "$state": 5
+        },
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: array literal",
+      "op": "resolveDynamicValue",
+      "args": [
+        [
+          1,
+          2
+        ],
+        {}
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: object literal",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "other": 1
+        },
+        {}
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: zero",
+      "op": "resolveDynamicValue",
+      "args": [
+        0,
+        {}
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: empty string",
+      "op": "resolveDynamicValue",
+      "args": [
+        "",
+        {}
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: false",
+      "op": "resolveDynamicValue",
+      "args": [
+        false,
+        {}
+      ]
+    },
+    {
+      "name": "resolveDynamicValue: extra keys still read state",
+      "op": "resolveDynamicValue",
+      "args": [
+        {
+          "$state": "/a",
+          "extra": 1
+        },
+        {
+          "a": 2
+        }
+      ]
+    },
+    {
+      "name": "flatten: nested and arrays",
+      "op": "flatten",
+      "args": [
+        {
+          "a": {
+            "b": {
+              "c": 1
+            }
+          },
+          "d": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flatten: keys are not escaped",
+      "op": "flatten",
+      "args": [
+        {
+          "a/b": {
+            "c": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "flatten: empty nested object disappears",
+      "op": "flatten",
+      "args": [
+        {
+          "a": {},
+          "b": 1
+        }
+      ]
+    },
+    {
+      "name": "flatten: null leaf",
+      "op": "flatten",
+      "args": [
+        {
+          "a": null
+        }
+      ]
+    }
+  ]
+}

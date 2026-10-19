@@ -1,0 +1,21 @@
+{
+  "name": "json-render-swift-conformance",
+  "private": true,
+  "type": "module",
+  "description": "Runs the conformance corpus through the pinned upstream json-render packages and writes golden JSON for the Swift tests.",
+  "scripts": {
+    "generate": "node src/generate.mjs && node src/embed.mjs",
+    "check": "node src/generate.mjs --check && node src/embed.mjs --check"
+  },
+  "dependencies": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "jsdom": "27.4.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "link:./shims/react-native",
+    "zod": "4.6.5"
+  },
+  "packageManager": "pnpm@10.28.0"
+}

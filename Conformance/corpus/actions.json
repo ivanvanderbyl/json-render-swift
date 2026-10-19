@@ -1,0 +1,323 @@
+{
+  "description": "resolveAction, interpolateString, actionBinding and executeAction.",
+  "cases": [
+    {
+      "name": "resolve: params are resolved one level deep",
+      "op": "resolve",
+      "binding": {
+        "action": "x",
+        "params": {
+          "a": {
+            "$state": "/a"
+          },
+          "b": {
+            "c": {
+              "$state": "/a"
+            }
+          },
+          "d": [
+            {
+              "$state": "/a"
+            }
+          ],
+          "e": null,
+          "f": {
+            "$js": "undefined"
+          }
+        }
+      },
+      "state": {
+        "a": 1
+      }
+    },
+    {
+      "name": "resolve: confirm interpolation",
+      "op": "resolve",
+      "binding": {
+        "action": "x",
+        "confirm": {
+          "title": "Hi ${/name}",
+          "message": "${/n} items, ${/missing}!",
+          "extra": 1
+        }
+      },
+      "state": {
+        "name": "Ann",
+        "n": 0
+      }
+    },
+    {
+      "name": "resolve: confirm without message throws",
+      "op": "resolve",
+      "binding": {
+        "action": "x",
+        "confirm": {
+          "title": "t"
+        }
+      }
+    },
+    {
+      "name": "resolve: confirm non-string title throws",
+      "op": "resolve",
+      "binding": {
+        "action": "x",
+        "confirm": {
+          "title": 5,
+          "message": "m"
+        }
+      }
+    },
+    {
+      "name": "resolve: string params",
+      "op": "resolve",
+      "binding": {
+        "action": "x",
+        "params": "ab"
+      }
+    },
+    {
+      "name": "resolve: non-string action is kept",
+      "op": "resolve",
+      "binding": {
+        "action": 5,
+        "onSuccess": {
+          "set": {}
+        },
+        "onError": "x"
+      }
+    },
+    {
+      "name": "interpolate: paths without slash",
+      "op": "interpolate",
+      "template": "${user/name} and ${/user/name} and ${}",
+      "state": {
+        "user": {
+          "name": "Bo"
+        }
+      }
+    },
+    {
+      "name": "interpolate: values",
+      "op": "interpolate",
+      "template": "${/a}|${/b}|${/c}|${/d}",
+      "state": {
+        "a": null,
+        "b": false,
+        "c": [
+          1,
+          2
+        ],
+        "d": {
+          "x": 1
+        }
+      }
+    },
+    {
+      "name": "builder: simple",
+      "op": "builder",
+      "builder": "simple",
+      "args": [
+        "go",
+        {
+          "a": 1
+        }
+      ]
+    },
+    {
+      "name": "builder: simple without params",
+      "op": "builder",
+      "builder": "simple",
+      "args": [
+        "go"
+      ]
+    },
+    {
+      "name": "builder: withConfirm",
+      "op": "builder",
+      "builder": "withConfirm",
+      "args": [
+        "del",
+        {
+          "title": "t",
+          "message": "m"
+        }
+      ]
+    },
+    {
+      "name": "builder: withSuccess",
+      "op": "builder",
+      "builder": "withSuccess",
+      "args": [
+        "save",
+        {
+          "navigate": "/x"
+        },
+        {
+          "id": 1
+        }
+      ]
+    },
+    {
+      "name": "execute: success set",
+      "op": "execute",
+      "action": {
+        "action": "x",
+        "params": {
+          "a": 1
+        },
+        "onSuccess": {
+          "set": {
+            "/a": 1,
+            "b": "$error.message"
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: navigate without navigate function falls through",
+      "op": "execute",
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": {
+          "navigate": "/home",
+          "set": {
+            "/a": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: navigate",
+      "op": "execute",
+      "navigate": true,
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": {
+          "navigate": 5
+        }
+      }
+    },
+    {
+      "name": "execute: success action",
+      "op": "execute",
+      "executeAction": true,
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": {
+          "action": "y",
+          "params": {
+            "p": 1
+          },
+          "extra": true
+        }
+      }
+    },
+    {
+      "name": "execute: success action without executeAction",
+      "op": "execute",
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": {
+          "action": "y"
+        }
+      }
+    },
+    {
+      "name": "execute: error set replaces only exact token",
+      "op": "execute",
+      "handler": {
+        "reject": "boom"
+      },
+      "action": {
+        "action": "x",
+        "params": {},
+        "onError": {
+          "set": {
+            "/e": "$error.message",
+            "/f": "$error.message!",
+            "/g": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: error without onError rethrows",
+      "op": "execute",
+      "handler": {
+        "reject": "boom"
+      },
+      "action": {
+        "action": "x",
+        "params": {}
+      }
+    },
+    {
+      "name": "execute: error action",
+      "op": "execute",
+      "executeAction": true,
+      "handler": {
+        "reject": "boom"
+      },
+      "action": {
+        "action": "x",
+        "params": {},
+        "onError": {
+          "action": "recover"
+        }
+      }
+    },
+    {
+      "name": "execute: failing onSuccess runs onError",
+      "op": "execute",
+      "executeAction": true,
+      "executeActionRejects": true,
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": {
+          "action": "next"
+        },
+        "onError": {
+          "set": {
+            "/e": "$error.message"
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: string onSuccess throws into onError",
+      "op": "execute",
+      "action": {
+        "action": "x",
+        "params": {},
+        "onSuccess": "nope",
+        "onError": {
+          "set": {
+            "/e": "$error.message"
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: setState throwing in onError rejects",
+      "op": "execute",
+      "handler": {
+        "reject": "boom",
+        "setStateThrows": true
+      },
+      "action": {
+        "action": "x",
+        "params": {},
+        "onError": {
+          "set": {
+            "/e": 1
+          }
+        }
+      }
+    }
+  ]
+}

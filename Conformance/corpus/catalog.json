@@ -1,0 +1,626 @@
+{
+  "description": "Catalogs built with defineCatalog and the specs catalog.validate() accepts or rejects. Component props use the zod DSL in Conformance/src/zod-dsl.mjs.",
+  "cases": [
+    {
+      "name": "upstream test catalog",
+      "schema": "test",
+      "components": {
+        "Text": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        },
+        "Card": {
+          "props": [
+            "object",
+            {
+              "title": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": [
+            "default"
+          ]
+        }
+      },
+      "actions": {},
+      "specs": [
+        {
+          "root": "card-1",
+          "elements": {
+            "card-1": {
+              "type": "Card",
+              "props": {
+                "title": "Hello"
+              },
+              "children": [
+                "text-1"
+              ]
+            },
+            "text-1": {
+              "type": "Text",
+              "props": {
+                "content": "World"
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "text-1",
+          "elements": {
+            "text-1": {
+              "type": "Text",
+              "props": {
+                "content": "Hello"
+              }
+            }
+          }
+        },
+        {
+          "root": 123,
+          "elements": {}
+        },
+        {
+          "elements": {}
+        },
+        {
+          "root": "x",
+          "elements": {
+            "x": {
+              "type": "NonExistent",
+              "props": {},
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": "hi"
+              },
+              "children": [],
+              "visible": {
+                "$state": "/x"
+              },
+              "on": {
+                "press": {
+                  "action": "a"
+                }
+              },
+              "extra": 1
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": 5
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": [],
+              "children": [],
+              "slots": {
+                "header": [
+                  "h"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {},
+              "children": [],
+              "slots": {
+                "header": "h"
+              }
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {},
+              "children": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": []
+        },
+        null,
+        "spec"
+      ]
+    },
+    {
+      "name": "single component validates props",
+      "schema": "test",
+      "components": {
+        "Text": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        }
+      },
+      "actions": {},
+      "specs": [
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": "hi"
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": 5
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {},
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": "hi",
+                "extra": true
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Other",
+              "props": {
+                "content": "hi"
+              },
+              "children": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "empty catalog accepts any type",
+      "schema": "test",
+      "components": {},
+      "actions": {},
+      "specs": [
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "Anything",
+              "props": {
+                "a": 1
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": 5,
+              "props": {},
+              "children": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "react schema",
+      "schema": "react",
+      "components": {
+        "Text": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        },
+        "Card": {
+          "props": [
+            "object",
+            {
+              "title": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": [
+            "default"
+          ]
+        }
+      },
+      "actions": {
+        "submit": {
+          "description": "Submit"
+        }
+      },
+      "specs": [
+        {
+          "root": "c",
+          "elements": {
+            "c": {
+              "type": "Card",
+              "props": {
+                "title": "x"
+              },
+              "children": [],
+              "slots": {
+                "footer": [
+                  "t"
+                ]
+              },
+              "repeat": {
+                "statePath": "/items"
+              }
+            },
+            "t": {
+              "type": "Text",
+              "props": {
+                "content": "y"
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "c",
+          "elements": {
+            "c": {
+              "type": "Card",
+              "props": {
+                "title": "x"
+              },
+              "children": [],
+              "slots": {
+                "footer": [
+                  1
+                ]
+              }
+            }
+          }
+        },
+        {
+          "root": "c",
+          "elements": {
+            "c": {
+              "type": "Card",
+              "props": "props",
+              "children": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "react native schema",
+      "schema": "react-native",
+      "components": {
+        "Text": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        },
+        "Card": {
+          "props": [
+            "object",
+            {
+              "title": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": [
+            "default"
+          ]
+        }
+      },
+      "actions": {
+        "submit": {
+          "description": "Submit"
+        }
+      },
+      "specs": [
+        {
+          "root": "c",
+          "elements": {
+            "c": {
+              "type": "Card",
+              "props": {
+                "title": "x"
+              },
+              "children": [],
+              "slots": {
+                "footer": [
+                  1
+                ]
+              }
+            }
+          }
+        },
+        {
+          "root": "c",
+          "elements": {
+            "c": {
+              "type": "Card",
+              "props": {
+                "title": "x"
+              },
+              "children": [],
+              "watch": {
+                "/a": {
+                  "action": "submit"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "integer-like component names order first",
+      "schema": "test",
+      "components": {
+        "1": {
+          "props": [
+            "object",
+            {
+              "title": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": [
+            "default"
+          ]
+        },
+        "2": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        },
+        "Zeta": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        }
+      },
+      "actions": {
+        "b": {
+          "description": ""
+        },
+        "a": {
+          "description": ""
+        }
+      },
+      "specs": [
+        {
+          "root": "t",
+          "elements": {
+            "t": {
+              "type": "3",
+              "props": {},
+              "children": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "only one component has props",
+      "schema": "test",
+      "components": {
+        "Text": {
+          "props": [
+            "object",
+            {
+              "content": [
+                "string"
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        },
+        "Spacer": {
+          "description": "",
+          "slots": []
+        }
+      },
+      "actions": {},
+      "specs": [
+        {
+          "root": "s",
+          "elements": {
+            "s": {
+              "type": "Spacer",
+              "props": {
+                "content": "required everywhere"
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "s",
+          "elements": {
+            "s": {
+              "type": "Spacer",
+              "props": {},
+              "children": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "react native standard components shape",
+      "schema": "react-native",
+      "components": {
+        "Heading": {
+          "props": [
+            "object",
+            {
+              "text": [
+                "string"
+              ],
+              "level": [
+                "nullable",
+                [
+                  "enum",
+                  [
+                    "h1",
+                    "h2",
+                    "h3",
+                    "h4"
+                  ]
+                ]
+              ]
+            }
+          ],
+          "description": "",
+          "slots": []
+        }
+      },
+      "actions": {},
+      "specs": [
+        {
+          "root": "h",
+          "elements": {
+            "h": {
+              "type": "Heading",
+              "props": {
+                "text": "x",
+                "level": null
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "h",
+          "elements": {
+            "h": {
+              "type": "Heading",
+              "props": {
+                "text": "x"
+              },
+              "children": []
+            }
+          }
+        },
+        {
+          "root": "h",
+          "elements": {
+            "h": {
+              "type": "Heading",
+              "props": {
+                "text": "x",
+                "level": "h5"
+              },
+              "children": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

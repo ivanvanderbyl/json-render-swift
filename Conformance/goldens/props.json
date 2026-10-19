@@ -1,0 +1,630 @@
+{
+  "suite": "props",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "2d724d4910024e5c1c56981aea0b8132f3b1d8917a5cc978c627cb195681914c",
+  "cases": [
+    {
+      "name": "resolve: null passes through",
+      "output": {
+        "value": null,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: undefined passes through",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: nested literal object",
+      "output": {
+        "value": {
+          "a": {
+            "b": [
+              1,
+              {
+                "c": "x"
+              }
+            ]
+          }
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: state wins over item",
+      "output": {
+        "value": 1,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: non-string state is a plain object",
+      "output": {
+        "value": {
+          "$state": 5
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: non-string state with nested expression",
+      "output": {
+        "value": {
+          "$state": 5,
+          "other": 1
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: item without scope",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: item empty path",
+      "output": {
+        "value": {
+          "x": 1
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: item nested path",
+      "output": {
+        "value": 3,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: item with leading slash",
+      "output": {
+        "value": 4,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: item of primitive",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: index",
+      "output": {
+        "value": 3,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: index outside scope",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: index not true is a plain object",
+      "output": {
+        "value": {
+          "$index": 1
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: bindState",
+      "output": {
+        "value": 2,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: bindItem",
+      "output": {
+        "value": true,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: bindItem empty path",
+      "output": {
+        "value": {
+          "done": true
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: bindItem outside scope warns",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "$bindItem used outside repeat scope: \"done\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolve: cond picks then",
+      "output": {
+        "value": "yes",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: cond picks else",
+      "output": {
+        "value": 2,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: cond without else is a plain object",
+      "output": {
+        "value": {
+          "$cond": true,
+          "$then": 1
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: cond with malformed condition throws",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in null",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: cond with item condition",
+      "output": {
+        "value": "on",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: cond with undefined then",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed",
+      "output": {
+        "value": "Jo Smith",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed without args",
+      "output": {
+        "value": 0,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed with null args",
+      "output": {
+        "value": 0,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed with string args",
+      "output": {
+        "value": {
+          "0": "a",
+          "1": "b"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed with array args",
+      "output": {
+        "value": {
+          "0": 1
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed that throws",
+      "output": {
+        "threw": "computed failed",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed unknown without functions warns",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown $computed function: \"unknownOne\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolve: computed unknown with functions warns",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "Unknown $computed function: \"unknownTwo\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolve: computed non-string name is a plain object",
+      "output": {
+        "value": {
+          "$computed": 5
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: computed nested in args",
+      "output": {
+        "value": 8,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template absolute",
+      "output": {
+        "value": "Hi Ann!",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template missing becomes empty",
+      "output": {
+        "value": "[]",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template null becomes empty",
+      "output": {
+        "value": "[]",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template number formatting",
+      "output": {
+        "value": "0.1 1e+21 0",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template object and array",
+      "output": {
+        "value": "[object Object]|1,2,3,",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template bare name from item",
+      "output": {
+        "value": "item",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template bare name falls back to state",
+      "output": {
+        "value": "state",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template bare name item null falls back",
+      "output": {
+        "value": "state",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template bare nested path",
+      "output": {
+        "value": "deep",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template empty placeholder is literal",
+      "output": {
+        "value": "${} and ${",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template nested braces",
+      "output": {
+        "value": "odd}",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template dollar without brace",
+      "output": {
+        "value": "$5 and $ {x}",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template root path",
+      "output": {
+        "value": "[object Object]",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template whole item via bare name",
+      "output": {
+        "value": "first",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: template non-string is a plain object",
+      "output": {
+        "value": {
+          "$template": 5
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive",
+      "output": {
+        "value": 8,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive composed",
+      "output": {
+        "value": "A-C",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive ambiguous throws",
+      "output": {
+        "threw": "Ambiguous directive: object has multiple directive keys (\"$double\" and \"$upper\")",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive that throws",
+      "output": {
+        "threw": "directive failed",
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive without registry is a plain object",
+      "output": {
+        "value": {
+          "$double": 4
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: built-in wins over directive",
+      "output": {
+        "value": 4,
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: directive inside array",
+      "output": {
+        "value": [
+          4,
+          "X"
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "resolve: array of expressions",
+      "output": {
+        "value": [
+          1,
+          7,
+          "lit"
+        ],
+        "messages": []
+      }
+    },
+    {
+      "name": "resolveProps: mixed props",
+      "output": {
+        "value": {
+          "title": "T",
+          "count": 2,
+          "style": {
+            "color": "red"
+          }
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "resolveProps: empty props",
+      "output": {
+        "value": {},
+        "messages": []
+      }
+    },
+    {
+      "name": "resolveProps: throwing prop",
+      "output": {
+        "threw": "Cannot use 'in' operator to search for '$index' in 5",
+        "messages": []
+      }
+    },
+    {
+      "name": "bindings: state and item",
+      "output": {
+        "value": {
+          "value": "/form/a",
+          "checked": "/items/0/done"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "bindings: none",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "bindings: bind item outside scope warns",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "$bindItem used outside repeat scope: \"done\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "bindings: bind item empty path",
+      "output": {
+        "value": {
+          "value": "/list/3"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "bindings: non-string bind is ignored",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "bindings: both keys prefers bindState",
+      "output": {
+        "value": {
+          "value": "/a"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: item gives a path",
+      "output": {
+        "value": "/todos/0/title",
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: item empty gives the base path",
+      "output": {
+        "value": "/todos/0",
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: item outside scope warns",
+      "output": {
+        "value": {
+          "$js": "undefined"
+        },
+        "messages": [
+          {
+            "level": "warning",
+            "text": "$bindItem used outside repeat scope: \"title\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "actionParam: index",
+      "output": {
+        "value": 5,
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: state",
+      "output": {
+        "value": 1,
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: nested item is a value",
+      "output": {
+        "value": {
+          "nested": "x"
+        },
+        "messages": []
+      }
+    },
+    {
+      "name": "actionParam: literal",
+      "output": {
+        "value": "x",
+        "messages": []
+      }
+    }
+  ]
+}

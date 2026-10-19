@@ -1,0 +1,389 @@
+{
+  "suite": "actions",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "115f1e66560c3d7f52e570ebf8c7ecd9b26cdd64a70cb2c0813350797a10398f",
+  "cases": [
+    {
+      "name": "resolve: params are resolved one level deep",
+      "output": {
+        "value": {
+          "action": "x",
+          "params": {
+            "a": 1,
+            "b": {
+              "c": {
+                "$state": "/a"
+              }
+            },
+            "d": [
+              {
+                "$state": "/a"
+              }
+            ],
+            "e": {
+              "$js": "undefined"
+            },
+            "f": {
+              "$js": "undefined"
+            }
+          },
+          "confirm": {
+            "$js": "undefined"
+          },
+          "onSuccess": {
+            "$js": "undefined"
+          },
+          "onError": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "resolve: confirm interpolation",
+      "output": {
+        "value": {
+          "action": "x",
+          "params": {},
+          "confirm": {
+            "title": "Hi Ann",
+            "message": "0 items, !",
+            "extra": 1
+          },
+          "onSuccess": {
+            "$js": "undefined"
+          },
+          "onError": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "resolve: confirm without message throws",
+      "output": {
+        "threw": "Cannot read properties of undefined (reading 'replace')"
+      }
+    },
+    {
+      "name": "resolve: confirm non-string title throws",
+      "output": {
+        "threw": "template.replace is not a function"
+      }
+    },
+    {
+      "name": "resolve: string params",
+      "output": {
+        "value": {
+          "action": "x",
+          "params": {
+            "0": "a",
+            "1": "b"
+          },
+          "confirm": {
+            "$js": "undefined"
+          },
+          "onSuccess": {
+            "$js": "undefined"
+          },
+          "onError": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "resolve: non-string action is kept",
+      "output": {
+        "value": {
+          "action": 5,
+          "params": {},
+          "confirm": {
+            "$js": "undefined"
+          },
+          "onSuccess": {
+            "set": {}
+          },
+          "onError": "x"
+        }
+      }
+    },
+    {
+      "name": "interpolate: paths without slash",
+      "output": {
+        "value": "Bo and Bo and ${}"
+      }
+    },
+    {
+      "name": "interpolate: values",
+      "output": {
+        "value": "|false|1,2|[object Object]"
+      }
+    },
+    {
+      "name": "builder: simple",
+      "output": {
+        "value": {
+          "action": "go",
+          "params": {
+            "a": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "builder: simple without params",
+      "output": {
+        "value": {
+          "action": "go",
+          "params": {
+            "$js": "undefined"
+          }
+        }
+      }
+    },
+    {
+      "name": "builder: withConfirm",
+      "output": {
+        "value": {
+          "action": "del",
+          "params": {
+            "$js": "undefined"
+          },
+          "confirm": {
+            "title": "t",
+            "message": "m"
+          }
+        }
+      }
+    },
+    {
+      "name": "builder: withSuccess",
+      "output": {
+        "value": {
+          "action": "save",
+          "params": {
+            "id": 1
+          },
+          "onSuccess": {
+            "navigate": "/x"
+          }
+        }
+      }
+    },
+    {
+      "name": "execute: success set",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {
+              "a": 1
+            }
+          },
+          {
+            "fn": "setState",
+            "path": "/a",
+            "value": 1
+          },
+          {
+            "fn": "setState",
+            "path": "b",
+            "value": "$error.message"
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: navigate without navigate function falls through",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "setState",
+            "path": "/a",
+            "value": 1
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: navigate",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "navigate",
+            "path": 5
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: success action",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "executeAction",
+            "binding": {
+              "action": "y",
+              "params": {
+                "p": 1
+              },
+              "extra": true
+            }
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: success action without executeAction",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: error set replaces only exact token",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "setState",
+            "path": "/e",
+            "value": "boom"
+          },
+          {
+            "fn": "setState",
+            "path": "/f",
+            "value": "$error.message!"
+          },
+          {
+            "fn": "setState",
+            "path": "/g",
+            "value": 1
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: error without onError rethrows",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          }
+        ],
+        "outcome": "rejected",
+        "error": "boom"
+      }
+    },
+    {
+      "name": "execute: error action",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "executeAction",
+            "binding": {
+              "action": "recover"
+            }
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: failing onSuccess runs onError",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "executeAction",
+            "binding": {
+              "action": "next"
+            }
+          },
+          {
+            "fn": "setState",
+            "path": "/e",
+            "value": "follow-up failed"
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: string onSuccess throws into onError",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "setState",
+            "path": "/e",
+            "value": "Cannot use 'in' operator to search for 'navigate' in nope"
+          }
+        ],
+        "outcome": "resolved"
+      }
+    },
+    {
+      "name": "execute: setState throwing in onError rejects",
+      "output": {
+        "calls": [
+          {
+            "fn": "handler",
+            "params": {}
+          },
+          {
+            "fn": "setState",
+            "path": "/e",
+            "value": 1
+          }
+        ],
+        "outcome": "rejected",
+        "error": "setState failed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1436 @@
+{
+  "description": "Form validation: built-in functions, single checks and configs.",
+  "cases": [
+    {
+      "name": "builtin required: zero",
+      "op": "builtin",
+      "fn": "required",
+      "value": 0
+    },
+    {
+      "name": "builtin required: whitespace",
+      "op": "builtin",
+      "fn": "required",
+      "value": " \t\n"
+    },
+    {
+      "name": "builtin required: nbsp",
+      "op": "builtin",
+      "fn": "required",
+      "value": " "
+    },
+    {
+      "name": "builtin required: empty object",
+      "op": "builtin",
+      "fn": "required",
+      "value": {}
+    },
+    {
+      "name": "builtin required: NaN",
+      "op": "builtin",
+      "fn": "required",
+      "value": {
+        "$js": "NaN"
+      }
+    },
+    {
+      "name": "builtin required: undefined",
+      "op": "builtin",
+      "fn": "required",
+      "value": {
+        "$js": "undefined"
+      }
+    },
+    {
+      "name": "builtin email: plain",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@b.co"
+    },
+    {
+      "name": "builtin email: no dot",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@b"
+    },
+    {
+      "name": "builtin email: dot at end",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@b."
+    },
+    {
+      "name": "builtin email: dot at start of domain",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@.b"
+    },
+    {
+      "name": "builtin email: two ats",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@b@c.d"
+    },
+    {
+      "name": "builtin email: space",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a b@c.d"
+    },
+    {
+      "name": "builtin email: nbsp",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a b@c.d"
+    },
+    {
+      "name": "builtin email: bom",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a﻿@c.d"
+    },
+    {
+      "name": "builtin email: next line char",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@c.d"
+    },
+    {
+      "name": "builtin email: unicode",
+      "op": "builtin",
+      "fn": "email",
+      "value": "jöhn@exämple.com"
+    },
+    {
+      "name": "builtin email: dots",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a.b@c.d.e"
+    },
+    {
+      "name": "builtin email: only dot domain",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@..."
+    },
+    {
+      "name": "builtin email: number",
+      "op": "builtin",
+      "fn": "email",
+      "value": 5
+    },
+    {
+      "name": "builtin email: empty",
+      "op": "builtin",
+      "fn": "email",
+      "value": ""
+    },
+    {
+      "name": "builtin email: subdomain dot first",
+      "op": "builtin",
+      "fn": "email",
+      "value": "a@b..c"
+    },
+    {
+      "name": "builtin minLength: utf16 length of emoji",
+      "op": "builtin",
+      "fn": "minLength",
+      "value": "😀",
+      "args": {
+        "min": 2
+      }
+    },
+    {
+      "name": "builtin minLength: string min",
+      "op": "builtin",
+      "fn": "minLength",
+      "value": "abc",
+      "args": {
+        "min": "2"
+      }
+    },
+    {
+      "name": "builtin minLength: missing args",
+      "op": "builtin",
+      "fn": "minLength",
+      "value": "abc"
+    },
+    {
+      "name": "builtin minLength: NaN min",
+      "op": "builtin",
+      "fn": "minLength",
+      "value": "abc",
+      "args": {
+        "min": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "builtin minLength: array value",
+      "op": "builtin",
+      "fn": "minLength",
+      "value": [
+        "a",
+        "b"
+      ],
+      "args": {
+        "min": 1
+      }
+    },
+    {
+      "name": "builtin maxLength: combining mark counts",
+      "op": "builtin",
+      "fn": "maxLength",
+      "value": "é",
+      "args": {
+        "max": 1
+      }
+    },
+    {
+      "name": "builtin maxLength: equal",
+      "op": "builtin",
+      "fn": "maxLength",
+      "value": "ab",
+      "args": {
+        "max": 2
+      }
+    },
+    {
+      "name": "builtin pattern: anchored",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "123",
+      "args": {
+        "pattern": "^\\d+$"
+      }
+    },
+    {
+      "name": "builtin pattern: trailing newline rejected by dollar",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "123\n",
+      "args": {
+        "pattern": "^\\d+$"
+      }
+    },
+    {
+      "name": "builtin pattern: unanchored search",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "x123y",
+      "args": {
+        "pattern": "\\d+"
+      }
+    },
+    {
+      "name": "builtin pattern: arabic digits are not \\\\d",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "١٢٣",
+      "args": {
+        "pattern": "^\\d+$"
+      }
+    },
+    {
+      "name": "builtin pattern: word class ascii",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "é",
+      "args": {
+        "pattern": "^\\w$"
+      }
+    },
+    {
+      "name": "builtin pattern: whitespace class includes bom",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "﻿",
+      "args": {
+        "pattern": "^\\s$"
+      }
+    },
+    {
+      "name": "builtin pattern: next line is not whitespace",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "",
+      "args": {
+        "pattern": "^\\s$"
+      }
+    },
+    {
+      "name": "builtin pattern: dot excludes line separator",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": " ",
+      "args": {
+        "pattern": "^.$"
+      }
+    },
+    {
+      "name": "builtin pattern: dot matches next line",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "",
+      "args": {
+        "pattern": "^.$"
+      }
+    },
+    {
+      "name": "builtin pattern: invalid pattern",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "x",
+      "args": {
+        "pattern": "("
+      }
+    },
+    {
+      "name": "builtin pattern: literal brace",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "a{",
+      "args": {
+        "pattern": "a{"
+      }
+    },
+    {
+      "name": "builtin pattern: quantifier",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "aaa",
+      "args": {
+        "pattern": "^a{2,3}$"
+      }
+    },
+    {
+      "name": "builtin pattern: bracket any",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "\n",
+      "args": {
+        "pattern": "^[^]$"
+      }
+    },
+    {
+      "name": "builtin pattern: empty class",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "a",
+      "args": {
+        "pattern": "[]"
+      }
+    },
+    {
+      "name": "builtin pattern: case sensitive",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "A",
+      "args": {
+        "pattern": "^a$"
+      }
+    },
+    {
+      "name": "builtin pattern: revision pattern",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "123",
+      "args": {
+        "pattern": "^[1-9][0-9]{0,18}$"
+      }
+    },
+    {
+      "name": "builtin pattern: revision leading zero",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "0123",
+      "args": {
+        "pattern": "^[1-9][0-9]{0,18}$"
+      }
+    },
+    {
+      "name": "builtin pattern: word boundary",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "a b",
+      "args": {
+        "pattern": "\\bb\\b"
+      }
+    },
+    {
+      "name": "builtin pattern: unicode word boundary",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "é",
+      "args": {
+        "pattern": "\\b"
+      }
+    },
+    {
+      "name": "builtin pattern: backreference",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "abab",
+      "args": {
+        "pattern": "^(ab)\\1$"
+      }
+    },
+    {
+      "name": "builtin pattern: named group",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "x",
+      "args": {
+        "pattern": "(?<n>x)"
+      }
+    },
+    {
+      "name": "builtin pattern: lookbehind",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "ab",
+      "args": {
+        "pattern": "(?<=a)b"
+      }
+    },
+    {
+      "name": "builtin pattern: escaped slash",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "a/b",
+      "args": {
+        "pattern": "a\\/b"
+      }
+    },
+    {
+      "name": "builtin pattern: astral dot",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "😀",
+      "args": {
+        "pattern": "^.$"
+      }
+    },
+    {
+      "name": "builtin pattern: astral two dots",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "😀",
+      "args": {
+        "pattern": "^..$"
+      }
+    },
+    {
+      "name": "builtin pattern: non-string pattern",
+      "op": "builtin",
+      "fn": "pattern",
+      "value": "x",
+      "args": {
+        "pattern": 5
+      }
+    },
+    {
+      "name": "builtin min: string value",
+      "op": "builtin",
+      "fn": "min",
+      "value": "5",
+      "args": {
+        "min": 1
+      }
+    },
+    {
+      "name": "builtin min: equal",
+      "op": "builtin",
+      "fn": "min",
+      "value": 1,
+      "args": {
+        "min": 1
+      }
+    },
+    {
+      "name": "builtin max: NaN value",
+      "op": "builtin",
+      "fn": "max",
+      "value": {
+        "$js": "NaN"
+      },
+      "args": {
+        "max": 1
+      }
+    },
+    {
+      "name": "builtin numeric: number",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": 5
+    },
+    {
+      "name": "builtin numeric: NaN",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": {
+        "$js": "NaN"
+      }
+    },
+    {
+      "name": "builtin numeric: infinity string",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "Infinity"
+    },
+    {
+      "name": "builtin numeric: hex",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "0x1F"
+    },
+    {
+      "name": "builtin numeric: spaces",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "  "
+    },
+    {
+      "name": "builtin numeric: padded",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": " 12 "
+    },
+    {
+      "name": "builtin numeric: letters",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "12px"
+    },
+    {
+      "name": "builtin numeric: exponent",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "1e5"
+    },
+    {
+      "name": "builtin numeric: boolean",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": true
+    },
+    {
+      "name": "builtin numeric: empty",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": ""
+    },
+    {
+      "name": "builtin numeric: binary",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "0b11"
+    },
+    {
+      "name": "builtin numeric: plus sign",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "+3"
+    },
+    {
+      "name": "builtin numeric: dot",
+      "op": "builtin",
+      "fn": "numeric",
+      "value": "."
+    },
+    {
+      "name": "builtin url: https",
+      "op": "builtin",
+      "fn": "url",
+      "value": "https://example.com"
+    },
+    {
+      "name": "builtin url: no scheme",
+      "op": "builtin",
+      "fn": "url",
+      "value": "example.com"
+    },
+    {
+      "name": "builtin url: mailto",
+      "op": "builtin",
+      "fn": "url",
+      "value": "mailto:a@b.c"
+    },
+    {
+      "name": "builtin url: custom scheme",
+      "op": "builtin",
+      "fn": "url",
+      "value": "foo:bar"
+    },
+    {
+      "name": "builtin url: http no host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://"
+    },
+    {
+      "name": "builtin url: http colon only",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http:"
+    },
+    {
+      "name": "builtin url: http single slash",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http:/example.com"
+    },
+    {
+      "name": "builtin url: backslashes",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http:\\\\example.com"
+    },
+    {
+      "name": "builtin url: space in host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://exa mple.com"
+    },
+    {
+      "name": "builtin url: port too big",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.com:65536"
+    },
+    {
+      "name": "builtin url: port max",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.com:65535"
+    },
+    {
+      "name": "builtin url: port letters",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.com:8o"
+    },
+    {
+      "name": "builtin url: empty port",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.com:"
+    },
+    {
+      "name": "builtin url: ipv4",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://127.0.0.1"
+    },
+    {
+      "name": "builtin url: ipv4 out of range",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://256.0.0.1"
+    },
+    {
+      "name": "builtin url: ipv4 hex",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://0x7f.1"
+    },
+    {
+      "name": "builtin url: ipv4 too many parts",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://1.2.3.4.5"
+    },
+    {
+      "name": "builtin url: ipv6",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://[::1]"
+    },
+    {
+      "name": "builtin url: ipv6 bad",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://[::g]"
+    },
+    {
+      "name": "builtin url: ipv6 unclosed",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://[::1"
+    },
+    {
+      "name": "builtin url: ipv6 embedded ipv4",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://[::ffff:1.2.3.4]"
+    },
+    {
+      "name": "builtin url: userinfo",
+      "op": "builtin",
+      "fn": "url",
+      "value": "https://user:pw@host.com/path?q=1#f"
+    },
+    {
+      "name": "builtin url: at with empty host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://user@"
+    },
+    {
+      "name": "builtin url: file",
+      "op": "builtin",
+      "fn": "url",
+      "value": "file:///tmp/x"
+    },
+    {
+      "name": "builtin url: file host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "file://server/share"
+    },
+    {
+      "name": "builtin url: leading space",
+      "op": "builtin",
+      "fn": "url",
+      "value": "  https://a.com  "
+    },
+    {
+      "name": "builtin url: tab inside",
+      "op": "builtin",
+      "fn": "url",
+      "value": "ht\ttp://a.com"
+    },
+    {
+      "name": "builtin url: scheme with plus",
+      "op": "builtin",
+      "fn": "url",
+      "value": "git+ssh://host/repo"
+    },
+    {
+      "name": "builtin url: scheme starting with digit",
+      "op": "builtin",
+      "fn": "url",
+      "value": "1http://a.com"
+    },
+    {
+      "name": "builtin url: unicode host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "https://exämple.com"
+    },
+    {
+      "name": "builtin url: percent in host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a%20b.com"
+    },
+    {
+      "name": "builtin url: empty",
+      "op": "builtin",
+      "fn": "url",
+      "value": ""
+    },
+    {
+      "name": "builtin url: relative path",
+      "op": "builtin",
+      "fn": "url",
+      "value": "/path"
+    },
+    {
+      "name": "builtin url: number",
+      "op": "builtin",
+      "fn": "url",
+      "value": 5
+    },
+    {
+      "name": "builtin url: javascript",
+      "op": "builtin",
+      "fn": "url",
+      "value": "javascript:alert(1)"
+    },
+    {
+      "name": "builtin url: data",
+      "op": "builtin",
+      "fn": "url",
+      "value": "data:text/plain,hi"
+    },
+    {
+      "name": "builtin url: opaque host forbidden char",
+      "op": "builtin",
+      "fn": "url",
+      "value": "foo://a b"
+    },
+    {
+      "name": "builtin url: non-special empty host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "foo://"
+    },
+    {
+      "name": "builtin url: http trailing dot host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.com."
+    },
+    {
+      "name": "builtin url: host ends in number",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a.123"
+    },
+    {
+      "name": "builtin url: wss",
+      "op": "builtin",
+      "fn": "url",
+      "value": "wss://a.com/socket"
+    },
+    {
+      "name": "builtin url: caret in host",
+      "op": "builtin",
+      "fn": "url",
+      "value": "http://a^b.com"
+    },
+    {
+      "name": "builtin matches: same primitive",
+      "op": "builtin",
+      "fn": "matches",
+      "value": "a",
+      "args": {
+        "other": "a"
+      }
+    },
+    {
+      "name": "builtin matches: objects never match",
+      "op": "builtin",
+      "fn": "matches",
+      "value": {
+        "x": 1
+      },
+      "args": {
+        "other": {
+          "x": 1
+        }
+      }
+    },
+    {
+      "name": "builtin matches: missing other matches undefined",
+      "op": "builtin",
+      "fn": "matches",
+      "value": {
+        "$js": "undefined"
+      },
+      "args": {}
+    },
+    {
+      "name": "builtin equalTo: NaN",
+      "op": "builtin",
+      "fn": "equalTo",
+      "value": {
+        "$js": "NaN"
+      },
+      "args": {
+        "other": {
+          "$js": "NaN"
+        }
+      }
+    },
+    {
+      "name": "builtin lessThan: numbers",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": 1,
+      "args": {
+        "other": 2
+      }
+    },
+    {
+      "name": "builtin greaterThan: numbers",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": 1,
+      "args": {
+        "other": 2
+      }
+    },
+    {
+      "name": "builtin lessThan: strings",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "a",
+      "args": {
+        "other": "b"
+      }
+    },
+    {
+      "name": "builtin greaterThan: strings",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "a",
+      "args": {
+        "other": "b"
+      }
+    },
+    {
+      "name": "builtin lessThan: iso dates",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "2024-01-02",
+      "args": {
+        "other": "2024-01-10"
+      }
+    },
+    {
+      "name": "builtin greaterThan: iso dates",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "2024-01-02",
+      "args": {
+        "other": "2024-01-10"
+      }
+    },
+    {
+      "name": "builtin lessThan: mixed numeric",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "3",
+      "args": {
+        "other": 5
+      }
+    },
+    {
+      "name": "builtin greaterThan: mixed numeric",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "3",
+      "args": {
+        "other": 5
+      }
+    },
+    {
+      "name": "builtin lessThan: mixed non-numeric",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "x",
+      "args": {
+        "other": 5
+      }
+    },
+    {
+      "name": "builtin greaterThan: mixed non-numeric",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "x",
+      "args": {
+        "other": 5
+      }
+    },
+    {
+      "name": "builtin lessThan: empty",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "",
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin greaterThan: empty",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "",
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin lessThan: null",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": null,
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin greaterThan: null",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": null,
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin lessThan: booleans",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": false,
+      "args": {
+        "other": true
+      }
+    },
+    {
+      "name": "builtin greaterThan: booleans",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": false,
+      "args": {
+        "other": true
+      }
+    },
+    {
+      "name": "builtin lessThan: array coercion",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": [
+        1
+      ],
+      "args": {
+        "other": 2
+      }
+    },
+    {
+      "name": "builtin greaterThan: array coercion",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": [
+        1
+      ],
+      "args": {
+        "other": 2
+      }
+    },
+    {
+      "name": "builtin lessThan: object",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": {},
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin greaterThan: object",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": {},
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin lessThan: whitespace string coerces to zero",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": " ",
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin greaterThan: whitespace string coerces to zero",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": " ",
+      "args": {
+        "other": 1
+      }
+    },
+    {
+      "name": "builtin lessThan: string compare not numeric",
+      "op": "builtin",
+      "fn": "lessThan",
+      "value": "10",
+      "args": {
+        "other": "9"
+      }
+    },
+    {
+      "name": "builtin greaterThan: string compare not numeric",
+      "op": "builtin",
+      "fn": "greaterThan",
+      "value": "10",
+      "args": {
+        "other": "9"
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition falsy",
+      "op": "builtin",
+      "fn": "requiredIf",
+      "value": "",
+      "args": {
+        "field": 0
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition truthy empty",
+      "op": "builtin",
+      "fn": "requiredIf",
+      "value": "",
+      "args": {
+        "field": "yes"
+      }
+    },
+    {
+      "name": "builtin requiredIf: condition truthy filled",
+      "op": "builtin",
+      "fn": "requiredIf",
+      "value": "x",
+      "args": {
+        "field": true
+      }
+    },
+    {
+      "name": "builtin requiredIf: missing args",
+      "op": "builtin",
+      "fn": "requiredIf",
+      "value": ""
+    },
+    {
+      "name": "check: dynamic args",
+      "op": "check",
+      "check": {
+        "type": "minLength",
+        "args": {
+          "min": {
+            "$state": "/n"
+          }
+        },
+        "message": "short"
+      },
+      "context": {
+        "value": "abc",
+        "state": {
+          "n": 5
+        }
+      }
+    },
+    {
+      "name": "check: args with nested expressions",
+      "op": "check",
+      "check": {
+        "type": "lessThan",
+        "args": {
+          "other": {
+            "$cond": {
+              "$state": "/x"
+            },
+            "$then": 10,
+            "$else": 0
+          }
+        },
+        "message": "m"
+      },
+      "context": {
+        "value": 5,
+        "state": {
+          "x": true
+        }
+      }
+    },
+    {
+      "name": "check: unknown function warns",
+      "op": "check",
+      "check": {
+        "type": "nope",
+        "message": "m"
+      },
+      "context": {
+        "value": 1
+      }
+    },
+    {
+      "name": "check: custom function",
+      "op": "check",
+      "check": {
+        "type": "startsWithA",
+        "message": "m"
+      },
+      "context": {
+        "value": "Apple",
+        "custom": true
+      }
+    },
+    {
+      "name": "check: builtin wins over custom",
+      "op": "check",
+      "check": {
+        "type": "required",
+        "message": "m"
+      },
+      "context": {
+        "value": "",
+        "custom": true
+      }
+    },
+    {
+      "name": "check: custom receives args",
+      "op": "check",
+      "check": {
+        "type": "hasArg",
+        "args": {
+          "a": 1
+        },
+        "message": "m"
+      },
+      "context": {
+        "value": 1,
+        "custom": true
+      }
+    },
+    {
+      "name": "check: custom without args gets empty object",
+      "op": "check",
+      "check": {
+        "type": "hasArg",
+        "message": "m"
+      },
+      "context": {
+        "value": 1,
+        "custom": true
+      }
+    },
+    {
+      "name": "check: non-string message",
+      "op": "check",
+      "check": {
+        "type": "required",
+        "message": 5
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "check: missing message",
+      "op": "check",
+      "check": {
+        "type": "required"
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "check: numeric type",
+      "op": "check",
+      "check": {
+        "type": 5,
+        "message": "m"
+      },
+      "context": {
+        "value": 1
+      }
+    },
+    {
+      "name": "check: string args",
+      "op": "check",
+      "check": {
+        "type": "minLength",
+        "args": "ab",
+        "message": "m"
+      },
+      "context": {
+        "value": "x"
+      }
+    },
+    {
+      "name": "check: null check throws",
+      "op": "check",
+      "check": null,
+      "context": {
+        "value": 1
+      }
+    },
+    {
+      "name": "check: string check",
+      "op": "check",
+      "check": "required",
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "check: template in args is resolved",
+      "op": "check",
+      "check": {
+        "type": "pattern",
+        "args": {
+          "pattern": {
+            "$template": "^${/p}$"
+          }
+        },
+        "message": "m"
+      },
+      "context": {
+        "value": "abc",
+        "state": {
+          "p": "abc"
+        }
+      }
+    },
+    {
+      "name": "run: all pass",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          },
+          {
+            "type": "email",
+            "message": "b"
+          }
+        ]
+      },
+      "context": {
+        "value": "a@b.co"
+      }
+    },
+    {
+      "name": "run: collects errors in order",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          },
+          {
+            "type": "minLength",
+            "args": {
+              "min": 3
+            },
+            "message": "b"
+          }
+        ]
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: disabled by state",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          }
+        ],
+        "enabled": {
+          "$state": "/on"
+        }
+      },
+      "context": {
+        "value": "",
+        "state": {
+          "on": false
+        }
+      }
+    },
+    {
+      "name": "run: enabled false literal is ignored",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          }
+        ],
+        "enabled": false
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: enabled zero is ignored",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          }
+        ],
+        "enabled": 0
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: enabled malformed throws",
+      "op": "run",
+      "config": {
+        "checks": [],
+        "enabled": 5
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: no checks",
+      "op": "run",
+      "config": {},
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: checks not iterable throws",
+      "op": "run",
+      "config": {
+        "checks": {
+          "a": 1
+        }
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: checks string iterates characters",
+      "op": "run",
+      "config": {
+        "checks": "ab"
+      },
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: null config throws",
+      "op": "run",
+      "config": null,
+      "context": {
+        "value": ""
+      }
+    },
+    {
+      "name": "run: enabled item condition without scope",
+      "op": "run",
+      "config": {
+        "checks": [
+          {
+            "type": "required",
+            "message": "a"
+          }
+        ],
+        "enabled": {
+          "$item": "x"
+        }
+      },
+      "context": {
+        "value": ""
+      }
+    }
+  ]
+}

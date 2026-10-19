@@ -1,0 +1,3091 @@
+{
+  "suite": "schemas",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "23dfbba4d8e6bde1d4ce0e9fd8855e03fb4af1ba2f95f6a1b9c3407863f1fd81",
+  "cases": [
+    {
+      "name": "string",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": true,
+            "data": ""
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received null"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received object"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received boolean"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "string length checks",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=2 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "ab"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected string to have <=4 characters"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=2 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "😀😀😀"
+          }
+        ]
+      }
+    },
+    {
+      "name": "string exact length",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have exactly 2 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "ab"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected string to have exactly 2 characters"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "string min and regex both fail",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^[0-9]+$"
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=3 characters"
+              },
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^[0-9]+$/"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=3 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "123"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^[0-9]+$/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "regex anchors",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,18}$"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "1"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^[1-9][0-9]{0,18}$/"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^[1-9][0-9]{0,18}$/"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "1234567890123456789"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^[1-9][0-9]{0,18}$/"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "number",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": true,
+            "data": -0.5
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected number, received null"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected number, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected number, received boolean"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "number bounds",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected number to be >=1"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": true,
+            "data": 3
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected number to be <=3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "number exclusive bounds",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "exclusiveMinimum": 1,
+          "exclusiveMaximum": 3
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected number to be >1"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": 2
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected number to be <3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiple of",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "multipleOf": 0.5
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "not_multiple_of",
+                "path": [],
+                "message": "Invalid number: must be a multiple of 0.5"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": 1.5
+          }
+        ]
+      }
+    },
+    {
+      "name": "int",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected int, received number"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": -3
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected int to be <=9007199254740991"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "int bounds",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected number to be >=0"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "boolean",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "boolean"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": true
+          },
+          {
+            "success": true,
+            "data": false
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected boolean, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected boolean, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "null",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "null"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": null
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected null, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected null, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "literal string",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "const": "x"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "x"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid input: expected \"x\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid input: expected \"x\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "literal number",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "const": 3
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 3
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid input: expected 3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "literal true",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "boolean",
+          "const": true
+        },
+        "results": [
+          {
+            "success": true,
+            "data": true
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid input: expected true"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "enum",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "enum": [
+            "a",
+            "b"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid option: expected one of \"a\"|\"b\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid option: expected one of \"a\"|\"b\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "email",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "format": "email",
+          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a@b.co"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid email address"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid email address"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "a.b+c@sub.example.org"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "url",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "format": "uri"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "https://example.com"
+          },
+          {
+            "success": true,
+            "data": "mailto:a@b.c"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid URL"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid URL"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "foo:bar"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid URL"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "uuid",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid UUID"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid UUID"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "array",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": []
+          },
+          {
+            "success": true,
+            "data": [
+              "a"
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  1
+                ],
+                "message": "Invalid input: expected string, received number"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  2
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected array, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected array, received null"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "array bounds",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "minItems": 1,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have >=1 items"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": [
+              1
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected array to have <=2 items"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "tuple",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "results": [
+          {
+            "success": true,
+            "data": [
+              "a",
+              1
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have >=2 items"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected array to have <=2 items"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  0
+                ],
+                "message": "Invalid input: expected string, received number"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  1
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected tuple, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "tuple with rest",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string"
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1
+        },
+        "results": [
+          {
+            "success": true,
+            "data": [
+              "a"
+            ]
+          },
+          {
+            "success": true,
+            "data": [
+              "a",
+              1,
+              2
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  1
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "object strips unknown keys",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            },
+            "b": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x",
+              "b": 1
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "a": "x",
+              "b": 1
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  "b"
+                ],
+                "message": "Invalid input: expected number, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received number"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  "b"
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received null"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "object optional key",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            }
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {}
+          },
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "a": {
+                "$js": "undefined"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "object nullable key",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "a"
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "a": null
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "object any key is required",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {}
+          },
+          "required": [
+            "a"
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected nonoptional, received undefined"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "a": null
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "a": {
+                "$js": "undefined"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "object unknown key is required",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {}
+          },
+          "required": [
+            "a"
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected nonoptional, received undefined"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "a": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "object default",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "default": "fallback",
+              "type": "string"
+            }
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "fallback"
+            }
+          },
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "strict object",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "a"
+          ],
+          "additionalProperties": false
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized key: \"b\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized keys: \"b\", \"c\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized key: \"b\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "loose object keeps unknown keys",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "a"
+          ],
+          "additionalProperties": {}
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x",
+              "b": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "object catchall",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "a"
+          ],
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x",
+              "b": 1
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "b"
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "nested object paths",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "o": {
+              "type": "object",
+              "properties": {
+                "p": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "p"
+              ]
+            }
+          },
+          "required": [
+            "o"
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "o",
+                  "p",
+                  1
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "o",
+                  "p"
+                ],
+                "message": "Invalid input: expected array, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "o"
+                ],
+                "message": "Invalid input: expected object, received array"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "record",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {}
+          },
+          {
+            "success": true,
+            "data": {
+              "a": 1
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected number, received string"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  "c"
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected record, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected record, received null"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected record, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "record with key checks",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 2
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "ab": 1
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_key",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid key in record"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "record of unknown",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {}
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": {
+                "$js": "undefined"
+              },
+              "b": [
+                1
+              ]
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected record, received array"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected record, received number"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "union",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [],
+                "message": "Invalid input"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [],
+                "message": "Invalid input"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "union first match wins",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "a"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "type": "string"
+                },
+                "b": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "a",
+                "b"
+              ]
+            }
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "union of objects",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "t": {
+                  "type": "string",
+                  "const": "a"
+                }
+              },
+              "required": [
+                "t"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "t": {
+                  "type": "string",
+                  "const": "b"
+                }
+              },
+              "required": [
+                "t"
+              ]
+            }
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "t": "a"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [],
+                "message": "Invalid input"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [],
+                "message": "Invalid input"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "discriminated union",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "t": {
+                  "type": "string",
+                  "const": "a"
+                },
+                "x": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "t",
+                "x"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "t": {
+                  "type": "string",
+                  "const": "b"
+                }
+              },
+              "required": [
+                "t"
+              ]
+            }
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "t": "a",
+              "x": "1"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "x"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "t": "b"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [
+                  "t"
+                ],
+                "message": "Invalid discriminator value. Expected 'a' | 'b'"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [
+                  "t"
+                ],
+                "message": "Invalid discriminator value. Expected 'a' | 'b'"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received string"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received null"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "intersection",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string"
+            },
+            "b": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": "x",
+              "b": 1
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "b"
+                ],
+                "message": "Invalid input: expected number, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "nullable",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": null
+          },
+          {
+            "success": true,
+            "data": "x"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "optional",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "$js": "undefined"
+            }
+          },
+          {
+            "success": true,
+            "data": "x"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected string, received null"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "any",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": true,
+            "data": null
+          },
+          {
+            "success": true,
+            "data": {
+              "$js": "undefined"
+            }
+          },
+          {
+            "success": true,
+            "data": {}
+          }
+        ]
+      }
+    },
+    {
+      "name": "brie fixed props",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "componentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "revision": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]{0,18}$"
+            }
+          },
+          "required": [
+            "componentId",
+            "revision"
+          ],
+          "additionalProperties": false
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "componentId": "position",
+              "revision": "1"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [
+                  "componentId"
+                ],
+                "message": "Too small: expected string to have >=1 characters"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [
+                  "revision"
+                ],
+                "message": "Invalid string: must match pattern /^[1-9][0-9]{0,18}$/"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "revision"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized key: \"extra\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "react native nullable props",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "level": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "h1",
+                    "h2"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "text",
+            "level"
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "level"
+                ],
+                "message": "Invalid option: expected one of \"h1\"|\"h2\""
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "text": "x",
+              "level": null
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [
+                  "level"
+                ],
+                "message": "Invalid option: expected one of \"h1\"|\"h2\""
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "text"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "array element errors come before length errors",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "minItems": 3,
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  0
+                ],
+                "message": "Invalid input: expected number, received string"
+              },
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have >=3 items"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have >=3 items"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  0
+                ],
+                "message": "Invalid input: expected number, received string"
+              },
+              {
+                "code": "invalid_type",
+                "path": [
+                  1
+                ],
+                "message": "Invalid input: expected number, received string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "array exact length",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "minItems": 2,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have exactly 2 items"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": [
+              1,
+              2
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected array to have exactly 2 items"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "string max then min",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected string to have <=2 characters"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=1 characters"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiple of a fraction",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "multipleOf": 0.1
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 0.3
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "not_multiple_of",
+                "path": [],
+                "message": "Invalid number: must be a multiple of 0.1"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": true,
+            "data": -0.2
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiple of three",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "number",
+          "multipleOf": 3
+        },
+        "results": [
+          {
+            "success": true,
+            "data": 9
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "not_multiple_of",
+                "path": [],
+                "message": "Invalid number: must be a multiple of 3"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": -6
+          }
+        ]
+      }
+    },
+    {
+      "name": "strict object reports keys after properties",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a"
+          ],
+          "additionalProperties": false
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected number, received string"
+              },
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized key: \"x\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "enum with one value",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "enum": [
+            "a"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid input: expected \"a\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "literal with several values",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "enum": [
+            "a",
+            1
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": true,
+            "data": 1
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_value",
+                "path": [],
+                "message": "Invalid option: expected one of \"a\"|1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "nullable object",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "a": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "a"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": null
+          },
+          {
+            "success": true,
+            "data": {
+              "a": "x"
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "a"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "nullable union",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": null
+          },
+          {
+            "success": true,
+            "data": "a"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [],
+                "message": "Invalid input"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "record with enum keys is exhaustive",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "enum": [
+              "a",
+              "b"
+            ]
+          },
+          "additionalProperties": {
+            "type": "number"
+          },
+          "required": [
+            "a",
+            "b"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "a": 1,
+              "b": 2
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "b"
+                ],
+                "message": "Invalid input: expected number, received undefined"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "unrecognized_keys",
+                "path": [],
+                "message": "Unrecognized key: \"c\""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "url trims whitespace",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "format": "uri"
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "https://a.com"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid URL"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "file:///x"
+          },
+          {
+            "success": true,
+            "data": "https://a.com"
+          }
+        ]
+      }
+    },
+    {
+      "name": "discriminated union with one option",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "t": {
+                  "type": "string",
+                  "const": "a"
+                }
+              },
+              "required": [
+                "t"
+              ]
+            }
+          ]
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_union",
+                "path": [
+                  "t"
+                ],
+                "message": "Invalid discriminator value. Expected 'a'"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [],
+                "message": "Invalid input: expected object, received array"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": {
+              "t": "a"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "unicode lengths count code points",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3
+        },
+        "results": [
+          {
+            "success": true,
+            "data": "é"
+          },
+          {
+            "success": true,
+            "data": "🇦🇺"
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=2 characters"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_big",
+                "path": [],
+                "message": "Too big: expected string to have <=3 characters"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "recursive tree",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "$ref": "#"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "children"
+          ]
+        },
+        "results": [
+          {
+            "success": true,
+            "data": {
+              "name": "a",
+              "children": [
+                {
+                  "name": "b",
+                  "children": []
+                }
+              ]
+            }
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "children",
+                  0,
+                  "name"
+                ],
+                "message": "Invalid input: expected string, received number"
+              }
+            ]
+          },
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_type",
+                "path": [
+                  "children"
+                ],
+                "message": "Invalid input: expected array, received undefined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "array min equals max",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "minItems": 2,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected array to have >=2 items"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": [
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "string min equals max",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=2 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "ab"
+          }
+        ]
+      }
+    },
+    {
+      "name": "regex then min",
+      "output": {
+        "jsonSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^a"
+        },
+        "results": [
+          {
+            "success": false,
+            "issues": [
+              {
+                "code": "invalid_format",
+                "path": [],
+                "message": "Invalid string: must match pattern /^a/"
+              },
+              {
+                "code": "too_small",
+                "path": [],
+                "message": "Too small: expected string to have >=3 characters"
+              }
+            ]
+          },
+          {
+            "success": true,
+            "data": "abc"
+          }
+        ]
+      }
+    }
+  ]
+}

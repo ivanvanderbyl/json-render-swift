@@ -1,0 +1,441 @@
+{
+  "suite": "state-store",
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "corpusSHA256": "cda49962e34a78ae6f121e166d53d2f43b89db790dd8aebf31b038f3fb436949",
+  "cases": [
+    {
+      "name": "set and no-op set",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a",
+            "b"
+          ],
+          "snapshot": {
+            "a": 1,
+            "b": {
+              "c": 2
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "b"
+          ],
+          "snapshot": {
+            "a": 2,
+            "b": {
+              "c": 2
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": 2,
+            "b": {
+              "c": 3
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "c": 3
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a",
+            "b"
+          ],
+          "snapshot": {
+            "a": 2,
+            "b": {
+              "c": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set an equal object still changes",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "o": {
+              "x": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set creates arrays and objects",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "list": [
+              {
+                "name": "a"
+              }
+            ]
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "list": [
+              {
+                "name": "a"
+              },
+              "b"
+            ]
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "list"
+          ],
+          "snapshot": {
+            "list": [
+              {
+                "name": "a"
+              },
+              "b"
+            ],
+            "map": {
+              "-": "c"
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "map"
+          ],
+          "snapshot": {
+            "list": [
+              {
+                "name": "a"
+              },
+              "b",
+              {
+                "$js": "hole"
+              },
+              "d"
+            ],
+            "map": {
+              "-": "c"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "update applies only changed paths",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": 1,
+            "b": 3,
+            "c": 4
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a",
+            "b",
+            "c"
+          ],
+          "snapshot": {
+            "a": 1,
+            "b": 3,
+            "c": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "update sees earlier updates in the batch",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "a": {
+              "x": 1,
+              "y": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set undefined",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "a": {
+              "$js": "undefined"
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": {
+              "$js": "undefined"
+            }
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": {
+              "$js": "undefined"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "root paths",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "a": 1
+            }
+          },
+          "notified": 0,
+          "snapshotChanged": false,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": 1
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": 1,
+            "": 5
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [
+            "a"
+          ],
+          "snapshot": {
+            "a": 1,
+            "": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "set through a primitive replaces it",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "a": {
+              "b": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "set on array with bad index",
+      "output": [
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "arr": [
+              1
+            ]
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "arr": [
+              1
+            ]
+          }
+        },
+        {
+          "result": {
+            "value": {
+              "$js": "undefined"
+            }
+          },
+          "notified": 1,
+          "snapshotChanged": true,
+          "sharedKeys": [],
+          "snapshot": {
+            "arr": [
+              1
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "upstream": {
+    "@json-render/core": "0.21.1",
+    "@json-render/react": "0.21.1",
+    "@json-render/react-native": "0.21.1",
+    "zod": "4.6.5",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "suites": {
+    "actions": {
+      "corpusSHA256": "115f1e66560c3d7f52e570ebf8c7ecd9b26cdd64a70cb2c0813350797a10398f"
+    },
+    "catalog": {
+      "corpusSHA256": "f6aede03a3aae59bda5830ba6e4f8997ad36a88372ff4b24dff1d16615497a45"
+    },
+    "js-semantics": {
+      "corpusSHA256": "14f0cb1083093b0bfa8c7ef07b31a92d54e8964ca5124ceb6afdc33850651f6b"
+    },
+    "paths": {
+      "corpusSHA256": "06fc60c3266ca3470a1f24479eb740e9533a7b8f4825d5831677aaef26f98c3f"
+    },
+    "props": {
+      "corpusSHA256": "2d724d4910024e5c1c56981aea0b8132f3b1d8917a5cc978c627cb195681914c"
+    },
+    "render": {
+      "corpusSHA256": "278294aaf28764e0ddb1b10a6f627438840e90e4c47c47ba1dd33fb1aa8cf923"
+    },
+    "schemas": {
+      "corpusSHA256": "23dfbba4d8e6bde1d4ce0e9fd8855e03fb4af1ba2f95f6a1b9c3407863f1fd81"
+    },
+    "spec-validator": {
+      "corpusSHA256": "a6afd8a14176fac311b1e50e7cdadc55e501d23b756263c21d7b9ad657f23ce2"
+    },
+    "standard-catalog": {
+      "corpusSHA256": "51bfb410046418182c7d7c4e1de38faf0a41dbe84bf8c420301f8840ca585533"
+    },
+    "state-store": {
+      "corpusSHA256": "cda49962e34a78ae6f121e166d53d2f43b89db790dd8aebf31b038f3fb436949"
+    },
+    "streaming": {
+      "corpusSHA256": "e8afd8b2bafbb285aa7699301cdf0512e0fe40c8b653f484deae719ae0c40763"
+    },
+    "upstream-schemas": {
+      "corpusSHA256": "f3643478b6eb0f086fef81fc81e2ae7328127af21c66465d26a0479a37ecf3e6"
+    },
+    "validation": {
+      "corpusSHA256": "b32ee2bb813bfb7614019721c50af21f82569464cd10040b2fef99561ce80d7e"
+    },
+    "visibility": {
+      "corpusSHA256": "8fd28b21294e8603e2a7d62ddbc4b2d1aadedf08704af616b9b65c777e04f66e"
+    }
+  }
+}

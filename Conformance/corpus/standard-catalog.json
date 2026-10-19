@@ -1,0 +1,820 @@
+{
+  "description": "The React Native standard catalog: the manifest the Swift package embeds, and zod's verdicts on sample props, params and specs.",
+  "cases": [
+    {
+      "name": "manifest",
+      "op": "manifest"
+    },
+    {
+      "name": "props: Container example",
+      "op": "props",
+      "component": "Container",
+      "value": {
+        "padding": 16,
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    {
+      "name": "props: Container empty",
+      "op": "props",
+      "component": "Container",
+      "value": {}
+    },
+    {
+      "name": "props: Container required and null",
+      "op": "props",
+      "component": "Container",
+      "value": {
+        "padding": null,
+        "paddingHorizontal": null,
+        "paddingVertical": null,
+        "margin": null,
+        "backgroundColor": null,
+        "borderRadius": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: Row example",
+      "op": "props",
+      "component": "Row",
+      "value": {
+        "gap": 12,
+        "alignItems": "center"
+      }
+    },
+    {
+      "name": "props: Row empty",
+      "op": "props",
+      "component": "Row",
+      "value": {}
+    },
+    {
+      "name": "props: Row required and null",
+      "op": "props",
+      "component": "Row",
+      "value": {
+        "gap": null,
+        "alignItems": null,
+        "justifyContent": null,
+        "flexWrap": null,
+        "padding": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: Column example",
+      "op": "props",
+      "component": "Column",
+      "value": {
+        "gap": 12,
+        "padding": 16
+      }
+    },
+    {
+      "name": "props: Column empty",
+      "op": "props",
+      "component": "Column",
+      "value": {}
+    },
+    {
+      "name": "props: Column required and null",
+      "op": "props",
+      "component": "Column",
+      "value": {
+        "gap": null,
+        "alignItems": null,
+        "justifyContent": null,
+        "padding": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: ScrollContainer empty",
+      "op": "props",
+      "component": "ScrollContainer",
+      "value": {}
+    },
+    {
+      "name": "props: ScrollContainer required and null",
+      "op": "props",
+      "component": "ScrollContainer",
+      "value": {
+        "horizontal": null,
+        "showsScrollIndicator": null,
+        "padding": null,
+        "backgroundColor": null
+      }
+    },
+    {
+      "name": "props: SafeArea empty",
+      "op": "props",
+      "component": "SafeArea",
+      "value": {}
+    },
+    {
+      "name": "props: SafeArea required and null",
+      "op": "props",
+      "component": "SafeArea",
+      "value": {
+        "backgroundColor": null
+      }
+    },
+    {
+      "name": "props: Spacer empty",
+      "op": "props",
+      "component": "Spacer",
+      "value": {}
+    },
+    {
+      "name": "props: Spacer required and null",
+      "op": "props",
+      "component": "Spacer",
+      "value": {
+        "size": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: Pressable empty",
+      "op": "props",
+      "component": "Pressable",
+      "value": {}
+    },
+    {
+      "name": "props: Pressable required and null",
+      "op": "props",
+      "component": "Pressable",
+      "value": {}
+    },
+    {
+      "name": "props: Divider empty",
+      "op": "props",
+      "component": "Divider",
+      "value": {}
+    },
+    {
+      "name": "props: Divider required and null",
+      "op": "props",
+      "component": "Divider",
+      "value": {
+        "direction": null,
+        "color": null,
+        "thickness": null,
+        "margin": null
+      }
+    },
+    {
+      "name": "props: Heading example",
+      "op": "props",
+      "component": "Heading",
+      "value": {
+        "text": "Welcome",
+        "level": "h1"
+      }
+    },
+    {
+      "name": "props: Heading empty",
+      "op": "props",
+      "component": "Heading",
+      "value": {}
+    },
+    {
+      "name": "props: Heading required and null",
+      "op": "props",
+      "component": "Heading",
+      "value": {
+        "text": "x",
+        "level": null,
+        "color": null,
+        "align": null
+      }
+    },
+    {
+      "name": "props: Paragraph example",
+      "op": "props",
+      "component": "Paragraph",
+      "value": {
+        "text": "This is a paragraph of body text."
+      }
+    },
+    {
+      "name": "props: Paragraph empty",
+      "op": "props",
+      "component": "Paragraph",
+      "value": {}
+    },
+    {
+      "name": "props: Paragraph required and null",
+      "op": "props",
+      "component": "Paragraph",
+      "value": {
+        "text": "x",
+        "color": null,
+        "align": null,
+        "numberOfLines": null,
+        "fontSize": null
+      }
+    },
+    {
+      "name": "props: Label example",
+      "op": "props",
+      "component": "Label",
+      "value": {
+        "text": "Status",
+        "size": "sm"
+      }
+    },
+    {
+      "name": "props: Label empty",
+      "op": "props",
+      "component": "Label",
+      "value": {}
+    },
+    {
+      "name": "props: Label required and null",
+      "op": "props",
+      "component": "Label",
+      "value": {
+        "text": "x",
+        "color": null,
+        "bold": null,
+        "size": null
+      }
+    },
+    {
+      "name": "props: Image example",
+      "op": "props",
+      "component": "Image",
+      "value": {
+        "src": "https://picsum.photos/300/200",
+        "alt": "Photo",
+        "width": 300,
+        "height": 200
+      }
+    },
+    {
+      "name": "props: Image empty",
+      "op": "props",
+      "component": "Image",
+      "value": {}
+    },
+    {
+      "name": "props: Image required and null",
+      "op": "props",
+      "component": "Image",
+      "value": {
+        "src": "x",
+        "alt": null,
+        "width": null,
+        "height": null,
+        "resizeMode": null,
+        "borderRadius": null
+      }
+    },
+    {
+      "name": "props: Avatar example",
+      "op": "props",
+      "component": "Avatar",
+      "value": {
+        "initials": "JD",
+        "size": "md"
+      }
+    },
+    {
+      "name": "props: Avatar empty",
+      "op": "props",
+      "component": "Avatar",
+      "value": {}
+    },
+    {
+      "name": "props: Avatar required and null",
+      "op": "props",
+      "component": "Avatar",
+      "value": {
+        "src": null,
+        "initials": null,
+        "size": null,
+        "backgroundColor": null
+      }
+    },
+    {
+      "name": "props: Badge example",
+      "op": "props",
+      "component": "Badge",
+      "value": {
+        "label": "New",
+        "variant": "info"
+      }
+    },
+    {
+      "name": "props: Badge empty",
+      "op": "props",
+      "component": "Badge",
+      "value": {}
+    },
+    {
+      "name": "props: Badge required and null",
+      "op": "props",
+      "component": "Badge",
+      "value": {
+        "label": "x",
+        "variant": null
+      }
+    },
+    {
+      "name": "props: Chip empty",
+      "op": "props",
+      "component": "Chip",
+      "value": {}
+    },
+    {
+      "name": "props: Chip required and null",
+      "op": "props",
+      "component": "Chip",
+      "value": {
+        "label": "x",
+        "selected": null,
+        "backgroundColor": null
+      }
+    },
+    {
+      "name": "props: Button example",
+      "op": "props",
+      "component": "Button",
+      "value": {
+        "label": "Submit",
+        "variant": "primary"
+      }
+    },
+    {
+      "name": "props: Button empty",
+      "op": "props",
+      "component": "Button",
+      "value": {}
+    },
+    {
+      "name": "props: Button required and null",
+      "op": "props",
+      "component": "Button",
+      "value": {
+        "label": "x",
+        "variant": null,
+        "size": null,
+        "disabled": null,
+        "loading": null
+      }
+    },
+    {
+      "name": "props: TextInput example",
+      "op": "props",
+      "component": "TextInput",
+      "value": {
+        "placeholder": "Enter text...",
+        "label": "Name"
+      }
+    },
+    {
+      "name": "props: TextInput empty",
+      "op": "props",
+      "component": "TextInput",
+      "value": {}
+    },
+    {
+      "name": "props: TextInput required and null",
+      "op": "props",
+      "component": "TextInput",
+      "value": {
+        "placeholder": null,
+        "value": null,
+        "secureTextEntry": null,
+        "keyboardType": null,
+        "multiline": null,
+        "numberOfLines": null,
+        "label": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: Switch empty",
+      "op": "props",
+      "component": "Switch",
+      "value": {}
+    },
+    {
+      "name": "props: Switch required and null",
+      "op": "props",
+      "component": "Switch",
+      "value": {
+        "checked": null,
+        "label": null,
+        "disabled": null
+      }
+    },
+    {
+      "name": "props: Checkbox empty",
+      "op": "props",
+      "component": "Checkbox",
+      "value": {}
+    },
+    {
+      "name": "props: Checkbox required and null",
+      "op": "props",
+      "component": "Checkbox",
+      "value": {
+        "checked": null,
+        "label": null,
+        "disabled": null
+      }
+    },
+    {
+      "name": "props: Slider empty",
+      "op": "props",
+      "component": "Slider",
+      "value": {}
+    },
+    {
+      "name": "props: Slider required and null",
+      "op": "props",
+      "component": "Slider",
+      "value": {
+        "min": null,
+        "max": null,
+        "step": null,
+        "value": null,
+        "label": null,
+        "color": null
+      }
+    },
+    {
+      "name": "props: SearchBar empty",
+      "op": "props",
+      "component": "SearchBar",
+      "value": {}
+    },
+    {
+      "name": "props: SearchBar required and null",
+      "op": "props",
+      "component": "SearchBar",
+      "value": {
+        "placeholder": null,
+        "value": null
+      }
+    },
+    {
+      "name": "props: Spinner empty",
+      "op": "props",
+      "component": "Spinner",
+      "value": {}
+    },
+    {
+      "name": "props: Spinner required and null",
+      "op": "props",
+      "component": "Spinner",
+      "value": {
+        "size": null,
+        "color": null
+      }
+    },
+    {
+      "name": "props: ProgressBar empty",
+      "op": "props",
+      "component": "ProgressBar",
+      "value": {}
+    },
+    {
+      "name": "props: ProgressBar required and null",
+      "op": "props",
+      "component": "ProgressBar",
+      "value": {
+        "progress": 1,
+        "color": null,
+        "trackColor": null,
+        "height": null
+      }
+    },
+    {
+      "name": "props: Card example",
+      "op": "props",
+      "component": "Card",
+      "value": {
+        "title": "Details",
+        "padding": 16,
+        "elevated": true
+      }
+    },
+    {
+      "name": "props: Card empty",
+      "op": "props",
+      "component": "Card",
+      "value": {}
+    },
+    {
+      "name": "props: Card required and null",
+      "op": "props",
+      "component": "Card",
+      "value": {
+        "title": null,
+        "subtitle": null,
+        "padding": null,
+        "backgroundColor": null,
+        "borderRadius": null,
+        "elevated": null
+      }
+    },
+    {
+      "name": "props: ListItem example",
+      "op": "props",
+      "component": "ListItem",
+      "value": {
+        "title": "Settings",
+        "subtitle": "Manage your preferences",
+        "showChevron": true
+      }
+    },
+    {
+      "name": "props: ListItem empty",
+      "op": "props",
+      "component": "ListItem",
+      "value": {}
+    },
+    {
+      "name": "props: ListItem required and null",
+      "op": "props",
+      "component": "ListItem",
+      "value": {
+        "title": "x",
+        "subtitle": null,
+        "leading": null,
+        "trailing": null,
+        "showChevron": null
+      }
+    },
+    {
+      "name": "props: Modal empty",
+      "op": "props",
+      "component": "Modal",
+      "value": {}
+    },
+    {
+      "name": "props: Modal required and null",
+      "op": "props",
+      "component": "Modal",
+      "value": {
+        "visible": true,
+        "title": null,
+        "animationType": null
+      }
+    },
+    {
+      "name": "props: Heading level out of range",
+      "op": "props",
+      "component": "Heading",
+      "value": {
+        "text": "Hi",
+        "level": "h5",
+        "color": null,
+        "align": null
+      }
+    },
+    {
+      "name": "props: Button wrong types",
+      "op": "props",
+      "component": "Button",
+      "value": {
+        "label": 1,
+        "variant": "huge",
+        "size": null,
+        "disabled": "no",
+        "loading": null
+      }
+    },
+    {
+      "name": "props: Card unknown keys are stripped",
+      "op": "props",
+      "component": "Card",
+      "value": {
+        "title": null,
+        "subtitle": null,
+        "padding": null,
+        "backgroundColor": null,
+        "borderRadius": null,
+        "elevated": null,
+        "extra": 1
+      }
+    },
+    {
+      "name": "props: TextInput keyboard types",
+      "op": "props",
+      "component": "TextInput",
+      "value": {
+        "placeholder": null,
+        "value": null,
+        "secureTextEntry": null,
+        "keyboardType": "decimal-pad",
+        "multiline": null,
+        "numberOfLines": null,
+        "label": null,
+        "flex": null
+      }
+    },
+    {
+      "name": "props: Modal visible must be a boolean",
+      "op": "props",
+      "component": "Modal",
+      "value": {
+        "visible": null,
+        "title": null,
+        "animationType": "fade"
+      }
+    },
+    {
+      "name": "params: navigate",
+      "op": "params",
+      "action": "navigate",
+      "value": {
+        "screen": "home",
+        "params": {
+          "id": 1
+        }
+      }
+    },
+    {
+      "name": "params: navigate without params",
+      "op": "params",
+      "action": "navigate",
+      "value": {
+        "screen": "home"
+      }
+    },
+    {
+      "name": "params: goBack",
+      "op": "params",
+      "action": "goBack",
+      "value": {}
+    },
+    {
+      "name": "params: showAlert with buttons",
+      "op": "params",
+      "action": "showAlert",
+      "value": {
+        "title": "Hi",
+        "message": null,
+        "buttons": [
+          {
+            "text": "OK",
+            "style": "cancel",
+            "action": null
+          },
+          {
+            "text": "Go",
+            "style": "weird",
+            "action": "x"
+          }
+        ]
+      }
+    },
+    {
+      "name": "params: share",
+      "op": "params",
+      "action": "share",
+      "value": {
+        "message": "m",
+        "url": null,
+        "title": null
+      }
+    },
+    {
+      "name": "params: openURL",
+      "op": "params",
+      "action": "openURL",
+      "value": {
+        "url": 5
+      }
+    },
+    {
+      "name": "params: setState",
+      "op": "params",
+      "action": "setState",
+      "value": {
+        "statePath": "/a"
+      }
+    },
+    {
+      "name": "params: pushState",
+      "op": "params",
+      "action": "pushState",
+      "value": {
+        "statePath": "/a",
+        "value": {
+          "id": "$id"
+        }
+      }
+    },
+    {
+      "name": "params: pushState with clearStatePath",
+      "op": "params",
+      "action": "pushState",
+      "value": {
+        "statePath": "/a",
+        "value": 1,
+        "clearStatePath": null
+      }
+    },
+    {
+      "name": "params: removeState",
+      "op": "params",
+      "action": "removeState",
+      "value": {
+        "statePath": "/a",
+        "index": "0"
+      }
+    },
+    {
+      "name": "params: refresh",
+      "op": "params",
+      "action": "refresh",
+      "value": {
+        "target": null
+      }
+    },
+    {
+      "name": "spec: standard components",
+      "op": "spec",
+      "spec": {
+        "root": "screen",
+        "elements": {
+          "screen": {
+            "type": "SafeArea",
+            "props": {
+              "backgroundColor": null
+            },
+            "children": [
+              "title",
+              "go"
+            ]
+          },
+          "title": {
+            "type": "Heading",
+            "props": {
+              "text": "Welcome",
+              "level": "h1",
+              "color": null,
+              "align": null
+            },
+            "children": []
+          },
+          "go": {
+            "type": "Button",
+            "props": {
+              "label": "Go",
+              "variant": "primary",
+              "size": null,
+              "disabled": null,
+              "loading": null
+            },
+            "children": [],
+            "on": {
+              "press": {
+                "action": "navigate",
+                "params": {
+                  "screen": "next"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "spec: unknown component type",
+      "op": "spec",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "Carousel",
+            "props": {},
+            "children": []
+          }
+        }
+      }
+    },
+    {
+      "name": "spec: props are not checked per component",
+      "op": "spec",
+      "spec": {
+        "root": "a",
+        "elements": {
+          "a": {
+            "type": "Heading",
+            "props": {
+              "wrong": 1
+            },
+            "children": []
+          }
+        }
+      }
+    }
+  ]
+}
