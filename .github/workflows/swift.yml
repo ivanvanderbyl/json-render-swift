@@ -77,7 +77,7 @@ jobs:
           make test-ios IOS_DESTINATION="id=$udid"
 
   release:
-    name: Release ${{ inputs.version }}
+    name: Release
     if: github.event_name == 'workflow_dispatch' && inputs.version != ''
     needs: [goldens, macos, ios]
     runs-on: ubuntu-latest
