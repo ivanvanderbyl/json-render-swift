@@ -15,11 +15,15 @@ A Swift and SwiftUI renderer for [json-render](https://json-render.dev) specs th
 
 ## Installation
 
-The package is not published yet. Add it to a SwiftPM package by path:
+Each release is a version tag, such as `0.1.0`, listed on the [releases page](https://github.com/ivanvanderbyl/json-render-swift/releases). The package needs Xcode 26 or later.
+
+In Xcode, choose File > Add Package Dependencies, enter `https://github.com/ivanvanderbyl/json-render-swift`, and set the dependency rule to Up to Next Minor Version. Add `JSONRenderUI` to your app target, and `JSONRenderStandard` if you use the standard components.
+
+In a `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(path: "../json-render-swift"),
+    .package(url: "https://github.com/ivanvanderbyl/json-render-swift", .upToNextMinor(from: "0.1.0")),
 ],
 targets: [
     .target(name: "App", dependencies: [
@@ -29,7 +33,7 @@ targets: [
 ]
 ```
 
-In Xcode, choose File > Add Package Dependencies, then Add Local.
+Until 1.0, a minor version can change the API. Up to Next Minor Version takes fixes without those changes.
 
 ## Usage
 
@@ -152,6 +156,14 @@ The goldens need Node and pnpm. The Swift tests read the committed goldens, so `
 - `Tests/IntegrationTests` loads Brightfield's exported Brie schema and draws a Brie surface with host views.
 
 To change behaviour, add a corpus case in `Conformance/corpus` (for render scenarios, edit `Conformance/corpus-sources/render.mjs` and run `node Conformance/corpus-sources/render.mjs`), run `make goldens`, and see the Swift test fail before you change the port. The Swift tests fail when a golden is stale: each golden records the upstream versions and a hash of its corpus.
+
+## Releasing
+
+Releases come from `main`. In GitHub, open Actions > Swift > Run workflow, enter the new version, and run it. The workflow runs every check on the newest commit on `main`. If they all pass, it tags that commit with the version and publishes a GitHub release with notes from the merged pull requests.
+
+- Write the version without a `v`, such as `0.2.0`. Add a suffix for a pre-release, such as `0.2.0-beta.1`.
+- Until 1.0, raise the minor version for a change that breaks the API, and the patch version for anything else.
+- Never move or delete a released tag. Swift Package Manager caches each version, so apps that already resolved it would break.
 
 ## Licence
 

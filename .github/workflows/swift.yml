@@ -1,22 +1,119 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+# Checks every push and pull request on macOS, iOS and against the pinned
+# upstream packages. Run it by hand with a version to release that commit:
+# the release creates the version tag that Swift Package Manager and Xcode
+# resolve, and a GitHub release with notes.
 
 name: Swift
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, such as 0.1.0 or 0.2.0-beta.1. Leave empty to run the checks only."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
-
-    runs-on: macos-latest
-
+  goldens:
+    name: Goldens match upstream
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: Conformance/package.json
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: Conformance/pnpm-lock.yaml
+      - run: make goldens-check
+
+  macos:
+    name: macOS
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: xcodebuild -version
+      - name: Build for release
+        run: swift build -c release
+      - name: Test
+        run: make test
+
+  ios:
+    name: iOS
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: xcodebuild -version
+      - name: Build for devices
+        run: xcodebuild build -scheme JSONRender-Package -destination 'generic/platform=iOS' -configuration Release -quiet
+      - name: Test on a simulator
+        run: |
+          # An iPhone on the newest iOS runtime, where actions start the same way as on macOS 26.
+          udid=$(xcrun simctl list devices available --json | jq -r '
+            [.devices | to_entries[] | select(.key | test("SimRuntime\\.iOS-"))
+              | (.key | capture("iOS-(?<major>[0-9]+)-(?<minor>[0-9]+)") | [(.major | tonumber), (.minor | tonumber)]) as $version
+              | .value[] | select(.name | startswith("iPhone")) | {version: $version, udid}]
+            | sort_by(.version) | last | .udid')
+          if [ -z "$udid" ] || [ "$udid" = "null" ]; then
+            echo "::error::No iPhone simulator is available on this runner."
+            exit 1
+          fi
+          make test-ios IOS_DESTINATION="id=$udid"
+
+  release:
+    name: Release
+    if: github.event_name == 'workflow_dispatch' && inputs.version != ''
+    needs: [goldens, macos, ios]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    env:
+      VERSION: ${{ inputs.version }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check the version
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Release from main only. This run is on $GITHUB_REF."
+            exit 1
+          fi
+          # Swift Package Manager reads semantic version tags without a prefix.
+          if ! printf '%s' "$VERSION" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::$VERSION is not a semantic version such as 1.2.3 or 1.2.3-beta.1."
+            exit 1
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$VERSION" --silent 2>/dev/null; then
+            echo "::error::Tag $VERSION already exists. Swift Package Manager caches versions, so never move a released tag."
+            exit 1
+          fi
+      - name: Tag and publish the release
+        run: |
+          prerelease=()
+          case "$VERSION" in *-*) prerelease=(--prerelease) ;; esac
+          gh release create "$VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "$VERSION" \
+            --generate-notes \
+            "${prerelease[@]}"
+          echo "Released [$VERSION](https://github.com/$GITHUB_REPOSITORY/releases/tag/$VERSION) from \`$GITHUB_SHA\`." >> "$GITHUB_STEP_SUMMARY"
