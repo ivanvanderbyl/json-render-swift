@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@json-render/core':
         specifier: 0.21.1
-        version: 0.21.1(zod@4.6.5)
+        version: 0.21.1(zod@4.6.6)
       '@json-render/react':
         specifier: 0.21.1
-        version: 0.21.1(react@19.2.3)(zod@4.6.5)
+        version: 0.21.1(react@19.2.3)(zod@4.6.6)
       '@json-render/react-native':
         specifier: 0.21.1
-        version: 0.21.1(react-native@shims+react-native)(react@19.2.3)(zod@4.6.5)
+        version: 0.21.1(react-native@shims+react-native)(react@19.2.3)(zod@4.6.6)
       jsdom:
         specifier: 27.4.0
         version: 27.4.0
@@ -30,8 +30,8 @@ importers:
         specifier: link:./shims/react-native
         version: link:shims/react-native
       zod:
-        specifier: 4.6.5
-        version: 4.6.5
+        specifier: 4.6.6
+        version: 4.6.6
 
 packages:
 
@@ -266,8 +266,8 @@ packages:
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
 
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
 snapshots:
 
@@ -317,20 +317,20 @@ snapshots:
 
   '@exodus/bytes@1.16.0': {}
 
-  '@json-render/core@0.21.1(zod@4.6.5)':
+  '@json-render/core@0.21.1(zod@4.6.6)':
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@json-render/react-native@0.21.1(react-native@shims+react-native)(react@19.2.3)(zod@4.6.5)':
+  '@json-render/react-native@0.21.1(react-native@shims+react-native)(react@19.2.3)(zod@4.6.6)':
     dependencies:
-      '@json-render/core': 0.21.1(zod@4.6.5)
+      '@json-render/core': 0.21.1(zod@4.6.6)
       react: 19.2.3
       react-native: link:shims/react-native
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@json-render/react@0.21.1(react@19.2.3)(zod@4.6.5)':
+  '@json-render/react@0.21.1(react@19.2.3)(zod@4.6.6)':
     dependencies:
-      '@json-render/core': 0.21.1(zod@4.6.5)
+      '@json-render/core': 0.21.1(zod@4.6.6)
       react: 19.2.3
     transitivePeerDependencies:
       - zod
@@ -482,4 +482,4 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
-  zod@4.6.5: {}
+  zod@4.6.6: {}

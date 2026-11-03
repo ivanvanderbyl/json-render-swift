@@ -15,7 +15,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "link:./shims/react-native",
-    "zod": "4.6.5"
+    "zod": "4.6.6"
   },
   "packageManager": "pnpm@10.28.0"
 }
