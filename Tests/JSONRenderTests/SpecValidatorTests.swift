@@ -72,6 +72,22 @@ struct SpecValidatorTests {
         })
     }
 
+    @Test("allows the standard Modal visible prop without weakening structural visibility checks")
+    func allowsModalVisibleProp() throws {
+        let spec = Spec(root: "root", elements: [
+            "root": ["type": "Column", "children": ["literal", "bound"]],
+            "literal": ["type": "Modal", "props": ["visible": true]],
+            "bound": ["type": "Modal", "props": ["visible": ["$bindState": "/shown"]]],
+        ])
+        let result = try SpecValidator.validate(spec)
+        #expect(result.valid)
+        #expect(result.issues.isEmpty)
+        let invalid = try SpecValidator.validate(Spec(root: "modal", elements: [
+            "modal": ["type": "Modal", "props": ["visible": true], "visible": "invalid"],
+        ]))
+        #expect(invalid.issues.contains { $0.code == "invalid_visible" })
+    }
+
     @Test("detects visible_in_props")
     func detectsVisibleInProps() throws {
         let spec = Spec(root: "root", elements: [
