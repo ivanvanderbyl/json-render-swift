@@ -236,14 +236,14 @@ extension Runtime {
             executeAction: { [unowned self] binding in try await self.execute(binding) }
         )
         activeTasks += 1
-        let work: @MainActor () async -> Void = { [weak self] in
+        // The accepted operation owns its runtime through handler callbacks and settlement.
+        let work: @MainActor () async -> Void = { [self] in
             var failure: (any Error)?
             do {
                 try await Actions.execute(context)
             } catch {
                 failure = error
             }
-            guard let self else { return }
             self.activeTasks -= 1
             self.enqueue {
                 self.loadingActions.remove(name)
