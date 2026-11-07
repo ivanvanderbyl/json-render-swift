@@ -59,6 +59,26 @@ final class Host<Content: View> {
 @MainActor
 @Suite("Standard components in SwiftUI")
 struct StandardRenderingTests {
+    #if os(macOS)
+    @Test("TextInput's border lets clicks reach its native editor")
+    func textInputHitTesting() throws {
+        _ = NSApplication.shared
+        let rendered = try render("TextInput", ["value": ["$bindState": "/name"], "label": "Name"], state: ["name": "Ada"])
+        let host = Host(try TextInputComponent(rendered.context), width: 400, height: 100)
+        let window = NSWindow(contentRect: CGRect(x: 0, y: 0, width: 400, height: 100),
+                              styleMask: [.borderless], backing: .buffered, defer: false)
+        window.contentView = host.view
+        host.layout()
+        func fields(_ view: NSView) -> [NSTextField] {
+            (view as? NSTextField).map { [$0] } ?? view.subviews.flatMap { fields($0) }
+        }
+        let field = try #require(fields(host.view).first)
+        let point = field.convert(NSPoint(x: field.bounds.midX, y: field.bounds.midY), to: host.view.superview)
+        let hit = host.view.hitTest(point)
+        #expect(hit === field || hit?.isDescendant(of: field) == true)
+    }
+    #endif
+
     @Test("every standard component draws its props")
     func everyComponentDraws() async throws {
         let elements: JSONObject = [

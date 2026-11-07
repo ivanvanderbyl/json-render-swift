@@ -174,7 +174,11 @@ public struct TextInputComponent: View {
                 .padding(.vertical, 10)
                 .frame(minHeight: model.minHeight.map { CGFloat($0) }, alignment: .topLeading)
                 .background(Color.white, in: RoundedRectangle(cornerRadius: 8))
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(CSSColor("#d1d5db")!.color, lineWidth: 1))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(CSSColor("#d1d5db")!.color, lineWidth: 1)
+                        .allowsHitTesting(false)
+                }
                 .keyboard(model.keyboard)
         }
         .onChange(of: model.text, initial: true) { editing = model.text }

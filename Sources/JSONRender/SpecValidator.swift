@@ -132,6 +132,8 @@ public enum SpecValidator {
             let props = try JavaScript.member("props", of: value)
             if props.isTruthy {
                 for (field, code) in [("visible", "visible_in_props"), ("on", "on_in_props"), ("repeat", "repeat_in_props"), ("watch", "watch_in_props")] {
+                    // Modal declares its presentation state as a component prop.
+                    if field == "visible", value["type"] == "Modal" { continue }
                     if try JavaScript.hasProperty(field, in: props), !props[field].isUndefined {
                         issues.append(SpecIssue(
                             severity: .error,
